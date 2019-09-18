@@ -1,0 +1,51 @@
+﻿@model IEnumerable<LostItem>
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+       
+<h3 class="container"> <a asp-action="Create" >Register your Item</a> </h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Lost Item
+              @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                Status
+                @*@Html.DisplayNameFor(model => model.IsFound)*@
+            </th>
+            
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameOfLostItem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFound )
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

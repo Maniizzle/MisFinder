@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "LostItems";
+}
+@model IEnumerable<LostItem>
+
+
+<div id="container" class="container ">
+    <div class="row">
+        @{ if (Model != null)
+            {
+                {
+                    foreach (var item in Model)
+                    {
+                        
+                          
+                        <div class="col">
+                            <div class="card ola" style="width: 18rem;background-color:lightsalmon; border-radius:5px;">
+                                <div class="card-body text-center" style="padding:15px;">
+                                    <span class="login100-form-title ">
+                                        @item.NameOfLostItem
+                                    </span>
+                                    <a asp-action="Create" asp-controller="LostItem">Claim Item<span class="glyphicon glyphicon-envelope" title="Claim Item"></span></a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <div> No Found Item</div>
+
+
+
+            }
+
+        }
+
+    </div>
+
+</div>
