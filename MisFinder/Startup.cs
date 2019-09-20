@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MisFinder.Domain.Models;
 using MisFinder.Data.Persistence;
 using MisFinder.Data.Data.Context;
+using MisFinder.Data.Persistence.Repositories;
+using MisFinder.Data.Persistence.IRepositories;
 
 namespace MisFinder
 {
@@ -28,7 +30,8 @@ namespace MisFinder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("MisFinder")));
-
+            services.AddTransient<IFoundItemsRepository, FoundItemRepository>();
+            services.AddTransient<ILostItemRepository, LostItemRepository>();
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {   
                 opts.Lockout.AllowedForNewUsers = true;

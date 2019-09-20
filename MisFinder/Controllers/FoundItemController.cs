@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
+using MisFinder.Data.Persistence.IRepositories;
 
 namespace MisFinder.Controllers
 {
@@ -16,11 +17,16 @@ namespace MisFinder.Controllers
     public class FoundItemController : Controller
     {
         private readonly MisFinderDbContext context;
+        private readonly IFoundItemRepository repository;
+        private readonly IStateRepository staterepository;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public FoundItemController(MisFinderDbContext context, UserManager<ApplicationUser> userManager)
+        public FoundItemController(MisFinderDbContext context,
+            IFoundItemRepository repository,IStateRepository staterepository, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            this.repository = repository;
+            this.staterepository = staterepository;
             this.userManager = userManager;
         }
 
@@ -29,21 +35,21 @@ namespace MisFinder.Controllers
             var user = await userManager.GetUserAsync(HttpContext.User);
             if (user == null)
                 return NotFound();
-            IEnumerable<FoundItem> foundItem = context.FoundItems.Where(c=>c.FoundItemUser==user).ToList();
-            return View(foundItem);
+            var foundItems= repository.GetFoundItemsByUser(user);
+            return View(foundItems);
         }
         [AllowAnonymous]
         public IActionResult GetFoundItems()
         {
-            IEnumerable<FoundItem> foundItem = context.FoundItems.Include(c=>c.FoundLostItems);
-            return View(foundItem);
+            var foundItems = repository.GetAllFoundItems();
+            return View(foundItems);
         }       
         public async Task<IActionResult> GetFoundItemById(int? id)
         {
             if (id == null)
                 return NotFound();
-            var FoundItem = await context.FoundItems.SingleOrDefaultAsync(c => c.Id == id);
-            return View(FoundItem);
+            var foundItem = repository.GetFoundItemById(id);
+            return View(foundItem);
         }
         [HttpGet]
         public IActionResult Create()
@@ -59,19 +65,16 @@ namespace MisFinder.Controllers
                 FoundItem itemm = new FoundItem
                 { 
                     FoundItemUser = user,
-                    Name = item.Name,
-                    Location = item.Location,
+                    NameOfFoundItem = item.Name,
+                    Location = item.State,
                     Description = item.Description,
                     Colour = item.Colour,
                     DateFound = item.DateFound
                     
-             
-                   
-
                 };
-                
-                context.Add(itemm);
-                await context.SaveChangesAsync();
+                repository.Create(itemm);
+               repository.Save();
+                ViewBag.StateList = staterepository.GetAllStates();
                 return RedirectToAction(nameof(Index));
             }
             return View(item);
@@ -85,16 +88,16 @@ namespace MisFinder.Controllers
                 return NotFound();
             }
 
-            var FoundItem = context.FoundItems.SingleOrDefault(m => m.Id == id);
+            var foundItem = repository.GetFoundItemById(id);
 
-            if (FoundItem == null)
+            if (foundItem == null)
             {
                 return NotFound();
             }
-            return View(FoundItem);
+            return View(foundItem);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, FoundItem foundItem)
+        public IActionResult Edit(int id, FoundItem foundItem)
         {
             if (id != foundItem.Id)
             { return NotFound(); }
@@ -103,8 +106,8 @@ namespace MisFinder.Controllers
             {
                 try
                 {
-                    context.Update(foundItem);
-                    await context.SaveChangesAsync();
+                    repository.Update(foundItem);
+                    repository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

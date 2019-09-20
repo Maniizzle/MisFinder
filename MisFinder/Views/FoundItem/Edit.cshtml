@@ -16,9 +16,9 @@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="FoundItemUser" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="NameOfFoundItem" class="control-label"></label>
+                <input asp-for="NameOfFoundItem" class="form-control" />
+                <span asp-validation-for="NameOfFoundItem" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -32,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Location" class="control-label"></label>
-                <select asp-for="Location" class="form-control" asp-items="@Html.GetEnumSelectList<Location>()"></select>
+              @*  <select asp-for="Location" class="form-control" asp-items="@Html.GetEnumSelectList<Location>()"></select>*@
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
 

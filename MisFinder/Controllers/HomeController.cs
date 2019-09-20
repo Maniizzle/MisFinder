@@ -12,44 +12,43 @@ namespace MisFinder.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly MisFinderDbContext context;
+        private readonly IFoundItemRepository repository;
 
-
-        public HomeController( MisFinderDbContext context)
+        public HomeController(IFoundItemRepository repository)
         {
-            this.context = context;
-            
+            this.repository = repository;
         }
         public IActionResult Index()
         {
             return View();
         }
         
-        public IActionResult Search(string name)
-        {
-          var result=  context.LostItems.
-                Where(c=>(c.NameOfLostItem.ToLower().Contains(name.ToLower())||c.Description.ToLower().Contains(name.ToLower()) ));
-            return View(result); 
-        }
-        public IActionResult Search2(string name)
-        {
-            var result = context.FoundItems.
-                  Where(c => (c.Name.ToLower().Contains(name.ToLower()) || c.Description.ToLower().Contains(name.ToLower())));
-            return View(result);
-        }
-        [HttpGet]
-        public IActionResult FoundItems()
-        {
+        //public IActionResult Search(string name)
+        //{
+        //  var result=  context.LostItems.
+        //        Where(c=>(c.NameOfLostItem.ToLower().Contains(name.ToLower())||c.Description.ToLower().Contains(name.ToLower()) ));
+        //    return View(result); 
+        //}
+        //public IActionResult Search2(string name)
+        //{
+        //    var result = context.FoundItems.
+        //          Where(c => (c.NameOfFoundItem.ToLower().Contains(name.ToLower()) || c.Description.ToLower().Contains(name.ToLower())));
+        //    return View(result);
+        //}
+        ////
+        ///[HttpGet]
+        //public IActionResult FoundItems()
+        //{
 
-            IEnumerable<FoundItem> foundItems = context.FoundItems.ToList();
-            return View(foundItems);
-        }
-        [HttpGet]
-        public IActionResult LostItems()
-        {
-            IEnumerable<LostItem> lostItems = context.LostItems.ToList();
-            return View(lostItems);
+        //    IEnumerable<FoundItem> foundItems = context.FoundItems.ToList();
+        //    return View(foundItems);
+        //}
+        //[HttpGet]
+        //public IActionResult LostItems()
+        //{
+        //    IEnumerable<LostItem> lostItems = context.LostItems.ToList();
+        //    return View(lostItems);
 
-        }
+        //}
     }
 }

@@ -13,7 +13,8 @@ namespace MisFinder.Domain.Models
         public string NameOfLostItem { get; set; }
         [StringLength(250, MinimumLength = 5)]
         public string Description { get; set; }
-        public Location? Location { get; set; }
+        public int LocationId { get; set; }
+        public Location Location { get; set; }
         [MaxLength(100)]
         public string SpecificLocation { get; set; }
         public string Color { get; set; }
@@ -29,30 +30,30 @@ namespace MisFinder.Domain.Models
 
 
     }
-    public enum Location
-    {   
-        Ikeja=1,
-        OshodiIsolo,
-        LagosIsland,
-        IfakoIjaye,
-        Alimosho,
-        Agege,
-        AjeromiIfelodun,
-        AmuwoOdofin,
-        Apapa,
-        Badagry,
-        Epe,
-        EtiOsa,
-        IbejuLekki,
-        Ikorodu,
-        Kosofe,
-        LagosMainland,
-        Mushin,
-        Ojo,
-        Shomolu,
-        Surulere
+    //public enum Location
+    //{   
+    //    Ikeja=1,
+    //    OshodiIsolo,
+    //    LagosIsland,
+    //    IfakoIjaye,
+    //    Alimosho,
+    //    Agege,
+    //    AjeromiIfelodun,
+    //    AmuwoOdofin,
+    //    Apapa,
+    //    Badagry,
+    //    Epe,
+    //    EtiOsa,
+    //    IbejuLekki,
+    //    Ikorodu,
+    //    Kosofe,
+    //    LagosMainland,
+    //    Mushin,
+    //    Ojo,
+    //    Shomolu,
+    //    Surulere
 
-    }
+    //}
 
     public enum LCDA
     {

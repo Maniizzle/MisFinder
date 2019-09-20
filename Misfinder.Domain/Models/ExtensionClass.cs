@@ -13,7 +13,7 @@ namespace MisFinder.Domain.Models
         {
             foreach (var foundItem in foundItemEnum)
             {
-                if ((foundItem?.Name ?? "") == name)
+                if ((foundItem?.NameOfFoundItem ?? "") == name)
                 {
                     yield return foundItem;
                 }

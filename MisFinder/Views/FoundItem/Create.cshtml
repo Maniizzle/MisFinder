@@ -24,7 +24,7 @@
             <div class="form-group">
                 @* <label asp-for="Location" class="control-label"></label>*@
                 @* @Html.DropDownList("Location", Html.GetEnumSelectList<Location>(), "Please Select Location", new { @class = "form-control" })*@
-                <select asp-for="Location" asp-items="@Html.GetEnumSelectList<Location>()" class="form-control">
+                <select asp-for="Location"  class="form-control">
                     <option selected="selected" value="">Please select Location</option>
                 </select>
                 <span asp-validation-for="Location" class="text-danger"></span>

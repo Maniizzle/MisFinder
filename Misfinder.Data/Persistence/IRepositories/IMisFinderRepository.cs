@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace MisFinder.Data.Persistence.IRepositories
 {
-    interface IMisFinderRepository<TUser>: IRepository
-    {
-        IEnumerable<TUser> GetAll();
+    //interface IMisFinderRepository<TUser>: IRepository
+    //{
+    //    IEnumerable<TUser> GetAll();
         
 
-    }
+    //}
 }

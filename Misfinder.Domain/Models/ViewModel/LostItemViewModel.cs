@@ -14,7 +14,7 @@ namespace MisFinder.Domain.Models.ViewModel
         [StringLength(250, MinimumLength = 5)]
         public string Description { get; set; }
         [Required]
-        public Location Location { get; set; }
+        public State Location { get; set; }
         [MaxLength(100)]
         public string SpecificLocation { get; set; }
         public string Color { get; set; }

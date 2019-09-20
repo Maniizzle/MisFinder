@@ -61,7 +61,9 @@ namespace MisFinder.Controllers
                     Description = model.Description,
                     Color = model.Color,
                     DateMisplaced = model.DateMisplaced,
-                    DateCreated = DateTime.Now
+                    DateCreated = DateTime.Now,
+
+                
                          
                     };
 
