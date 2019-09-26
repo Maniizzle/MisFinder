@@ -17,10 +17,16 @@
             @Html.DisplayFor(model => model.NameOfLostItem)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Location)
+            @Html.DisplayNameFor(model => model.State)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Location)
+            @Html.DisplayFor(model => model.State.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalGovernment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalGovernment.Name)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DateMisplaced)
@@ -35,10 +41,16 @@
             @Html.DisplayFor(model => model.Color)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.SpecificLocation)
+            @Html.DisplayNameFor(model => model.WhereItemWasLost)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.SpecificLocation)
+            @Html.DisplayFor(model => model.WhereItemWasLost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExactArea)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExactArea)
         </dd>
     </dl>
 </div>

@@ -5,24 +5,24 @@
 }
 
 
-       
-<h3 class="container"> <a asp-action="Create" >Register your Item</a> </h3>
+
+<h3 class="container"> <a asp-action="Create">Register your Item</a> </h3>
 
 <table class="table">
     <thead>
         <tr>
             <th>
                 Lost Item
-              @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
+                @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.State)
             </th>
             <th>
                 Status
                 @*@Html.DisplayNameFor(model => model.IsFound)*@
             </th>
-            
+
 
             <th></th>
         </tr>
@@ -35,10 +35,13 @@
                 @Html.DisplayFor(modelItem => item.NameOfLostItem)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @Html.DisplayFor(modelItem => item.State.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsFound )
+                @Html.DisplayFor(modelItem => item.WhereItemWasLost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFound)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -49,3 +52,5 @@
         }
     </tbody>
 </table>
+ @*var des = "~/img/" + ra.Photopath;
+<img asp-append-version="true" src="@des" />*@

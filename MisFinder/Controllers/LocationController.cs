@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MisFinder.Data.Persistence.IRepositories;
+using MisFinder.Domain.Models;
 
 namespace MisFinder.Controllers
 {
@@ -15,9 +16,9 @@ namespace MisFinder.Controllers
         {
             this.repository = repository;
         }
-        public IEnumerable<States> GetAllStates()
+        public Task<IEnumerable<State>> GetAllStates()
         {
-            repository.GetAllStates();
+           return repository.GetAllStates();
         }
     }
 }

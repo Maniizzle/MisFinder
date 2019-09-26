@@ -47,7 +47,7 @@ namespace MisFinder.Controllers
                     var ConfirmEmail = Url.Action("ConfirmEmailAddress", "Account",
                         new { token = token, email = user.Email }, Request.Scheme);
                     System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
-                    return RedirectToAction("Success", "Account");
+                    return RedirectToAction("Success", "Account", new { comment = "Registration Complete,Check your Email for Confirmation" });
                 }
             }
             return View(model);
@@ -59,9 +59,10 @@ namespace MisFinder.Controllers
             var user = await userManager.FindByEmailAsync(email);
             if (user != null)
             {
+               
                 var result = await userManager.ConfirmEmailAsync(user, token);
                 if (result.Succeeded)
-                    return View("Success");
+                    return View("Success", new { comment = "Email Confirmed" });
             }
             return View("Error");
         }
@@ -101,7 +102,7 @@ namespace MisFinder.Controllers
                     {   //resetting their lockout count 
                         await userManager.ResetAccessFailedCountAsync(user);
                         if (await userManager.IsInRoleAsync(user, "Admin"))
-                             return RedirectToAction("Index","Admin");
+                             return RedirectToAction("Index","Dashboard",new { area = "Admin" });
                         return LocalRedirect(returnUrl ?? "/");
                     }
                     //if user access failed, log it(lockout count) to be able to implement lockout
@@ -143,7 +144,8 @@ namespace MisFinder.Controllers
                     //send dem mail that they dont have an account with your company
                     ModelState.AddModelError("", "Invalid Email Address");
                 }
-                return View("Success");
+                
+                return View("Success", new { comment = "Check your mail for Password reset link" });
             }
             return View();
 
@@ -176,7 +178,7 @@ namespace MisFinder.Controllers
                     {
                         await userManager.SetLockoutEndDateAsync(user, DateTime.UtcNow);
                     }
-                    return View("Success");
+                    return View("Success", new { comment = "Kindly Login" });
                 }
                 ModelState.AddModelError("", "Invalid Request");
             }
@@ -188,7 +190,11 @@ namespace MisFinder.Controllers
             var userEmail = await userManager.FindByEmailAsync(email);
             return userEmail != null ? Json(true) : Json("Invalid UserName or Password");
         }
-        public IActionResult Success() => View();
+        public IActionResult Success(string comment)
+        {
+            ViewBag.Comment = comment;
+            return View();
+        }
         
         
     }

@@ -1,0 +1,161 @@
+﻿@model  IEnumerable<LostItem>
+@{
+    ViewData["Title"] = "LostItems";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card transparent-card">
+            <div class="card-header pb-0">
+                <h4 class="card-title mt-2"> Lost Items </h4>
+                <div class="table-action float-sm-right mt-4 mt-sm-0">
+                    <form action="#">
+                        <div class="form-row">
+                            <div class="form-group mr-3">
+                                <div class="dropdown bootstrap-select show-tick dropup" style="width: 131px;">
+                                    <select class="selectpicker show-tick" data-width="auto" tabindex="-98">
+                                        <option selected="selected">Russia</option>
+                                        <option>USA</option>
+                                        <option>Canada</option>
+                                        <option>Australia</option>
+                                    </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Russia"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Russia</div></div> </div></button><div class="dropdown-menu " role="combobox" style="min-width: 0px; max-height: 1207px; overflow: hidden; min-height: 91px;"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 1195px; overflow-y: auto; min-height: 79px;"><ul class="dropdown-menu inner show"></ul></div></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="dropdown bootstrap-select show-tick dropup" style="width: 152px;">
+                                    <select class="selectpicker show-tick" data-width="auto" tabindex="-98">
+                                        <option selected="selected">Last 30 Days</option>
+                                        <option>Last 1 MOnth</option>
+                                        <option>Last 6 MOnth</option>
+                                        <option>Last Year</option>
+                                    </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Last 30 Days"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Last 30 Days</div></div> </div></button><div class="dropdown-menu " role="combobox" style="min-width: 0px; max-height: 1207px; overflow: hidden; min-height: 91px;"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 1195px; overflow-y: auto; min-height: 79px;"><ul class="dropdown-menu inner show"></ul></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-padded recent-order-list-table table-responsive-fix-big">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Lost Item</th>
+                                <th>Date Misplaced &amp; Time</th>
+                                <th>Local Government</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Claims</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @{ foreach (var lostitem in Model)
+                               {<tr>
+                                <td>01</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-primary rounded-circle text-center text-uppercase d-inline-block">@lostitem.LostItemUser.FullName</a> <span class="text-pale-sky">Valentino Morose</span>
+                                </td>
+                                <td class="text-muted">@lostitem.DateMisplaced.ToShortDateString()</td>
+                                <td><a href="javascript:void()" class="text-primary">@lostitem.LocalGovernment.Name</a></td>
+                                <td><span class="text-pale-sky">$ 25.000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-warning">Hold</span>
+                                </td>
+                                <td>
+                                    Valid
+                                </td>
+                               
+                            </tr>}
+                               }
+                            @*foreach
+                            <tr>
+                                <td>02</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-lgreen rounded-circle text-center text-uppercase d-inline-block">RM</a> <span class="text-pale-sky">Adib</span>
+                                </td>
+                                <td class="text-muted">04 May 2018, 10:30 AM</td>
+                                <td><a href="javascript:void()" class="text-primary">Samara</a></td>
+                                <td><span class="text-pale-sky">$ 35.000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-success">Delivered</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>03</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-dpink rounded-circle text-center text-uppercase d-inline-block">SE</a> <span class="text-pale-sky">Adam Razu</span>
+                                </td>
+                                <td class="text-muted">04 May 2018, 10:30 AM</td>
+                                <td><a href="javascript:void()" class="text-primary">Suzdal</a></td>
+                                <td><span class="text-pale-sky">$ 29.000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-danger">Cancel</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>04</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-success rounded-circle text-center text-uppercase d-inline-block">FM</a> <span class="text-pale-sky">David Aziz</span>
+                                </td>
+                                <td class="text-muted">04 May 2018, 10:30 AM</td>
+                                <td><a href="javascript:void()" class="text-primary">Hrasnoyarsk</a></td>
+                                <td><span class="text-pale-sky">$ 38.000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-success">Delivered</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>05</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-info rounded-circle text-center text-uppercase d-inline-block">FK</a> <span class="text-pale-sky">David Morose</span>
+                                </td>
+                                <td class="text-muted">04 May 2018, 10:30 AM</td>
+                                <td><a href="javascript:void()" class="text-primary">Samara</a></td>
+                                <td><span class="text-pale-sky">$ 75.000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-warning">Hold</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>06</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-warning rounded-circle text-center text-uppercase d-inline-block">MS</a> <span class="text-pale-sky">Lionel Morose</span>
+                                </td>
+                                <td class="text-muted">04 May 2018, 10:30 AM</td>
+                                <td><a href="javascript:void()" class="text-primary">Suzdal</a></td>
+                                <td><span class="text-pale-sky">$ 225.000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-warning">Hold</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>07</td>
+                                <td>
+                                    <a href="javascript:void()" class="mr-2 bg-primary rounded-circle text-center text-uppercase d-inline-block">GM</a> <span class="text-pale-sky">Cristiano Morose</span>
+                                </td>
+                                <td class="text-muted">04 May 2018, 10:30 AM</td>
+                                <td><a href="javascript:void()" class="text-primary">Moscow</a></td>
+                                <td><span class="text-pale-sky">$ 25. 000</span></td>
+                                <td>
+                                    <span class="label label-xl label-rounded label-danger">Cancel</span>
+                                </td>
+                            </tr>*@
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    <ul class="pagination pagination-rounded pagination-md justify-content-end">
+                        <li class="page-item"><a class="page-link" href="javascript:void()">1</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void()">2</a></li>
+                        <li class="page-item active"><a class="page-link" href="javascript:void()">3</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void()">4</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void()">5</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+

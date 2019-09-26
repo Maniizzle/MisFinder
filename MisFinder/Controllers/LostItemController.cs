@@ -9,17 +9,24 @@ using Microsoft.EntityFrameworkCore;
 using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Data.Data.Context;
+using MisFinder.Data.Persistence.IRepositories;
 
 namespace MisFinder.Controllers
 {
     [Authorize]
     public class LostItemController : Controller
     {
+        private readonly IStateRepository stateRepository;
+        private readonly ILocalGovernmentRepository lgaRepository;
+        private readonly ILostItemRepository repository;
         private readonly MisFinderDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public LostItemController(MisFinderDbContext context,UserManager<ApplicationUser> userManager)
+        public LostItemController(IStateRepository stateRepository,ILocalGovernmentRepository lgaRepository,  ILostItemRepository repository, MisFinderDbContext context,UserManager<ApplicationUser> userManager)
         {
+            this.stateRepository = stateRepository;
+            this.lgaRepository = lgaRepository;
+            this.repository = repository;
             this.context = context;
             this.userManager = userManager;
         }
@@ -28,24 +35,31 @@ namespace MisFinder.Controllers
             var user = await userManager.GetUserAsync(HttpContext.User);
             if (user == null)
                 return NotFound();
-            IEnumerable<LostItem> lostitem = context.LostItems.Where(c=>c.LostItemUser==user).ToList();
+
+            IEnumerable<LostItem> lostitem = await repository.GetLostItemsByUser(user);
             return View(lostitem);
         }
         [AllowAnonymous]
-        public IActionResult GetLostItems()
+        
+        public async Task<IActionResult> GetLostItems()
         {
-            IEnumerable<LostItem> lostItems = context.LostItems.Include(c => c.FoundLostItems);
+            IEnumerable<LostItem> lostItems = await repository.GetAllLostItems(); 
             return View(lostItems);
         }
         public async Task<IActionResult> GetLostItemById(int? id)
         {
             if (id == null)
                 return NotFound();
-            var lostItem = await context.LostItems.SingleOrDefaultAsync(c => c.Id == id);
+            var lostItem = await repository.GetLostItemsById(id); 
             return View(lostItem);
         }
         [HttpGet]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.StateList = await stateRepository.GetAllStates();
+            
+            return View();
+        } 
         [HttpPost]
         public async Task<IActionResult> Create(LostItemViewModel model)
         {
@@ -57,21 +71,21 @@ namespace MisFinder.Controllers
                 {
                     LostItemUser = user,
                     NameOfLostItem = model.NameOfLostItem,
-                    Location = model.Location,
+                    StateId = model.StateId,
                     Description = model.Description,
                     Color = model.Color,
                     DateMisplaced = model.DateMisplaced,
                     DateCreated = DateTime.Now,
-
-                
                          
                     };
 
-                    context.Add(itemm);
-                    await context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(model);
+                repository.Create(itemm);
+                repository.Save();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.StateList = await stateRepository.GetAllStates();
+            return View(model);
 
             
         }
@@ -82,25 +96,24 @@ namespace MisFinder.Controllers
                 return NotFound();
             }
 
-            var quote = await context.LostItems
-                .Include(q => q.FoundLostItems)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (quote == null)
+            var lostItem = await repository.GetLostItemById(id); 
+                
+            if (lostItem == null)
             {
                 return NotFound();
             }
 
-            return View(quote);
+            return View(lostItem);
         }
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var lostItem =context.LostItems.SingleOrDefault(m => m.Id == id);
+            var lostItem =await repository.GetLostItemById(id);
                                                  
             if (lostItem == null)
             {
@@ -109,7 +122,7 @@ namespace MisFinder.Controllers
             return View(lostItem);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, LostItem lostItem)
+        public  IActionResult Edit(int id, LostItem lostItem)
         {
             if (id != lostItem.Id)
             { return NotFound();}
@@ -118,8 +131,8 @@ namespace MisFinder.Controllers
             {
                 try
                 {
-                    context.Update(lostItem);
-                    await context.SaveChangesAsync();
+                    repository.Update(lostItem);
+                    repository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -159,16 +172,21 @@ namespace MisFinder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var lostItem = await context.LostItems.SingleOrDefaultAsync(m => m.Id == id);
-            context.LostItems.Remove(lostItem);
-            await context.SaveChangesAsync();
+            var lostItem = await repository.GetLostItemById(id);
+             repository.Delete(lostItem);
+            repository.Save();
             return RedirectToAction(nameof(Index));
         }
-
+        public async Task<IEnumerable<LocalGovernment>> LocalGovernments(int id)
+        {
+            IEnumerable<LocalGovernment> lgas = new List<LocalGovernment>(); 
+             lgas= await lgaRepository.GetAllLGAByStateId(id);
+            return lgas;
+        }
 
         private bool LostItemExists(int id)
         {
-            return context.LostItems.Any(e => e.Id == id);
+            return repository.LostItemExists(id);
         }
 
        

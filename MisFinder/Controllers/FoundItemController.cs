@@ -48,7 +48,7 @@ namespace MisFinder.Controllers
         {
             if (id == null)
                 return NotFound();
-            var foundItem = repository.GetFoundItemById(id);
+            var foundItem = await repository.GetFoundItemById(id);
             return View(foundItem);
         }
         [HttpGet]
@@ -66,10 +66,12 @@ namespace MisFinder.Controllers
                 { 
                     FoundItemUser = user,
                     NameOfFoundItem = item.Name,
-                    Location = item.State,
+                    State = item.State,
                     Description = item.Description,
                     Colour = item.Colour,
-                    DateFound = item.DateFound
+                    DateFound = item.DateFound,
+                     WhereItemWasFound= item.WhereItemWasFound,
+                     ExactArea= item.ExactArea
                     
                 };
                 repository.Create(itemm);

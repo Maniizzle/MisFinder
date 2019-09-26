@@ -37,6 +37,8 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
@@ -64,21 +66,25 @@
                 <ul class="nav navbar-nav">
 
 
-                    <li>
+                    @*<li>
                         <a asp-action="LostItems"> LostItems</a>
                     </li>
-                    <li>  <a asp-action="FoundItems"> FoundItems</a> </li>
+                    <li>  <a asp-action="FoundItems"> FoundItems</a> </li>*@
 
 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right ">
+                    <li><a href="">About</a></li>
+                    <li><a href="">Contact</a></li>
+
                     @{ if (SignInManager.IsSignedIn(User))
 
                         {
                             if (User.IsInRole("User"))
                             {
-                                <li><a asp-area="" asp-controller="ApplicationUser" asp-action="Profile">@user.Email</a></li>}
+                                <li><a asp-area="" asp-controller="ApplicationUser" asp-action="Profile">@user.FullName</a></li>
+                            }
 
                             <li><a asp-area="" asp-controller="Account" asp-action="LogOut">Logout</a></li>
                         }
@@ -108,7 +114,6 @@
     </footer>
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>

@@ -1,0 +1,248 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MisFinder -Admin </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Admin/assets/images/favicon.png">
+    <link href="~/Admin/css/style.css" rel="stylesheet">
+    <link href="~/Admin/assets/plugins/animate/animate.min.css" rel="stylesheet" />
+    <link href="~/Admin/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/Admin/assets/plugins/dragula/dragula.min.css" rel="stylesheet" />
+    <link href="~/Admin/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet"/>
+
+    @*<style type="text/css">*@
+  @*  /* Chart.js */*@
+    @*@-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style>*@
+    <style class="datamaps-style-block">
+        .datamap path.datamaps-graticule {
+            fill: none;
+            stroke: #777;
+            stroke-width: 0.5px;
+            stroke-opacity: .5;
+            pointer-events: none;
+            17816454;
+        }
+
+        .datamap .labels {
+            pointer-events: none;
+        }
+
+        .datamap path:not(.datamaps-arc), .datamap circle, .datamap line {
+            stroke: #FFFFFF;
+            vector-effect: non-scaling-stroke;
+            stroke-width: 1px;
+        }
+
+        .datamaps-legend dt, .datamaps-legend dd {
+            float: left;
+            margin: 0 3px 0 0;
+
+        }
+
+        .datamaps-legend dd {
+            width: 20px;
+            margin-right: 6px;
+            border-radius: 3px;
+        }
+
+        .datamaps-legend {
+            padding-bottom: 20px;
+            z-index: 1001;
+            position: absolute;
+            left: 4px;
+            font-size: 12px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .datamaps-hoverover {
+            display: none;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .hoverinfo {
+            padding: 4px;
+            border-radius: 1px;
+            background-color: #FFF;
+            box-shadow: 1px 1px 5px #CCC;
+            font-size: 12px;
+            border: 1px solid #CCC;
+        }
+
+            .hoverinfo hr {
+                border: 1px dotted #CCC;
+            }
+    </style>
+</head>
+
+<body>
+    <div id="main-wrapper">
+        <div id="preloader" style="display: none;">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"></circle>
+                </svg>
+            </div>
+        </div>
+        <div class="nk-sidebar">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 50%;">
+                <div class="nk-nav-scroll active" style="overflow: hidden; width: auto; height: 50%;">
+                    <ul class="metismenu" id="menu">
+                        <li class="nav-label">Dashboard</li>
+                        <li class="mega-menu mega-menu-lg">
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                                <i class="mdi mdi-view-dashboard"></i><span class="nav-text">Dashboard</span><span class="badge bg-dpink text-white nav-badge">3</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse" style="height:0px">
+                              @*  <li class="active"><a href="index-restaurent.html" class="active">Restaurant</a></li>*@
+                                <li>
+                                    <a asp-action="LostItems">Lost Items</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Found Items">Found Items</a>
+                                </li>
+                                @*<li>
+                                    <a asp-action="">Lost Items</a>
+                                </li>*@
+                                <li>
+                                    <a asp-action="ClaimedItems">Claimed Items</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-label">Apps</li>
+                        <li>
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="mdi mdi-email-outline"></i> <span class="nav-text">Email</span><span class="badge bg-lgreen text-white nav-badge">০3</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li>
+                                    <a href="email-inbox.html">Inbox</a>
+                                </li>
+                                <li>
+                                    <a href="email-read.html">Read</a>
+                                </li>
+                                <li>
+                                    <a href="email-compose.html">Compose</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="mdi mdi-application"></i><span class="nav-text">Apps</span> <span class="badge badge-info nav-badge">05</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li>
+                                    <a href="app-profile.html">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="app-chat.html">Chat</a>
+                                </li>
+                                <li>
+                                    <a href="app-calender-event.html">Calendar</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="mdi mdi-ticket"></i><span class="nav-text">Ticket</span> <span class="badge bg-lgreen text-white nav-badge">02</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li>
+                                    <a href="./support-ticket.html">Support Ticket</a>
+                                </li>
+                                <li>
+                                    <a href="./support-tickets-single.html">Single Ticket</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="mega-menu mega-menu-lg">
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="mdi mdi-chart-bar"></i> <span class="nav-text">Charts</span> <span class="badge badge-primary nav-badge">19</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li>
+                                    <a href="chart-amchart.html">AmChart</a>
+                                </li>
+                                <li>
+                                    <a href="chart-c3.html">C3 Chart</a>
+                                </li>
+                                <li>
+                                    <a href="chart-flot.html">Flot</a>
+                                </li>
+                                <li>
+                                    <a href="chart-morris.html">Morris</a>
+                                </li>
+                                <li>
+                                    <a href="chart-highchart.html">Highchart</a>
+                                </li>
+                                <li>
+                                    <a href="chart-chartjs.html">Chartjs</a>
+                                </li>
+                                <li>
+                                    <a href="chart-chartjs-candlestick.html">Candlestick</a>
+                                </li>
+                                <li>
+                                    <a href="chart-chartjs-data-labels.html">Datalabels</a>
+                                </li>
+                                <li>
+                                    <a href="chart-chartjs-stream.html">Live Stream</a>
+                                </li>
+                                <li>
+                                    <a href="chart-chartist.html">Chartist</a>
+                                </li>
+                                <li>
+                                    <a href="chart-sparkline.html">Sparkline</a>
+                                </li>
+                                <li>
+                                    <a href="chart-echart.html">Echart</a>
+                                </li>
+                                <li>
+                                    <a href="chart-google.html">Google</a>
+                                </li>
+                                <li>
+                                    <a href="chart-rickshaw.html">Rickshaw</a>
+                                </li>
+                                <li>
+                                    <a href="chart-peity.html">Peity</a>
+                                </li>
+                                <li>
+                                    <a href="chart-justgage.html">Justgage</a>
+                                </li>
+                                <li>
+                                    <a href="chart-knob.html">Knob</a>
+                                </li>
+                                <li>
+                                    <a href="./chart-circle-progress.html">Circle Progress</a>
+                                </li>
+                                <!-- <li><a href="./chart-easy-pichart.html">Easy Piechart</a>
+                                </li> -->
+                                <!-- <li><a href="./chart-gauge.html">Gauge</a>
+                                </li> -->
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div><div class="slimScrollBar" style="background: rgb(198, 200, 201); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 2192.18px;"></div><div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+            </div>
+        </div>
+
+
+        <div class="content-body" style="min-height: 788px;">
+            @RenderBody()
+        </div>
+    </div>
+    <script src="~/Admin/assets/plugins/common/common.min.js"></script>
+    <script src="~/Admin/js/custom.min.js"></script>
+    <script src="~/Admin/js/settings.js"></script>
+    <script src="~/Admin/js/gleek.js"></script>
+    <script src="~/Admin/js/styleSwitcher.js"></script>
+
+    <!-- Chartjs chart -->
+    <script src="~/Admin/assets/plugins/chart.js/Chart.bundle.min.js"></script>
+    <script src="~/Admin/assets/plugins/d3v3/index.js"></script>
+    <script src="~/Admin/assets/plugins/topojson/topojson.min.js"></script>
+    <script src="~/Admin/assets/plugins/datamaps/datamaps.world.min.js"></script>
+
+    <script src="~/Admin/js/plugins-init/datamap-world-init.js"></script>
+
+    <script src="~/Admin/assets/plugins/datamaps/datamaps.usa.min.js"></script>
+
+    <script src="~/Admin/js/dashboard/dashboard-1.js"></script>
+
+    <script src="~/Admin/js/plugins-init/datamap-usa-init.js"></script>
+</body>
+</html>

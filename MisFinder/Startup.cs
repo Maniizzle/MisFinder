@@ -30,8 +30,10 @@ namespace MisFinder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("MisFinder")));
-            services.AddTransient<IFoundItemsRepository, FoundItemRepository>();
+            services.AddTransient<IFoundItemRepository, FoundItemRepository>();
             services.AddTransient<ILostItemRepository, LostItemRepository>();
+            services.AddTransient<IStateRepository, StateRepository>();
+            services.AddTransient<ILocalGovernmentRepository, LocalGovernmentRepository>();
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {   
                 opts.Lockout.AllowedForNewUsers = true;
@@ -62,9 +64,34 @@ namespace MisFinder
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvc(routes =>
-            routes.MapRoute(
-                "default", "{controller=Home}/{action=Index}/{id?}"
-                ));
+            {
+                //routes.MapRoute(
+                //   name: "default",
+                //   template: "{controller=Home}/{action=Index}/{id?}");
+                //routes.MapRoute("areaRoute", "{area=exists}/{controller=Dashboard}/{action=index}/{id?}");
+                
+                
+                    routes.MapRoute(
+                      name: "areas",
+                      template: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+
+                    routes.MapRoute(
+                       name: "default",
+                       template: "{controller=Home}/{action=Index}/{id?}");
+                
+                //routes.MapRoute(
+                // name: "default",
+                // template: "{controller=Home}/{action=Index}/{id?}");
+
+                //routes.MapAreaRoute(
+                //    name: "default",
+                //    areaName: "Admin",
+                //    template: "{controller=Home}/{action=Index}/{id?}");
+
+            }
+            );
+
+
             CreateAdmin.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
 
         }
