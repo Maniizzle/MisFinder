@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Data.Persistence.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MisFinder.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -22,9 +24,13 @@ namespace MisFinder.Controllers
             this.signInManager = signInManager;
         }
         [HttpGet]
+        [AllowAnonymous]
+
         public IActionResult Register () => View();
         
         [HttpPost]
+        [AllowAnonymous]
+
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -54,6 +60,8 @@ namespace MisFinder.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
+
         public async Task<IActionResult> ConfirmEmailAddress(string token, string email)
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -67,12 +75,16 @@ namespace MisFinder.Controllers
             return View("Error");
         }
         [HttpGet]
+        [AllowAnonymous]
+
         public IActionResult Login(string returnUrl)
         {
             ViewBag.returnUrl = returnUrl;
             return View();
         }
         [HttpPost]
+        [AllowAnonymous]
+
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -125,9 +137,13 @@ namespace MisFinder.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
+
         public IActionResult ForgotPassword() => View();
        [HttpPost]
-       public async Task<IActionResult> ForgotPassword([Required][EmailAddress] string email)
+        [AllowAnonymous]
+
+        public async Task<IActionResult> ForgotPassword([Required][EmailAddress] string email)
         {
             if (ModelState.IsValid)
             {
@@ -151,11 +167,15 @@ namespace MisFinder.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
+
         public IActionResult ResetPassword(string token,string email)
         {
             return View(new ResetViewModel { Token = token, Email = email });
         }
         [HttpPost]
+        [AllowAnonymous]
+
         public async Task<IActionResult> ResetPassword(ResetViewModel model)
         {
             if (ModelState.IsValid)
@@ -185,6 +205,8 @@ namespace MisFinder.Controllers
             return View();
         }
         [AcceptVerbs("Get","Post")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> EmailExist([Bind(Prefix ="UserName")] string email)
         {
             var userEmail = await userManager.FindByEmailAsync(email);

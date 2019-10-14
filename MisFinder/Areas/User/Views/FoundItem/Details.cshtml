@@ -1,0 +1,65 @@
+﻿@model FoundItem
+@{ 
+    Layout = "_LayoutUser";
+}
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Found Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            <a href="~/Photos/@Model.Image.ImagePath"> <img style="width:70px;height:70px;" src="~/Photos/@Model.Image.ImagePath" /></a>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NameOfFoundItem)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NameOfFoundItem)
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.State.Name)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalGovernment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalGovernment.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFound)
+        </dt>
+        <dd>
+            @Model.DateFound.ToShortDateString()
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Colour)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Colour)
+        </dd>
+        <dt>
+            Where Item Was Found
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhereItemWasFound)
+        </dd>
+        <dt>
+           Claims
+        </dt>
+        <dd>
+            <a asp-action="FoundItemClaims" title="Claims" asp-route-id="@Model.Id" class="btn btn-info" role="button">@Model.FoundItemClaims.Count</a>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

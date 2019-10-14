@@ -1,0 +1,56 @@
+﻿
+@model FoundItem
+
+@{
+    Layout = "_LayoutUser";
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>FoundItem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input asp-for="ApplicationUserId" />
+            <input type="hidden" asp-for="FoundItemUser" />
+            <div class="form-group">
+                <label asp-for="NameOfFoundItem" class="control-label"></label>
+                <input asp-for="NameOfFoundItem" class="form-control" />
+                <span asp-validation-for="NameOfFoundItem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WhereItemWasFound" class="control-label"></label>
+                <input asp-for="WhereItemWasFound" class="form-control" />
+                <span asp-validation-for="WhereItemWasFound" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExactArea" class="control-label"></label>
+                <input asp-for="ExactArea" class="form-control" />
+                <span asp-validation-for="ExactArea" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                 <select asp-for="Location" class="form-control" asp-items="@Html.GetEnumSelectList<Location>()"></select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>*@
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

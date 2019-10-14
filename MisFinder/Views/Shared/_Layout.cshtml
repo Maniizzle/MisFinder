@@ -1,139 +1,124 @@
-﻿@inject  SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-@{ 
-    var user = await UserManager.GetUserAsync(User);
-}
-<!DOCTYPE html>
-<html>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+<!doctype html>
+<html lang="en">
 <head>
-    <style>
-        footer {
-            /*padding: 10px;
-            margin-top: 10px;
-            
-            background-color: #e8491d;*/
-            text-align: center;
-            position:fixed;
-            bottom:0;
-            width:100%;
-        }
-        body{
-            height:100%;
-        }
-        #container {
-            margin-top: 20px;
-        }
-           .card ola  {
-               border-radius:5px;
-        }
-        .card ola a:hover {
-            text-decoration: none;
-        }
-        }
-    </style>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MisFinder</title>
-
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="~/img/favicon.png" type="image/png">
+    <title>MisFinder</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.css">
+    <link rel="stylesheet" href="~/vendors/linericon/style.css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/vendors/lightbox/simpleLightbox.css">
+    <!-- <link rel="stylesheet" href="~/vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="~/vendors/animate-css/animate.css">
+    <link rel="stylesheet" href="~/vendors/popup/magnific-popup.css"> -->
+    <!-- main css -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
 </head>
-<body>
+<body data-target="#mainNav" data-offset="70">
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
+    <!--================Header Menu Area =================-->
+    <header class="header_area">
+        <div class="main_menu" id="mainNav">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container box_1620">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" asp-controller="Home" asp-action="Index"><h2 style="color:white" class="font-italic"><span>misFinder</span></h2></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>*@
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">MisFinder</a>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto">
+                            <li class="nav-item active"><a class="nav-link" href="~/#home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="~/#">About</a></li>
 
-            </div>
-            <div class="navbar-collapse collapse justify-content-end">
-                <ul class="nav navbar-nav">
+                            @{ if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item submenu dropdown">
+                                        @*  data-toggle="dropdown" class="dropdown-toggle hdbutton*@
+                                        @if (!User.IsInRole("Admin"))
+                                        {
+                                            <a href="~/#" class="nav-link dropdown-toggle hdbutton" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <i class="fa fa-angle-down"></i> </a>
 
+                                            <ul class="dropdown-menu">
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Items</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Items</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-action="Claims">Claims</a></li>
 
-                    @*<li>
-                        <a asp-action="LostItems"> LostItems</a>
-                    </li>
-                    <li>  <a asp-action="FoundItems"> FoundItems</a> </li>*@
+                                            </ul>}
+                                        else
+                                        {
+                                            <a href="~/#" class="nav-link dropdown-toggle hdbutton" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <i class="fa fa-angle-down"></i></a>
 
+                                            <ul class="dropdown-menu">
+                                                <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                                            </ul>
+                                        }
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="LogOut">LogOut</a></li>
 
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right ">
-                    <li><a href="">About</a></li>
-                    <li><a href="">Contact</a></li>
-
-                    @{ if (SignInManager.IsSignedIn(User))
-
-                        {
-                            if (User.IsInRole("User"))
-                            {
-                                <li><a asp-area="" asp-controller="ApplicationUser" asp-action="Profile">@user.FullName</a></li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item"><a class="nav-link" asp-action="Login" asp-controller="Account">Login</a></li>
+                                    <li class="nav-item"> <a class="nav-link" asp-action="Register" asp-controller="Account">Register</a></li>
+                                }
                             }
-
-                            <li><a asp-area="" asp-controller="Account" asp-action="LogOut">Logout</a></li>
-                        }
-                        else
-                        {
-                            <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-                            <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-
-                        }
-
-                    }
-
-                </ul>
-            </div>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
-    </nav>
+    </header>
+    <!--================Header Menu Area =================-->
+    <!--================Home Banner Area =================-->
+    <div class="home_banner_area">
+        <section id="home">
+            <div class="banner_inner">
+                @*<div class="container">*@
+                @*<div class="banner_content">
+                        <h2>Precise concept design <br />for stylish living</h2>
+                        <p>If you are looking at blank cassettes on the web, you may be very confused at the difference in price. You may see some for as low as $.17 each.</p>
+                        <a class="banner_btn" href="~/#">Get Started</a>
+                    </div>*@
 
-    <div id="container">
-        @RenderBody()
+                @RenderBody()
+
+                @*</div>*@
+            </div>
+
+        </section>
 
     </div>
-    <footer>
-        <div class="panel-footer bottom">
-
-            <p>&copy; @DateTime.Now.Year  - MisFinder</p>
-        </div>
-    </footer>
-
-    <environment include="Development">
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" ></script>
+    @*<script src="~/js/stellar.js"></script>
+        <script src="~/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="~/vendors/nice-select/js/jquery.nice-select.min.js"></script>
+        <script src="~/vendors/isotope/imagesloaded.pkgd.min.js"></script>
+        <script src="~/vendors/isotope/isotope-min.js"></script>
+        <script src="~/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="~/js/jquery.ajaxchimp.min.js"></script>
+        <script src="~/vendors/counter-up/jquery.waypoints.min.js"></script>
+        <script src="~/vendors/counter-up/jquery.counterup.js"></script>
+        <script src="~/js/mail-script.js"></script>
+        <script src="~/vendors/popup/jquery.magnific-popup.min.js"></script>
+        <script src="~/js/theme.js"></script>*@
 </body>
 </html>
-

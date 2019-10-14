@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System;///////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +14,10 @@ using MisFinder.Data.Persistence;
 using MisFinder.Data.Data.Context;
 using MisFinder.Data.Persistence.Repositories;
 using MisFinder.Data.Persistence.IRepositories;
+using MisFinder.Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace MisFinder
 {
@@ -34,6 +38,14 @@ namespace MisFinder
             services.AddTransient<ILostItemRepository, LostItemRepository>();
             services.AddTransient<IStateRepository, StateRepository>();
             services.AddTransient<ILocalGovernmentRepository, LocalGovernmentRepository>();
+            services.AddTransient<ILostItemClaimRepository, LostItemClaimRepository>();
+            services.AddTransient<IFoundItemClaimRepository, FoundItemClaimRepository>();
+            services.AddTransient<IUtility, UtilityService>();
+            services.Configure<CookiePolicyOptions>(o =>
+            {
+                o.CheckConsentNeeded = context => true;
+                o.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {   
                 opts.Lockout.AllowedForNewUsers = true;
@@ -46,7 +58,17 @@ namespace MisFinder
                 AddEntityFrameworkStores<MisFinderDbContext>()
                 .AddDefaultTokenProviders() 
                 .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconf");//registering a new tokenprovideroption
-            services.AddMvc();//.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+            services.AddAuthentication();
+
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+
+                config.Filters.Add(new AuthorizeFilter(policy));
+            }).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+          //  config.Filters.Add(new AuthorizeFilter(policy));//.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
             services.Configure<DataProtectionTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(3));
             //configuring the token sent for email confirmation to be valid for a day
@@ -61,15 +83,12 @@ namespace MisFinder
             {
                 app.UseDeveloperExceptionPage();
             }
+            
             app.UseAuthentication();
+            app.UseCookiePolicy();
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
-                //routes.MapRoute(
-                //   name: "default",
-                //   template: "{controller=Home}/{action=Index}/{id?}");
-                //routes.MapRoute("areaRoute", "{area=exists}/{controller=Dashboard}/{action=index}/{id?}");
-                
                 
                     routes.MapRoute(
                       name: "areas",
@@ -79,15 +98,7 @@ namespace MisFinder
                        name: "default",
                        template: "{controller=Home}/{action=Index}/{id?}");
                 
-                //routes.MapRoute(
-                // name: "default",
-                // template: "{controller=Home}/{action=Index}/{id?}");
-
-                //routes.MapAreaRoute(
-                //    name: "default",
-                //    areaName: "Admin",
-                //    template: "{controller=Home}/{action=Index}/{id?}");
-
+                
             }
             );
 

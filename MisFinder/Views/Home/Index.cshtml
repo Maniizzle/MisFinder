@@ -1,7 +1,8 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model  SearchViewModel
+
+@*@{
+    ViewData["Title"] = "Home";
+}*@
 
 
 
@@ -20,19 +21,41 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" class="form-inline mt-2 mt-md-0" asp-action="Search">
-
+            <form method="post" class="form-inline mt-2 mt-md-0" asp-action="SearchFoundItem">
+                <div asp-validation-summary="ModelOnly"></div>
                 <div class="modal-body mx-3">
                     <div class="md-form mb-5">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input type="text" id="form3" name="Name" placeholder="Name of LostItem" class="form-control validate">
+                        <label asp-for="Name" class="control-label">Name of Lost Item</label>
+                        <input type="text" id="form3" asp-for="Name" placeholder="Name of LostItem" class="form-control validate">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label"> State </label>
+                        @Html.DropDownListFor(m => m.StateId,
+                      new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
+                      "Select state", new  { @class = "form-control" })
+                        <span asp-validation-for="StateId" class="text-danger"></span>
 
                     </div>
 
+
+                    <div class="modal-body mx-3">
+                        <label asp-for="Date" class="control-label">Date Lost</label>
+                        <input placeholder="Selected date" id="datePickerId2" type="date" name="DateMisplaced" class="form-control daterangepicker">
+                        <span asp-validation-for="Date" class="text-danger"></span>
+
+                        @*<div class="md-form mb-4">
+                <i class="fas fa-envelope prefix grey-text"></i>
+                <input type=" id="form2" class="form-control validate">
+            </div>*@
+
+                    </div>
                     @*<div class="md-form mb-4">
-                            <i class="fas fa-envelope prefix grey-text"></i>
-                            <input type=" id="form2" class="form-control validate">
-                        </div>*@
+            <i class="fas fa-envelope prefix grey-text"></i>
+            <input type=" id="form2" class="form-control validate">
+        </div>*@
 
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -45,7 +68,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="mmodalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade" id="foundmodalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -55,39 +78,91 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" class="form-inline mt-2 mt-md-0" asp-action="Search2">
+            <form method="post" class="form-inline mt-2 mt-md-0" asp-action="SearchLostItem">
 
                 <div class="modal-body mx-3">
                     <div class="md-form mb-5">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input type="text" id="form3" name="Name" placeholder="Name of Found Item" class="form-control validate">
+                        <input type="text" id="form3" asp-for="Name" placeholder="Name of Found Item" class="form-control validate">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label"> State </label>
+                        @Html.DropDownListFor(m => m.StateId,
+                      new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
+                      "Select state",
+                      new { @class = "form-control", @onchange="FillCity()",id="state" })
+                        <span asp-validation-for="StateId" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label"> LGA</label>
+                        <select id="lga" class="form-control" name="LocalGovernmentId">
+                            <option selected="selected" name="" value="">Please select LGA</option>
+                        </select>
 
                     </div>
 
-                    @*<div class="md-form mb-4">
-                            <i class="fas fa-envelope prefix grey-text"></i>
-                            <input type=" id="form2" class="form-control validate">
-                        </div>*@
+                    <div class="modal-body mx-3">
+                        <label asp-for="Date" class="control-label">Date Found</label>
+                        <input placeholder="Selected date" id="datePickerId" type="date" asp-for="Date" class="form-control daterangepicker">
+                        <span asp-validation-for="Date" class="text-danger"></span>
 
+                        @*<div class="md-form mb-4">
+                <i class="fas fa-envelope prefix grey-text"></i>
+                <input type=" id="form2" class="form-control validate">
+            </div>*@
+
+                    </div>
+                    <div asp-validation-summary="All"></div>
                 </div>
-                <div class="modal-footer d-flex justify-content-center">
+                    <div class="modal-footer d-flex justify-content-center">
 
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 
-                </div>
-            </form>
+                    </div>
+</form>
         </div>
     </div>
 </div>
-<div class="container ">
-    <div class="text-center" style="margin-top:200px;">
+    <div class="text-center">
         <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modalSubscriptionForm">
             Lost Something?
         </a>
 
 
-        <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#mmodalSubscriptionForm">
+        <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#foundmodalSubscriptionForm">
             Found Something?
         </a>
     </div>
-</div>
+    <script>
+        datePickerId.max = new Date().toISOString().split("T")[0];
+        datePickerId2.max = new Date().toISOString().split("T")[0];
+
+
+        function FillCity() {
+            $("#state").on('change', function () {
+                var val = this.value;
+            });
+            var stateId = $("#state").val();
+            //var selectedCountry = $("#state").children("option:selected").val()
+            $.ajax({
+                url: '/Home/LocalGovernments',
+                type: "GET",
+                dataType: "JSON",
+                data: { id: stateId },
+                success: function (cities) {
+                    $("#lga").html(""); // clear before appending new list
+                    $("#lga").append($('<option></option>').val("").html("Please select LGA"));
+                    $.each(cities, function (i, city) {
+                        $("#lga").append(
+                            $('<option></option>').val(city.id).html(city.name));
+                    });
+
+                }
+            });
+        }
+
+        
+    </script>

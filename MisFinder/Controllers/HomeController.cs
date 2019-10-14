@@ -7,34 +7,76 @@ using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Data.Data.Context;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MisFinder.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IFoundItemRepository repository;
+        private readonly ILocalGovernmentRepository localGovernmentRepository;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILostItemRepository lostItemRepository;
+        private readonly IStateRepository stateRepository;
 
-        public HomeController(IFoundItemRepository repository)
+        public HomeController(IFoundItemRepository repository,ILocalGovernmentRepository localGovernmentRepository,
+            UserManager<ApplicationUser> userManager, ILostItemRepository lostItemRepository,IStateRepository stateRepository)
         {
             this.repository = repository;
+            this.localGovernmentRepository = localGovernmentRepository;
+            this.userManager = userManager;
+            this.lostItemRepository = lostItemRepository;
+            this.stateRepository = stateRepository;
         }
-        public IActionResult Index()
+        [AllowAnonymous]
+
+        public async Task<IActionResult> Index()
         {
+            TempData["States"]
+             = await stateRepository.GetAllStates();
+
             return View();
         }
-        
+
         //public IActionResult Search(string name)
         //{
         //  var result=  context.LostItems.
         //        Where(c=>(c.NameOfLostItem.ToLower().Contains(name.ToLower())||c.Description.ToLower().Contains(name.ToLower()) ));
         //    return View(result); 
         //}
-        //public IActionResult Search2(string name)
-        //{
-        //    var result = context.FoundItems.
-        //          Where(c => (c.NameOfFoundItem.ToLower().Contains(name.ToLower()) || c.Description.ToLower().Contains(name.ToLower())));
-        //    return View(result);
-        //}
+        [AllowAnonymous]
+
+        public async Task<IActionResult> SearchFoundItem(SearchViewModel model)
+        {
+            if (ModelState.IsValid) {
+           var result= await repository.SearchFoundItem(model);
+            return View(result);
+            }
+            return View("Index",model);
+        }
+        [AllowAnonymous]
+
+        public async Task<IActionResult> SearchLostItem(SearchViewModel model)
+        {
+            if (model == null)
+                return NotFound();
+            if (ModelState.IsValid)
+            {
+
+                var result = await lostItemRepository.SearchLostItem(model);
+                return View(result);
+            }
+            return View("Index", model);
+
+        }
+        [AllowAnonymous]
+
+        public async Task<IEnumerable<LocalGovernment>> LocalGovernments(int id)
+        {
+            return await localGovernmentRepository.GetAllLGAByStateId(id);
+        }
+
         ////
         ///[HttpGet]
         //public IActionResult FoundItems()

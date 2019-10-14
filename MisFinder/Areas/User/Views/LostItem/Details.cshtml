@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "_LayoutUser";
+}
+@model LostItem
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Lost Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NameOfLostItem)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NameOfLostItem)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalGovernment.State.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalGovernment.State.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalGovernment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalGovernment.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateMisplaced)
+        </dt>
+        <dd>
+            @Model.DateMisplaced.ToShortDateString()
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhereItemWasLost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhereItemWasLost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExactArea)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExactArea)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

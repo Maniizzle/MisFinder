@@ -1,0 +1,56 @@
+/* Post Slider Area css
+============================================================================================ */
+.post_slider_area{
+	
+}
+.post_slider_inner{
+	
+}
+.post_s_item{
+	position: relative;
+	overflow: hidden;
+	.post_img{
+		position: relative;
+		&:before{
+			content: "";
+			background: rgba(0, 0, 0, .6);
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			height: 100%;
+			width: 100%;
+		}
+	}
+	.post_text{
+		position: absolute;
+		left: 40px;
+		bottom: 40px;
+		max-width: 355px;
+		h4{
+			font-size: 21px;
+			font-family: $hee;
+			line-height: 27px;
+			text-transform: uppercase;
+			color: #fff;
+			padding-right: 20px;
+			margin-bottom: 20px;
+			@include transition;
+			&:hover{
+				color: $baseColor;
+			}
+		}
+		p{
+			font-size: 14px;
+			line-height: 24px;
+			color: #fff;
+			margin-bottom: 35px;
+		}
+		.main_btn{
+			line-height: 40px;
+			padding: 0px 40px;
+			box-shadow: none;
+		}
+	}
+}
+/* End Post Slider Area css
+============================================================================================ */

@@ -1,0 +1,132 @@
+﻿@{
+    Layout = "_SearchLayOut";
+}
+
+@model IEnumerable<LostItem>
+@{
+    ViewData["Title"] = "Search";
+}
+@*<link rel="stylesheet" href="~/css/app.min.css" />*@
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 2px;
+    }
+
+    /* Create four equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 10px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Responsive layout - makes a two column-layout instead of four columns */
+    @@media screen and (max-width: 900px) {
+        .column {
+            width: 50%;
+        }
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @@media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    }
+
+    #icon {
+        position: relative;
+        display: inline-block;
+    }
+
+        #icon .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+        }
+
+        #icon:hover .tooltiptext {
+            visibility: visible;
+        }
+</style>
+
+
+
+<div class="row">
+    <div class="column"></div>
+    <div class="column"></div>
+</div>
+@if (Model.Count() == 0)
+{
+    <div>No Lost Item Matches </div>
+}
+else
+{
+    <h4>Lost Items Found</h4>
+    <div class="contacts row">
+
+        @foreach (var item in Model)
+        {
+
+
+
+            <div class="col-xl-2 col-lg-3 col-sm-4 col-5">
+                <div class="contacts__item">
+                    @if (item.Image != null)
+                    {<a href="~/Photos/@item.Image.ImagePath" class="contacts__img">
+                            <img src="~/Photos/@item.Image.ImagePath" alt="" />
+                        </a>}
+                    else
+                    {
+                        <a href="~/Photos/home 1081.jpg" class="contacts__img">
+                            <img src="~/Photos/home 1081.jpg" alt="" />
+                        </a>}
+
+                    <div class="contacts__info">
+                        <strong>@item.NameOfLostItem</strong>
+                        <small>@item.Description</small>
+                        <small>@item.ExactArea</small>
+
+                    </div>
+                    <a asp-controller="LostItemClaim" title="Claim" asp-action="SameUser" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
+
+                    @*                    <button class="contacts__btn">Following</button>*@
+                </div>
+            </div>
+            @*<div class="container">
+                    <div class="row">
+
+                        <div class="col">
+                            <div class="card ola" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h1 class="card-body">@item.Description</h1>
+                                    <p>@item.ExactArea </p>
+                                    <p>@item.DateMisplaced.ToShortDateString()</p>
+                                    <a id="icon"><img src="~/img/icon/lostclaimicon.png" /></a>
+                                    <span class="tooltiptext">Tooltip text</span>
+                                    <a href="#" class="card-link">Another link</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        }
+    </div>
+}
+
+

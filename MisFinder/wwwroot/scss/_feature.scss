@@ -1,0 +1,148 @@
+/* Feature Area css
+============================================================================================ */
+.feature_area{
+	padding-bottom: 120px;
+}
+.feature_inner{}
+.feature_item{
+	padding: 50px 30px;
+	border-radius: 10px;
+	border: 1px solid #eeeeee;
+	@include transition;
+	img{
+		margin-bottom: 35px;
+	}
+	h4{
+		color: $dip;
+		font-size: 20px;
+		font-family: $hee;
+		font-weight: 600;
+		margin-bottom: 20px;
+	}
+	p{
+		margin-bottom: 36px;
+	}
+	.main_btn{
+		padding: 0px 30px;
+		line-height: 38px;
+	}
+	&:hover{
+		box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.08);
+		border-color: #fff;
+	}
+}
+/* End Feature Area css
+============================================================================================ */
+
+/* Design Area css
+============================================================================================ */
+.design_area{
+	
+}
+.design_inner{
+	.col-lg-7{
+		vertical-align: middle;
+		align-self: center;
+	}
+	.design_left_text{
+		margin-left: 195px;
+		max-width: 380px;
+		h6{
+			font-size: 21px;
+			font-family: $rob;
+			color: $dip;
+			font-weight: normal;
+			margin-bottom: 40px;
+		}
+		h2{
+			font-size: 36px;
+			line-height: 45px;
+			color: $dip;
+			text-transform: uppercase;
+			margin-bottom: 30px;
+		}
+		h5{
+			font-size: 21px;
+			font-family: $rob;
+			color: $dip;
+			font-weight: normal;
+			margin-bottom: 30px;
+		}
+		p{
+			margin-bottom: 45px;
+		}
+	}
+}
+/* End Design Area css
+============================================================================================ */
+
+/* Project Details Area css
+============================================================================================ */
+.portfolio_details_area{
+	
+}
+.portfolio_details_inner{
+	.row{
+		margin-bottom: 65px;
+	}
+	p{
+		margin-bottom: 30px;
+		&:last-child{
+			margin-bottom: 0px;
+		}
+	}
+	.portfolio_right_text{
+		padding-left: 98px;
+		h4{
+			color: $dip;
+			font-size: 24px;
+			margin-bottom: 18px;
+			text-transform: uppercase;
+			margin-top: 40px;
+		}
+		p{
+			margin-bottom: 30px;	
+		}
+		.list{
+			li{
+				margin-bottom: 7px;
+				span{
+					font-size: 14px;
+					color: $dip;
+					font-weight: 500;
+					width: 97px;
+					display: inline-block;
+				}
+				color: $pfont;
+				font-weight: normal;
+				font-size: 14px;
+				&:last-child{
+					margin-bottom: 0px;
+				}
+				i{
+					color: #f1cd09;
+				}
+			}
+		}
+		.social{
+			margin-top: 35px;
+			li{
+				display: inline-block;
+				margin-right: 10px;
+				a{
+					i{
+						color: $dip;
+					}
+				}
+				&:last-child{
+					margin-right: 0px;
+				}
+			}
+		}
+	}
+}
+
+/* End Project Details Area css
+============================================================================================ */
+
+
