@@ -1,4 +1,7 @@
-﻿@model IEnumerable<LostItem>
+﻿@model PaginatedList<FoundItem>
+@{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 <div class="page-wrapper" style="min-height: 261px;">
     <!-- ============================================================== -->
     <!-- Container fluid  -->
@@ -41,14 +44,23 @@
                                 </select>
                             </div>
                         </div>
+                        @*<form asp-action="Index" method="get">
+                                <div class="form-actions no-color">
+                                    <p>
+                                        Find by name: <input type="text" class="form-control" name="SearchString"  value="@ViewData["currentFilter"]" />
+                                        <input type="submit" value="Search" class="btn btn-default" /> |
+                                        <a asp-action="FoundItems">Back to Full List</a>
+                                    </p>
+                                </div>
+                            </form>*@
                         <div class="table-responsive m-t-20 no-wrap">
                             <table class="table vm no-th-brd pro-of-month">
                                 <thead>
                                     <tr>
-                                        <th colspan="2"><a asp-action="LostItems" asp-route-sortOrder="@ViewBag.NameSortParm">Name/LGA</a></th>
+                                        <th colspan="2"><a asp-action="FoundItems" asp-route-sortOrder="@ViewBag.NameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Assigned</a></th>
                                         <th>Name</th>
                                         <th>Priority</th>
-                                        <th><a asp-action="LostItems" asp-route-sortOrder="@ViewBag.DateSortParm">Date Misplaced </a></th>
+                                        <th><a asp-action="FoundItems" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Misplaced </a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,67 +69,40 @@
                                         <tr>
                                             <td style="width:50px;"><span class="round">S</span></td>
                                             <td>
-                                                <h6>@item.NameOfLostItem</h6><small class="text-muted">@item.LocalGovernment.Name</small>
+                                                <h6>@item.NameOfFoundItem</h6><small class="text-muted">@item.LocalGovernment.Name</small>
                                             </td>
                                             <td>Elite Admin</td>
                                             <td><span class="label label-success label-rounded">Low</span></td>
-                                            <td>@item.DateMisplaced.ToShortDateString()</td>
+                                            <td>@item.DateFound.ToShortDateString()</td>
                                         </tr>
                                     }
-                                    @*<tr class="active">
-                                            <td><span class="round"><img src="../assets/images/users/2.jpg" alt="user" width="50"></span></td>
-                                            <td>
-                                                <h6>Andrew</h6><small class="text-muted">Project Manager</small>
-                                            </td>
-                                            <td>Real Homes</td>
-                                            <td><span class="label label-info label-rounded">Medium</span></td>
-                                            <td>$23.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-success">B</span></td>
-                                            <td>
-                                                <h6>Bhavesh patel</h6><small class="text-muted">Developer</small>
-                                            </td>
-                                            <td>MedicalPro Theme</td>
-                                            <td><span class="label label-primary label-rounded">High</span></td>
-                                            <td>$12.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-primary">N</span></td>
-                                            <td>
-                                                <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small>
-                                            </td>
-                                            <td>Elite Admin</td>
-                                            <td><span class="label label-danger label-rounded">Low</span></td>
-                                            <td>$10.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-warning">M</span></td>
-                                            <td>
-                                                <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small>
-                                            </td>
-                                            <td>Helping Hands</td>
-                                            <td><span class="label label-success label-rounded">High</span></td>
-                                            <td>$12.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-danger">N</span></td>
-                                            <td>
-                                                <h6>Johnathan</h6><small class="text-muted">Graphic</small>
-                                            </td>
-                                            <td>Digital Agency</td>
-                                            <td><span class="label label-info label-rounded">High</span></td>
-                                            <td>$2.6K</td>
-                                        </tr>*@
+                                    
                                 </tbody>
                             </table>
                         </div>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @prevDisabled">
+                            Previous
+                        </a>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @nextDisabled">
+                            Next
+                        </a>
                     </div>
                 </div>
             </div>
             <!-- Column -->
 
         </div>
+
+
+
         <!-- ============================================================== -->
         <!-- End Projects of the Month -->
         <!-- ============================================================== -->
@@ -144,7 +129,7 @@
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
-    <footer class="footer"> © 2017 Adminwrap by wrappixel.com </footer>
+    <footer class="footer"> © @DateTime.UtcNow.Year MisFinder  </footer>
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->

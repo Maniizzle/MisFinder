@@ -4,6 +4,8 @@
 }
 @{
     ViewData["Title"] = "Details";
+    var photopath = "Photos/"+$"{Model.Image?.ImagePath ?? "home 1081.jpg"}";
+
 }
 
 <h2>Details</h2>
@@ -13,7 +15,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dd>
-            <a href="~/Photos/@Model.Image.ImagePath"> <img style="width:70px;height:70px;" src="~/Photos/@Model.Image.ImagePath" /></a>
+                <a href="~/@photopath"> <img style="width:70px;height:70px;" src="~/@photopath" /></a>
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.NameOfFoundItem)

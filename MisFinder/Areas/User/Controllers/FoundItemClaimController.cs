@@ -49,6 +49,7 @@ namespace MisFinder.Areas.User.Controllers
 
             if (ModelState.IsValid)
             {
+                Image image = null;
                 if (model.Image != null)
                 {
                     if (!utility.IsSizeAllowed(model.Image))
@@ -62,10 +63,10 @@ namespace MisFinder.Areas.User.Controllers
                         ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
                         return View(model);
                     }
+                    var photoPath = utility.SaveImageToFolder(model.Image);
+                    image = new Image { ImagePath =photoPath  };
                 }
-                var photopath = utility.SaveImageToFolder(model.Image);
-                user.PhoneNumber = model.PhoneNumber;
-
+                
                 user.PhoneNumber = user.PhoneNumber ?? model.PhoneNumber;
                 var claim = new FoundItemClaim
                 {
@@ -74,7 +75,7 @@ namespace MisFinder.Areas.User.Controllers
                     Description = model.Description,
                      DateLost=model.DateLost,
                       ExactAreaLost=model.ExactAreaLost,
-                    CreatedAt = DateTime.Now,
+                      Image= image,
 
                 };
                 claimRepository.Create(claim);

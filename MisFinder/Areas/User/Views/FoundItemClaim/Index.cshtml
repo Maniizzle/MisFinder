@@ -3,5 +3,85 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>iNDEX</h1>
+@model IEnumerable<FoundItemClaim>
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    Layout = "_LayoutUser";
+}
+
+
+<p>
+    <a asp-action="Create" asp-route-id="">Create New</a>
+</p>
+@if (Model.Count() == 0 || Model == null)
+{
+    <Div><h4>No Claims </h4> </Div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Item Claiming
+                </th>
+                <th>
+                    Area I Lost It
+                 </th>
+                <th>
+                    Date 
+                </th>
+                <th>
+                    Status
+                </th>
+                @*<th>
+
+                    @Html.DisplayNameFor(model => model.)
+
+                </th>
+                <th>
+                    Claims
+                </th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FoundItem.NameOfFoundItem)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExactAreaLost)
+                </td>
+                <td>
+                    @item.DateLost.ToShortDateString()
+                </td>
+                
+                    @{if (item.IsValid == true)
+                        {
+                        <td> <span class="bg-success text-white"> Success</span> </td>}
+                    else
+                    {
+                        <td ><span class="bg-warning text-white"> Pending</span> </td>}
+                    }
+                    
+                    
+
+
+
+                    
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>}
+
 

@@ -18,12 +18,14 @@ using MisFinder.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using MisFinder.Data.Notification.Email;
+using MisFinder.Data.Notification;
 
 namespace MisFinder
 {
-    public class Startup
+    public partial class Startup
     {
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -33,19 +35,15 @@ namespace MisFinder
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("MisFinder")));
-            services.AddTransient<IFoundItemRepository, FoundItemRepository>();
-            services.AddTransient<ILostItemRepository, LostItemRepository>();
-            services.AddTransient<IStateRepository, StateRepository>();
-            services.AddTransient<ILocalGovernmentRepository, LocalGovernmentRepository>();
-            services.AddTransient<ILostItemClaimRepository, LostItemClaimRepository>();
-            services.AddTransient<IFoundItemClaimRepository, FoundItemClaimRepository>();
-            services.AddTransient<IUtility, UtilityService>();
+           
             services.Configure<CookiePolicyOptions>(o =>
             {
                 o.CheckConsentNeeded = context => true;
                 o.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("MisFinder")));
+
+            ConfigureDI(services);
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {   
                 opts.Lockout.AllowedForNewUsers = true;
@@ -60,13 +58,13 @@ namespace MisFinder
                 .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconf");//registering a new tokenprovideroption
             services.AddAuthentication();
 
-            services.AddMvc(config =>
+            services.AddMvc(configg =>
             {
                 var policy = new AuthorizationPolicyBuilder()
                                 .RequireAuthenticatedUser()
                                 .Build();
 
-                config.Filters.Add(new AuthorizeFilter(policy));
+                configg.Filters.Add(new AuthorizeFilter(policy));
             }).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
           //  config.Filters.Add(new AuthorizeFilter(policy));//.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
             services.Configure<DataProtectionTokenProviderOptions>(options =>
@@ -84,9 +82,10 @@ namespace MisFinder
                 app.UseDeveloperExceptionPage();
             }
             
-            app.UseAuthentication();
             app.UseCookiePolicy();
             app.UseStaticFiles();
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 

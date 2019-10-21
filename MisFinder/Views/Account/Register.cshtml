@@ -65,15 +65,19 @@
             <div class="wrap-login100">
                 <form class="login100-form validate-form" asp-controller="Account" asp-action="Register" method="post">
                     <div asp-validation-summary="All"></div>
-                    <a asp-action="Index">
+                    <a asp-controller="Home" asp-action="Index">
                         <span class="login100-form-title p-b-26">
                             Welcome to MisFinder
                         </span>
                     </a>
-                    
+
                     <div class="wrap-input100 validate-input">
-                        <input class="input100" asp-for="FullName" name="FullName">
-                        <span class="focus-input100" data-placeholder="Full Name"></span>
+                        <input class="input100" asp-for="FirstName" name="FirstName">
+                        <span class="focus-input100" data-placeholder="First Name"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" asp-for="LastName" name="LastName">
+                        <span class="focus-input100" data-placeholder="Last Name"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input">

@@ -22,16 +22,25 @@
                 </button>
             </div>
             <form method="post" class="form-inline mt-2 mt-md-0" asp-action="SearchFoundItem">
-                <div asp-validation-summary="ModelOnly"></div>
+                <div asp-validation-summary="All"></div>
                 <div class="modal-body mx-3">
-                    <div class="md-form mb-5">
+                    <div class="md-form mb-3">
                         <i class="fas fa-user prefix grey-text"></i>
                         <label asp-for="Name" class="control-label">Name of Lost Item</label>
                         <input type="text" id="form3" asp-for="Name" placeholder="Name of LostItem" class="form-control validate">
                         <span asp-validation-for="Name" class="text-danger"></span>
 
                     </div>
-                    <div class="form-group">
+                    <div class="md-form mb-3" >
+                        <label class="control-label"> Category</label>
+                        <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                            <option selected="selected" name="" value="">Please select a Category</option>
+                        </select>
+
+                        <span asp-validation-for="ItemCategory" class="text-danger"></span>
+
+                    </div>
+                    <div class="md-form mb-3">
                         <label class="control-label"> State </label>
                         @Html.DropDownListFor(m => m.StateId,
                       new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
@@ -41,9 +50,9 @@
                     </div>
 
 
-                    <div class="modal-body mx-3">
+                    <div class="md-form mb-3">
                         <label asp-for="Date" class="control-label">Date Lost</label>
-                        <input placeholder="Selected date" id="datePickerId2" type="date" name="DateMisplaced" class="form-control daterangepicker">
+                        <input placeholder="Selected date" id="datePickerId2" type="date" asp-for="Date" class="form-control daterangepicker">
                         <span asp-validation-for="Date" class="text-danger"></span>
 
                         @*<div class="md-form mb-4">
@@ -81,13 +90,22 @@
             <form method="post" class="form-inline mt-2 mt-md-0" asp-action="SearchLostItem">
 
                 <div class="modal-body mx-3">
-                    <div class="md-form mb-5">
+                    <div class="md-form mb-3">
                         <i class="fas fa-user prefix grey-text"></i>
                         <input type="text" id="form3" asp-for="Name" placeholder="Name of Found Item" class="form-control validate">
                         <span asp-validation-for="Name" class="text-danger"></span>
 
                     </div>
-                    <div class="form-group">
+                    <div class="md-form mb-3">
+                        <label class="control-label"> Category</label>
+                        <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                            <option selected="selected" name="" value="">Please select a Category</option>
+                        </select>
+
+                        <span asp-validation-for="ItemCategory" class="text-danger"></span>
+
+                    </div>
+                    <div class="md-form mb-3">
                         <label class="control-label"> State </label>
                         @Html.DropDownListFor(m => m.StateId,
                       new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
@@ -96,7 +114,7 @@
                         <span asp-validation-for="StateId" class="text-danger"></span>
 
                     </div>
-                    <div class="form-group">
+                    <div class="md-form mb-3">
                         <label class="control-label"> LGA</label>
                         <select id="lga" class="form-control" name="LocalGovernmentId">
                             <option selected="selected" name="" value="">Please select LGA</option>
@@ -104,7 +122,7 @@
 
                     </div>
 
-                    <div class="modal-body mx-3">
+                    <div class="md-form mb-3">
                         <label asp-for="Date" class="control-label">Date Found</label>
                         <input placeholder="Selected date" id="datePickerId" type="date" asp-for="Date" class="form-control daterangepicker">
                         <span asp-validation-for="Date" class="text-danger"></span>

@@ -18,19 +18,26 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label"> Category</label>
+                <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                    <option selected="selected" name="" value="">Please select a Category</option>
+                </select>
+
+                <span asp-validation-for="ItemCategory" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
                 <label asp-for="Description" class="control-label"> </label>
                 <input asp-for="Description" class="form-control" placeholder="An IPhone 6,Cracked screen" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label  class="control-label"> State </label>
+                <label class="control-label"> State </label>
                 @Html.DropDownListFor(m => m.StateId,
               new SelectList(ViewBag.StateList, "Id", "Name"),
               "Select state",
               new { @class = "form-control", @onchange="FillCity()",id="state" })
-                @*<select id="state" asp-for="StateId" asp-items="@(new SelectList(@ViewBag.StateList, "Id","Name",new { @class = "form-control", @onchange="FillCity()" }))" class="form-control">
-                <option selected="selected" value="">Please select State</option>
-            </select>*@
+               
                 <span asp-validation-for="StateId" class="text-danger"></span>
             </div>
 
@@ -44,17 +51,6 @@
 
             </div>
 
-            @*<div class="form-group">
-                <select id="state" asp-for="Id" asp-items="@(new SelectList(ViewBag.StateList, "Id","Name"))" class="form-control">
-                    <option selected="selected" value="">Please select Location</option>
-                </select>
-                <span asp-validation-for="State" class="text-danger"></span>
-            </div>*@
-            @*<div class="form-group">
-            <label asp-for="Description" class="control-label"> </label>
-            <input asp-for="Description" class="form-control" placeholder="Brief details " />
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>*@
             <div class="form-group">
                 <label asp-for="DateFound" class="control-label">Date Found</label>
                 <input placeholder="Selected date" id="datePickerId" type="date" name="DateFound" class="form-control daterangepicker">
@@ -121,7 +117,7 @@
                 $("#lga").append($('<option></option>').val("").html("Please select LGA"));
                 $.each(cities, function (i, city) {
                     $("#lga").append(
-                        $('<option></option>').val(city.id).html(city.name));
+i                        $('<option></option>').val(city.id).html(city.name));
                 });
 
             }

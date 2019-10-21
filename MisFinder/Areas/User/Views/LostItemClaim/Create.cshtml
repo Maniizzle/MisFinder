@@ -18,6 +18,16 @@ Layout="_LayoutUser";
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>*@
             <div class="form-group">
+                <label class="control-label"> Category</label>
+                <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                    <option selected="selected" name="" value="">Please select a Category</option>
+                </select>
+
+                <span asp-validation-for="ItemCategory" class="text-danger"></span>
+
+            </div>
+            
+            <div class="form-group">
                 <label class="control-label">Detailed Description  </label>
                 <textarea asp-for="Description" class="form-control" rows="3"
                           placeholder="A green File bag containing Certificates found in a bus going to Yaba on Monday Evening. Name on University Certificate is Obafemi Kazeem"></textarea>
@@ -38,7 +48,7 @@ Layout="_LayoutUser";
             <div class="form-group">
                 <label asp-for="Image" class="control-label">Image</label>
                 <input type="file" name="Image" accept="image/* ">
-               @* <span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
+                @* <span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <input type="submit" value="Claim" class="btn btn-default" />

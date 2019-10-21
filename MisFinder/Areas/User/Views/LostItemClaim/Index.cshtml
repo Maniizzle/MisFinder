@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "_LayoutUser";
+}
+@model IEnumerable<LostItemClaim>
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<h3 class="container"> <a asp-action="Create">Register your Item</a> </h3>
+@if (Model.Count() == 0 || Model == null)
+{
+    <Div><h4>You did not Claim to have found Any Lost Item </h4> </Div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Lost Item Claim
+                    @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    ExactArea
+                    @*@Html.DisplayNameFor(model => model.IsFound)*@
+                </th>
+                <th>
+                    Date Misplaced
+                </th>
+
+                <th>
+                    Status
+                </th>
+                <th>
+                    Claims
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @item.DateFound.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemCategory )
+                    </td>
+                    <td>
+                       
+                    </td>
+
+                    @{if (item.Sorted == true)
+                        {
+                            <td>  Closed </td>}
+                        else
+                        {
+                            <td> Pending </td>}
+                    }
+
+
+                    <td>
+                    @*    <a asp-action="LostItemClaims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>*@
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-controller="LostItemClaim" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>}
+@*var des = "~/img/" + ra.Photopath;
+    <img asp-append-version="true" src="@des" />*@

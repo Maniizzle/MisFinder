@@ -66,9 +66,13 @@
 
 
 
-<div class="row">
+@*<div class="row">
     <div class="column"></div>
     <div class="column"></div>
+</div>*@
+<div>
+    Cant Find your Lost Item?
+    <a><span> Register your Lost Item </span> </a>
 </div>
 @if (Model.Count() == 0)
 {
@@ -81,51 +85,59 @@ else
 
         @foreach (var item in Model)
         {
+            var photopath = $"~/Photos/{item.Image?.ImagePath ?? "home 1081.jpg"}";
 
-
-
-            <div class="col-xl-2 col-lg-3 col-sm-4 col-5">
-                <div class="contacts__item">
-                    @if (item.Image != null)
-                    {<a href="~/Photos/@item.Image.ImagePath" class="contacts__img">
-                            <img src="~/Photos/@item.Image.ImagePath" alt="" />
-                        </a>}
-                    else
-                    {
-                        <a href="~/Photos/home 1081.jpg" class="contacts__img">
-                            <img src="~/Photos/home 1081.jpg" alt="" />
-                        </a>}
-
-                    <div class="contacts__info">
-                        <strong>@item.NameOfLostItem</strong>
-                        <small>@item.Description</small>
-                        <small>@item.ExactArea</small>
-
+            <div class="col-lg-3 col-md-6">
+                <!-- Card -->
+                <div class="card">
+                    <img class="card-img-top img-responsive" src="../assets/images/big/img1.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h4 class="card-title">Card title</h4>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
-                    <a asp-controller="LostItemClaim" title="Claim" asp-action="SameUser" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
-
-                    @*                    <button class="contacts__btn">Following</button>*@
                 </div>
+                <!-- Card -->
             </div>
+        }
+
+            @*<div class="col-xl-2 col-lg-3 col-sm-4 col-5">
+            <div class="contacts__item">
+              <a href=@photopath class="contacts__img">
+                        <img src=@photopath alt="" />
+                    </a>}
+
+
+                <div class="contacts__info">
+                    <strong>@item.NameOfLostItem</strong>
+                    <small>@item.Description</small>
+                    <small>@item.ExactArea</small>
+
+                </div>
+                <a asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
+
+                @*                    <button class="contacts__btn">Following</button>*@
+        @*</div>
+            </div>*@
             @*<div class="container">
-                    <div class="row">
+                <div class="row">
 
-                        <div class="col">
-                            <div class="card ola" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h1 class="card-body">@item.Description</h1>
-                                    <p>@item.ExactArea </p>
-                                    <p>@item.DateMisplaced.ToShortDateString()</p>
-                                    <a id="icon"><img src="~/img/icon/lostclaimicon.png" /></a>
-                                    <span class="tooltiptext">Tooltip text</span>
-                                    <a href="#" class="card-link">Another link</a>
+                    <div class="col">
+                        <div class="card ola" style="width: 18rem;">
+                            <div class="card-body">
+                                <h1 class="card-body">@item.Description</h1>
+                                <p>@item.ExactArea </p>
+                                <p>@item.DateMisplaced.ToShortDateString()</p>
+                                <a id="icon"><img src="~/img/icon/lostclaimicon.png" /></a>
+                                <span class="tooltiptext">Tooltip text</span>
+                                <a href="#" class="card-link">Another link</a>
 
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>*@
-        }
+                </div>
+            </div>*@
+        
     </div>
 }
 

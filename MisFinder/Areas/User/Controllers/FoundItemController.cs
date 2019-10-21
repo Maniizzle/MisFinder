@@ -26,7 +26,8 @@ namespace MisFinder.Areas.User.Controllers
         private readonly UserManager<ApplicationUser> userManager;
 
         public FoundItemController(MisFinderDbContext context,IUtility utility,
-            IFoundItemRepository repository,IStateRepository staterepository, UserManager<ApplicationUser> userManager)
+            IFoundItemRepository repository,IStateRepository staterepository,
+            UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.utility = utility;
@@ -70,6 +71,7 @@ namespace MisFinder.Areas.User.Controllers
             var user = await userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
+                Image image = null;
                 if (item.Photo != null)
                 {
                     if (!utility.IsSizeAllowed(item.Photo))
@@ -80,9 +82,10 @@ namespace MisFinder.Areas.User.Controllers
                     if (!utility.IsImageExtensionAllowed(item.Photo))
                     { ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
                       return View(item);
-                    }     
-                }
+                    }
                 var photopath = utility.SaveImageToFolder(item.Photo);
+                    image = new Image { ImagePath = photopath };
+                }
                 user.PhoneNumber = item.PhoneNumber;
                 FoundItem itemm = new FoundItem
                 {
@@ -94,9 +97,9 @@ namespace MisFinder.Areas.User.Controllers
                     DateFound = item.DateFound,
                     WhereItemWasFound = item.WhereItemWasFound,
                     ExactArea = item.ExactArea,
-                    Image=new Image { ImagePath=photopath},
+                    Image=image,
                     LocalGovernmentId= item.LocalGovernmentId,
-                   CreatedAt = DateTime.Now
+                   
                     
                 };
                 repository.Create(itemm);

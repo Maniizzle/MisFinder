@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="~/img/favicon.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
     <title>MisFinder</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/css/bootstrap.css">
@@ -52,9 +52,18 @@
                                             <ul class="dropdown-menu">
                                                 <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Items</a></li>
                                                 <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Items</a></li>
-                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-action="Claims">Claims</a></li>
+                                               
+                                                <li class="nav-item">
+                                                    <a class="nav-link1 dropdown-toggle " data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false" asp-area="User" asp-action="Claims">Claims</a>
+                                                                     <ul class="dropdown-menu ">
+                                                                         <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Item Claims</a></li>
+                                                                         <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Ite Claims</a></li>
 
-                                            </ul>}
+
+                                                                     </ul></li>
+
+                                            </ul>
+                                        }
                                         else
                                         {
                                             <a href="~/#" class="nav-link dropdown-toggle hdbutton" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <i class="fa fa-angle-down"></i></a>

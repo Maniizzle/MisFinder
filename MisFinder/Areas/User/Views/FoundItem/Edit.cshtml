@@ -15,12 +15,20 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input asp-for="ApplicationUserId" />
-            <input type="hidden" asp-for="FoundItemUser" />
+
             <div class="form-group">
                 <label asp-for="NameOfFoundItem" class="control-label"></label>
                 <input asp-for="NameOfFoundItem" class="form-control" />
                 <span asp-validation-for="NameOfFoundItem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"> Category</label>
+                <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                    <option selected="selected" name="" value="">Please select a Category</option>
+                </select>
+
+                <span asp-validation-for="ItemCategory" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -37,11 +45,38 @@
                 <input asp-for="ExactArea" class="form-control" />
                 <span asp-validation-for="ExactArea" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="DateFound" class="control-label">Date Found</label>
+                <input asp-for="DateFound" id="datePickerId" type="date" class="form-control daterangepicker">
+                <span asp-validation-for="DateFound" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocalGovernmentId" class="control-label"> Local Government </label>
+                @Html.DropDownListFor(m => m.LocalGovernmentId,
+              new SelectList(ViewBag.LGA, "Id", "Name"),
+              "Select state",
+              new { @class = "form-control"})
+                @*<select id="state" asp-for="StateId" asp-items="@(new SelectList(@ViewBag.StateList, "Id","Name",new { @class = "form-control", @onchange="FillCity()" }))" class="form-control">
+                <option selected="selected" value="">Please select State</option>
+            </select>*@
+                <span asp-validation-for="LocalGovernmentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Colour" class="control-label"></label>
+                <input asp-for="Colour" class="form-control" />
+                <span asp-validation-for="Colour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateFound" class="control-label"></label>
+                <input asp-for="DateFound" class="form-control" />
+                <span asp-validation-for="DateFound" class="text-danger"></span>
+            </div>
+
             @*<div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                 <select asp-for="Location" class="form-control" asp-items="@Html.GetEnumSelectList<Location>()"></select>
-                <span asp-validation-for="State" class="text-danger"></span>
-            </div>*@
+            <label asp-for="State" class="control-label"></label>
+             <select asp-for="Location" class="form-control" asp-items="@Html.GetEnumSelectList<Location>()"></select>
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>*@
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

@@ -38,7 +38,7 @@ namespace MisFinder.Controllers
                 var user = await userManager.FindByEmailAsync(model.UserName);
                 if (user == null)
                 {
-                    user = new ApplicationUser { UserName = model.UserName, Email = model.UserName };
+                    user = new ApplicationUser { UserName = model.UserName, Email = model.UserName, FirstName=model.FirstName,LastName=model.LastName };
                     var result = await userManager.CreateAsync(user, model.Password);
                     await userManager.AddToRoleAsync(user, "User");
                     if (!result.Succeeded)
@@ -53,8 +53,11 @@ namespace MisFinder.Controllers
                     var ConfirmEmail = Url.Action("ConfirmEmailAddress", "Account",
                         new { token = token, email = user.Email }, Request.Scheme);
                     System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
+                    
                     return RedirectToAction("Success", "Account", new { comment = "Registration Complete,Check your Email for Confirmation" });
                 }
+                ModelState.AddModelError("", "Account already Exist");
+
             }
             return View(model);
 
@@ -70,7 +73,8 @@ namespace MisFinder.Controllers
                
                 var result = await userManager.ConfirmEmailAsync(user, token);
                 if (result.Succeeded)
-                    return View("Success", new { comment = "Email Confirmed" });
+                    ViewBag.Comment = "Email Confirmed, Login ";
+                    return View("Success");
             }
             return View("Error");
         }
@@ -97,17 +101,23 @@ namespace MisFinder.Controllers
                     //Making Sure the Email is Confirmed before User sign in.
                     
                         if (!await userManager.IsEmailConfirmedAsync(user))
-                        {if (await userManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            if (await userManager.IsInRoleAsync(user, "Admin"))
                             {
-                                var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                                var ConfirmEmail = Url.Action("ConfirmEmailAddress", "Account",
+                                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                                    var ConfirmEmail = Url.Action("ConfirmEmailAddress", "Account",
                                     new { token = token, email = user.Email }, Request.Scheme);
-                                System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
+                                    System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
                             }
-                            ModelState.AddModelError("", "Email is Not Confirmed");
+                                ModelState.AddModelError("", "Email is Not Confirmed");
+                                return View();
+                        }
+                        if (user.IsBlackListed)
+                        {
+                        ModelState.AddModelError("", "Account has been Suspended");
                             return View();
                         }
-                    
+                            
                     
                    var result = await signInManager.PasswordSignInAsync(user, model.Password, true, false);
                     if (result.Succeeded)

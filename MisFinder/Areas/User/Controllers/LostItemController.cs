@@ -10,6 +10,8 @@ using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Data.Data.Context;
 using MisFinder.Data.Persistence.IRepositories;
+using MisFinder.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -20,15 +22,17 @@ namespace MisFinder.Areas.User.Controllers
     {
         private readonly IStateRepository stateRepository;
         private readonly ILocalGovernmentRepository lgaRepository;
+        private readonly IUtility utility;
         private readonly ILostItemRepository repository;
         private readonly ILostItemClaimRepository claimRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public LostItemController(IStateRepository stateRepository,ILocalGovernmentRepository lgaRepository,
+        public LostItemController(IStateRepository stateRepository,ILocalGovernmentRepository lgaRepository,IUtility utility,
             ILostItemRepository repository, ILostItemClaimRepository claimRepository,UserManager<ApplicationUser> userManager)
         {
             this.stateRepository = stateRepository;
             this.lgaRepository = lgaRepository;
+            this.utility = utility;
             this.repository = repository;
             this.claimRepository = claimRepository;
            // this.context = context;
@@ -71,7 +75,25 @@ namespace MisFinder.Areas.User.Controllers
             var user = await userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
-                    user.PhoneNumber = model.PhoneNumber;
+                Image image = null;
+                if (model.Photo != null)
+                {
+                    if (!utility.IsSizeAllowed(model.Photo))
+                    {
+                        ModelState.AddModelError("Photo", "Your file is too large, maximum allowed size is: 5MB");
+                        return View(model);
+                    }
+
+                    if (!utility.IsImageExtensionAllowed(model.Photo))
+                    {
+                        ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
+                        return View(model);
+                    }
+                    var photoPath = utility.SaveImageToFolder(model.Photo);
+                    image = new Image { ImagePath = photoPath  };
+                    
+                }
+                user.PhoneNumber = model.PhoneNumber;
                 LostItem itemm = new LostItem
                 {
                     LostItemUser = user,
@@ -83,7 +105,7 @@ namespace MisFinder.Areas.User.Controllers
                     ExactArea= model.ExactArea,
                     WhereItemWasLost    =model.WhereItemWasLost,
                     LocalGovernmentId =model.LocalGovernmentId,
-                    CreatedAt = DateTime.Now,
+                    Image = image,
                          
                     };
 
@@ -120,9 +142,9 @@ namespace MisFinder.Areas.User.Controllers
             {
                 return NotFound();
             }
-
             var lostItem =await repository.GetLostItemById(id);
-                                                 
+            ViewBag.LGA = await lgaRepository.GetAllLGAByStateId(lostItem.LocalGovernment.StateId);
+            
             if (lostItem == null)
             {
                 return NotFound();
@@ -130,13 +152,31 @@ namespace MisFinder.Areas.User.Controllers
             return View(lostItem);
         }
         [HttpPost]
-        public  IActionResult Edit(int id, LostItem lostItem)
+        public  IActionResult Edit(int id, LostItem lostItem, IFormFile file=null)
         {
-            if (id != lostItem.Id)
+            if (id != lostItem.Id) 
             { return NotFound();}
-
+            Image image = null;
             if (ModelState.IsValid)
             {
+                if (file!= null)
+                {
+                    if (!utility.IsSizeAllowed(file))
+                    {
+                        ModelState.AddModelError("Photo", "Your file is too large, maximum allowed size is: 5MB");
+                        return View(file);
+                    }
+
+                    if (!utility.IsImageExtensionAllowed(file))
+                    {
+                        ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
+                        return View(file);
+                    }
+                    var photoPath = utility.SaveImageToFolder(file);
+                    image = new Image { ImagePath = photoPath };
+                    lostItem.Image = image;
+
+                }
                 try
                 {
                     repository.Update(lostItem);

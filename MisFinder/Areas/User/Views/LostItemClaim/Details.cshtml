@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "_LayoutUser";
+}
+@model LostItemClaim
+
+@{
+    ViewData["Title"] = "Details";
+    var photopath = "Photos/" + (Model.Image?.ImagePath ?? "home 1081.jpg");
+    var lostphotopath = "Photos/" + (Model.LostItem.Image?.ImagePath ?? "home 1081.jpg");
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Lost Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            <a href="~/@photopath" target="_blank"> <img style="width:150px;height:150px;" src="~/@photopath" /></a>
+
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemCategory)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemCategory)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sorted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sorted)
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.DateMisplaced)
+        </dt>
+        <dd>
+            @Model.DateMisplaced.ToShortDateString()
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhereItemWasLost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhereItemWasLost)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.LostItem.NameOfLostItem)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LostItem.NameOfLostItem)
+        </dd>
+
+        <dt>
+            Lost Item
+        </dt>
+        <dd>
+            <a class="btn btn-warning btn-circle text-uppercase collapsed" data-toggle="collapse" href="#replyOne"><span class="glyphicon"></span>Details</a>
+
+           @* <a asp-action="#" title="Claims" asp-route-id="@Model.Id" class="btn btn-info" role="button">Details</a>*@
+        </dd>
+    </dl>
+</div>
+
+<div class="collapse" id="replyOne" style="height: 0px;">
+    <ul class="media-list">
+        <li class="media media-replied">
+            <a class="pull-left" href="~/@lostphotopath">
+                <img class="media-object img-circle" style="width:150px;height:150px;" src="~/@lostphotopath" alt="profile">
+            </a>
+            <div class="media-body">
+                <div class="well well-lg">
+                    <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span>@Model.LostItem.NameOfLostItem</h4>
+                    @*<ul class="media-date text-uppercase reviews list-inline">
+                        <li class="dd">22</li>
+                        <li class="mm">09</li>
+                        <li class="aaaa">2014</li>
+                    </ul>*@
+                    <p class="media-comment">
+                        @Model.LostItem.Description
+                    </p>
+                    <span>@Model.LostItem.DateMisplaced.ToShortDateString()</span>
+                </div>
+            </div>
+        </li>
+       
+    </ul>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

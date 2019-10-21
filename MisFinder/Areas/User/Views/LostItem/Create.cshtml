@@ -10,12 +10,21 @@
 <hr />
 <div class="row" onload="ola()">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="NameOfLostItem" class="control-label">Name of Item Lost</label>
                 <input asp-for="NameOfLostItem" class="form-control" placeholder="In One Word e.g Phone " />
                 <span asp-validation-for="NameOfLostItem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"> Category</label>
+                <select  class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                    <option selected="selected" name="" value="">Please select a Category</option>
+                </select>
+
+                <span asp-validation-for="ItemCategory" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"> </label>
@@ -28,9 +37,7 @@
               new SelectList(ViewBag.StateList, "Id", "Name"),
               "Select state",
               new { @class = "form-control", @onchange="FillCity()",id="state" })
-                @*<select id="state" asp-for="StateId" asp-items="@(new SelectList(@ViewBag.StateList, "Id","Name",new { @class = "form-control", @onchange="FillCity()" }))" class="form-control">
-                <option selected="selected" value="">Please select State</option>
-            </select>*@
+
                 <span asp-validation-for="StateId" class="text-danger"></span>
             </div>
 
@@ -54,8 +61,8 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>*@
             <div class="form-group">
-                <label asp-for="DateMisplaced" class="control-label">Date Found</label>
-                <input placeholder="Selected date" id="datePickerId" type="date" name="DateMisplaced" class="form-control daterangepicker">
+                <label asp-for="DateMisplaced" class="control-label">Date Lost</label>
+                <input placeholder="Selected date" id="datePickerId" type="date" name="DateMisplaced" class="form-control">
                 <span asp-validation-for="DateMisplaced" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -80,8 +87,8 @@
             </div>
             <div class="form-group">
                 <label asp-for=" Photo" class="control-label">Picture</label>
-                <input asp-for="Photo" type="file" class="form-control" placeholder="upload Image" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
+                <input name="Photo" class="form-control" type="file" />
+                @* <span asp-validation-for="Photo" class="text-danger"></span>*@
             </div>
 
             @*<div class="form-group">
