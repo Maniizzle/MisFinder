@@ -9,6 +9,7 @@ using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Data.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace MisFinder.Controllers
 {
@@ -50,8 +51,8 @@ namespace MisFinder.Controllers
         public async Task<IActionResult> SearchFoundItem(SearchViewModel model)
         {
             if (ModelState.IsValid) {
-           var result= await repository.SearchFoundItem(model);
-            return View(result);
+           var result=  repository.SearchFoundItem(model);
+                return View(await result.AsNoTracking().ToListAsync());
             }
             return View("Index",model);
         }
@@ -64,9 +65,12 @@ namespace MisFinder.Controllers
             if (ModelState.IsValid)
             {
 
-                var result = await lostItemRepository.SearchLostItem(model);
-                return View(result);
+                var result =  lostItemRepository.SearchLostItem(model);
+                return View(await result.AsNoTracking().ToListAsync());
             }
+          // TempData["States"]
+          //=  await stateRepository.GetAllStates();
+
             return View("Index", model);
 
         }

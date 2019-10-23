@@ -8,7 +8,7 @@
 }
 <h4 class="mb-2">Register <span>Found Item</span></h4>
 <hr />
-<div class="row">
+<div class="row" onload="ola()">
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -117,7 +117,7 @@
                 $("#lga").append($('<option></option>').val("").html("Please select LGA"));
                 $.each(cities, function (i, city) {
                     $("#lga").append(
-i                        $('<option></option>').val(city.id).html(city.name));
+                        $('<option></option>').val(city.id).html(city.name));
                 });
 
             }

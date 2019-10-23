@@ -6,6 +6,11 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    .smallModal {
+        width: 300px;
+    }
+</style>
 
 
 
@@ -16,69 +21,95 @@
 }
 else
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Lost Item
-                @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
-            </th>
-            <th>
-                State
-            </th>
-            <th>
-                ExactArea
-                @*@Html.DisplayNameFor(model => model.IsFound)*@
-            </th>
-            <th>
-                Date Misplaced
-            </th>
 
-            <th>
-                Status
-            </th>
-            <th>
-                Claims
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NameOfLostItem)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LocalGovernment.State.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExactArea)
-                </td>
-                <td>
-                    @item.DateMisplaced.ToShortDateString()
-                </td>
+                <th>
+                    Lost Item
+                    @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    ExactArea
+                    @*@Html.DisplayNameFor(model => model.IsFound)*@
+                </th>
+                <th>
+                    Date Misplaced
+                </th>
 
-                @{if (item.IsFound == true)
-                    {
-                        <td>  Closed </td>}
-                    else
-                    {
-                        <td> Pending </td>}
-                }
-
-
-                <td>
-                    <a asp-action="LostItemClaims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Claims
+                </th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content smallModal">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>Are you sure you Want to Delete the Item</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form asp-action="Deletes" method="post">
+                                    <input type="hidden" name="@item.Id" value="" />
+                                    <input type="submit" value="Delete" class="btn btn-success" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameOfLostItem)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocalGovernment.State.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExactArea)
+                    </td>
+                    <td>
+                        @item.DateMisplaced.ToShortDateString()
+                    </td>
+
+                    @{if (item.IsFound == true)
+                        {
+                            <td>  Closed </td>}
+                        else
+                        {
+                            <td> Pending </td>}
                     }
-    </tbody>
-</table>}
-@*var des = "~/img/" + ra.Photopath;
-    <img asp-append-version="true" src="@des" />*@
+
+
+                    <td>
+                        <a asp-action="LostItemClaims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

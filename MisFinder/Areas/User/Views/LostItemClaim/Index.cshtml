@@ -45,6 +45,31 @@ else
         <tbody>
             @foreach (var item in Model)
             {
+                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content smallModal">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>Are you sure you Want to Delete the Item</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form asp-action="Deletes" method="post">
+                                    <input type="hidden" name="@item.Id" value="" />
+                                    <input type="submit" value="Delete" class="btn btn-success" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
@@ -53,11 +78,9 @@ else
                         @item.DateFound.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ItemCategory )
+                        @Html.DisplayFor(modelItem => item.ItemCategory)
                     </td>
-                    <td>
-                       
-                    </td>
+                    <td></td>
 
                     @{if (item.Sorted == true)
                         {
@@ -69,12 +92,12 @@ else
 
 
                     <td>
-                    @*    <a asp-action="LostItemClaims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>*@
+                        @*    <a asp-action="LostItemClaims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>*@
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-action="Details" asp-controller="LostItemClaim" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id">Delete</a>
                     </td>
                 </tr>
             }

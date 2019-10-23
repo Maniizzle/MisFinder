@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Search";
 }
-@*<link rel="stylesheet" href="~/css/app.min.css" />*@
+<link rel="stylesheet" href="~/css/style.css" />
 
 <style>
     * {
@@ -62,6 +62,27 @@
         #icon:hover .tooltiptext {
             visibility: visible;
         }
+    .card {
+        background: #272c33;
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        /*background-color: #fff;*/
+        background-clip: border-box;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: .25rem;
+    }
+
+    *, ::after, ::before {
+        box-sizing: border-box;
+    }
 </style>
 
 
@@ -72,7 +93,7 @@
 </div>*@
 <div>
     Cant Find your Lost Item?
-    <a><span> Register your Lost Item </span> </a>
+    <a asp-area="User" asp-action="Create" asp-controller="LostItem"><span> Register your Lost Item </span> </a>
 </div>
 @if (Model.Count() == 0)
 {
@@ -85,16 +106,20 @@ else
 
         @foreach (var item in Model)
         {
-            var photopath = $"~/Photos/{item.Image?.ImagePath ?? "home 1081.jpg"}";
+            var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
+
 
             <div class="col-lg-3 col-md-6">
                 <!-- Card -->
                 <div class="card">
-                    <img class="card-img-top img-responsive" src="../assets/images/big/img1.jpg" alt="Card image cap">
+                    <img class="card-img-top img-responsive" src="~/@photopath" alt="Card image cap">
                     <div class="card-body">
-                        <h4 class="card-title">Card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h4 class="card-title">@item.NameOfLostItem</h4>
+                        <li class="p-l-0">@item.DateMisplaced.ToShortDateString()</li>
+                        <p class="card-text">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
                         <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a class="float-right" asp-controller="FoundItemClaim" title="Claim" asp-action="SameUser" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
+
                     </div>
                 </div>
                 <!-- Card -->

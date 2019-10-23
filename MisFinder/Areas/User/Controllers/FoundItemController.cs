@@ -11,6 +11,7 @@ using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -127,21 +128,53 @@ namespace MisFinder.Areas.User.Controllers
             return View(foundItem);
         }
         [HttpPost]
-        public IActionResult Edit(int id, FoundItem foundItem)
+        public async Task<IActionResult> Edit(int id, FoundItem model, IFormFile file=null)
         {
-            if (id != foundItem.Id)
+            if (id != model.Id)
             { return NotFound(); }
 
+            var foundItem = await repository.GetFoundItemById(id);
+            Image image = null;
             if (ModelState.IsValid)
             {
+
+                if (file != null)
+                {
+                    if (!utility.IsSizeAllowed(file))
+                    {
+                        ModelState.AddModelError("Photo", "Your file is too large, maximum allowed size is: 5MB");
+                        return View(file);
+                    }
+
+                    if (!utility.IsImageExtensionAllowed(file))
+                    {
+                        ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
+                        return View(file);
+                    }
+                    var photoPath = utility.SaveImageToFolder(file);
+                    image = new Image { ImagePath = photoPath };
+                    foundItem.Image = image;
+
+                }
                 try
                 {
+                    foundItem.NameOfFoundItem = model.NameOfFoundItem;
+                    foundItem.Description = model.Description;
+                    foundItem.ItemCategory = model.ItemCategory;
+                    foundItem.ExactArea = model.ExactArea;
+                    foundItem.WhereItemWasFound = model.WhereItemWasFound;
+                    foundItem.Colour = model.Colour;
+                    foundItem.DateFound = model.DateFound;
+                    foundItem.LocalGovernmentId = model.LocalGovernmentId;
+                    foundItem.ModifiedOn = DateTime.UtcNow;
+                    foundItem.IsEditedCount += 1;
+
                     repository.Update(foundItem);
                     repository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FoundItemExists(foundItem.Id))
+                    if (!FoundItemExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -152,7 +185,7 @@ namespace MisFinder.Areas.User.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(foundItem);
+            return View(model);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -174,23 +207,7 @@ namespace MisFinder.Areas.User.Controllers
 
             return View(foundItem);
         }
-
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var FoundItem = await context.FoundItems
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (FoundItem == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(FoundItem);
-        //}
+        
 
         // POST: FoundItems/Delete/5
         [HttpGet, ActionName("Delete")]
@@ -203,7 +220,18 @@ namespace MisFinder.Areas.User.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost, ActionName("Deletes")]
+        public async Task<IActionResult> SoftDelete(int? id)
+        {
+            if (id == null)
+            { return NotFound(); }
+            var foundItem = await repository.GetFoundItemById(id);
+            foundItem.IsDeleted = true;
+            foundItem.DeletedOn = DateTime.UtcNow;
+            repository.Save();
+            return RedirectToAction(nameof(Index));
 
+        }
         private bool FoundItemExists(int id)
         {
             return repository.FoundItemExists(id);

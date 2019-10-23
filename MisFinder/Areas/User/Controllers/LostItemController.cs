@@ -152,10 +152,12 @@ namespace MisFinder.Areas.User.Controllers
             return View(lostItem);
         }
         [HttpPost]
-        public  IActionResult Edit(int id, LostItem lostItem, IFormFile file=null)
+        public async Task<IActionResult> Edit(int id, LostItem model, IFormFile file=null)
         {
-            if (id != lostItem.Id) 
+            if (id != model.Id) 
             { return NotFound();}
+
+            var lostItem = await repository.GetLostItemById(id);
             Image image = null;
             if (ModelState.IsValid)
             {
@@ -179,6 +181,15 @@ namespace MisFinder.Areas.User.Controllers
                 }
                 try
                 {
+                    lostItem.NameOfLostItem = model.NameOfLostItem;
+                    lostItem.Description = model.Description;
+                    lostItem.ItemCategory = model.ItemCategory;
+                    lostItem.ExactArea = model.ExactArea;
+                    lostItem.WhereItemWasLost = model.WhereItemWasLost;
+                    lostItem.Color = model.Color;
+                    lostItem.DateMisplaced = model.DateMisplaced;
+                    lostItem.LocalGovernmentId = model.LocalGovernmentId;
+                    lostItem.ModifiedOn = DateTime.UtcNow;
                     repository.Update(lostItem);
                     repository.Save();
                 }
@@ -195,38 +206,36 @@ namespace MisFinder.Areas.User.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(lostItem);
+            return View(model);
         }
 
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var lostItem = await context.LostItems
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (lostItem == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(lostItem);
-        //}
-
+        
         // POST: lostItems/Delete/5
         [HttpGet,ActionName("Delete")]
        // [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            var lostItem = await repository.GetLostItemById(id);
+            if (id == null)
+                    {  return NotFound(); }
+
+                var lostItem = await repository.GetLostItemById(id);
              repository.Delete(lostItem);
             repository.Save();
             return RedirectToAction(nameof(Index));
         }
-       
 
+        [HttpPost, ActionName("Deletes")]
+        public async Task<IActionResult> SoftDelete(int? id)
+        {
+            if (id == null)
+            { return NotFound(); }
+            var lostItem = await repository.GetLostItemById(id);
+            lostItem.IsDeleted = true;
+            lostItem.DeletedOn = DateTime.UtcNow;
+            repository.Save();
+            return RedirectToAction(nameof(Index));
+
+        }
         private bool LostItemExists(int id)
         {
             return repository.LostItemExists(id);

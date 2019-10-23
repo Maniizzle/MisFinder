@@ -133,10 +133,12 @@ namespace MisFinder.Areas.User.Controllers
             return View(lostItem);
         }
         [HttpPost]
-        public IActionResult Edit(int id, LostItemClaim lostItemClaim, IFormFile file = null)
+        public async Task<IActionResult> Edit(int id, LostItemClaim model, IFormFile file = null)
         {
-            if (id != lostItemClaim.Id)
+            if (id != model.Id)
             { return NotFound(); }
+
+            var lostItemClaim = await claimRepository.GetLostItemClaimById(id);
             Image image = null;
             if (ModelState.IsValid)
             {
@@ -160,42 +162,28 @@ namespace MisFinder.Areas.User.Controllers
                 }
                 try
                 {
+                    lostItemClaim.ItemCategory = model.ItemCategory;
+                    lostItemClaim.Description = model.Description;
+                    lostItemClaim.DateFound = model.DateFound;
                     claimRepository.Update(lostItemClaim);
                     claimRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    //if (!LostItemExists(lostItemClaim.Id))
-                    //{
-                    //    return NotFound();
-                    //}
-                    //else
+                    if (!claimRepository.LostItemClaimsExists(lostItemClaim.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
                     {
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(lostItemClaim);
+            return View(model);
         }
-
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var lostItem = await context.LostItems
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (lostItem == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(lostItem);
-        //}
-
+        
         // POST: lostItems/Delete/5
         [HttpGet, ActionName("Delete")]
         // [ValidateAntiForgeryToken]
@@ -207,7 +195,18 @@ namespace MisFinder.Areas.User.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost, ActionName("Deletes")]
+        public async Task<IActionResult> SoftDelete(int? id)
+        {
+            if (id == null)
+            { return NotFound(); }
+            var lostItem = await claimRepository.GetLostItemClaimById(id);
+            lostItem.IsDeleted = true;
+            lostItem.DeletedOn = DateTime.UtcNow;
+            claimRepository.Save();
+            return RedirectToAction(nameof(Index));
 
+        }
         //private bool LostItemExists(int id)
         //{
         //    return claimRepository.LostItemClaimExists(id);
