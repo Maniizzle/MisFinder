@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Http;
 namespace MisFinder.Areas.User.Controllers
 
 {
-   
     [Area("User")]
     public class FoundItemController : Controller
     {
@@ -24,16 +23,18 @@ namespace MisFinder.Areas.User.Controllers
         private readonly IUtility utility;
         private readonly IFoundItemRepository repository;
         private readonly IStateRepository staterepository;
+        private readonly IFoundItemClaimRepository claimRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public FoundItemController(MisFinderDbContext context,IUtility utility,
-            IFoundItemRepository repository,IStateRepository staterepository,
+        public FoundItemController(MisFinderDbContext context, IUtility utility,
+            IFoundItemRepository repository, IStateRepository staterepository, IFoundItemClaimRepository claimRepository,
             UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.utility = utility;
             this.repository = repository;
             this.staterepository = staterepository;
+            this.claimRepository = claimRepository;
             this.userManager = userManager;
         }
 
@@ -42,15 +43,17 @@ namespace MisFinder.Areas.User.Controllers
             var user = await userManager.GetUserAsync(HttpContext.User);
             if (user == null)
                 return NotFound();
-            var foundItems=await repository.GetFoundItemsByUser(user);
+            var foundItems = await repository.GetFoundItemsByUser(user);
             return View(foundItems);
         }
+
         [AllowAnonymous]
         public IActionResult GetFoundItems()
         {
             var foundItems = repository.GetAllFoundItems();
             return View(foundItems);
-        }       
+        }
+
         public async Task<IActionResult> GetFoundItemById(int? id)
         {
             if (id == null)
@@ -58,12 +61,14 @@ namespace MisFinder.Areas.User.Controllers
             var foundItem = await repository.GetFoundItemById(id);
             return View(foundItem);
         }
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             ViewBag.StateList = await staterepository.GetAllStates();
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(FoundItemViewModel item)
         {
@@ -76,15 +81,17 @@ namespace MisFinder.Areas.User.Controllers
                 if (item.Photo != null)
                 {
                     if (!utility.IsSizeAllowed(item.Photo))
-                    { ModelState.AddModelError( "Photo", "Your file is too large, maximum allowed size is: 5MB");
+                    {
+                        ModelState.AddModelError("Photo", "Your file is too large, maximum allowed size is: 5MB");
                         return View(item);
                     }
-              
+
                     if (!utility.IsImageExtensionAllowed(item.Photo))
-                    { ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
-                      return View(item);
+                    {
+                        ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
+                        return View(item);
                     }
-                var photopath = utility.SaveImageToFolder(item.Photo);
+                    var photopath = utility.SaveImageToFolder(item.Photo);
                     image = new Image { ImagePath = photopath };
                 }
                 user.PhoneNumber = item.PhoneNumber;
@@ -98,19 +105,17 @@ namespace MisFinder.Areas.User.Controllers
                     DateFound = item.DateFound,
                     WhereItemWasFound = item.WhereItemWasFound,
                     ExactArea = item.ExactArea,
-                    Image=image,
-                    LocalGovernmentId= item.LocalGovernmentId,
-                   
-                    
+                    Image = image,
+                    LocalGovernmentId = item.LocalGovernmentId,
                 };
                 repository.Create(itemm);
-               repository.Save();
+                repository.Save();
                 ViewBag.StateList = staterepository.GetAllStates();
                 return RedirectToAction(nameof(Index));
             }
             return View(item);
-
         }
+
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -127,8 +132,9 @@ namespace MisFinder.Areas.User.Controllers
             }
             return View(foundItem);
         }
+
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, FoundItem model, IFormFile file=null)
+        public async Task<IActionResult> Edit(int id, FoundItem model, IFormFile file = null)
         {
             if (id != model.Id)
             { return NotFound(); }
@@ -137,7 +143,6 @@ namespace MisFinder.Areas.User.Controllers
             Image image = null;
             if (ModelState.IsValid)
             {
-
                 if (file != null)
                 {
                     if (!utility.IsSizeAllowed(file))
@@ -154,7 +159,6 @@ namespace MisFinder.Areas.User.Controllers
                     var photoPath = utility.SaveImageToFolder(file);
                     image = new Image { ImagePath = photoPath };
                     foundItem.Image = image;
-
                 }
                 try
                 {
@@ -196,7 +200,6 @@ namespace MisFinder.Areas.User.Controllers
             }
 
             var foundItem = await repository.GetFoundItemById(id);
-                
 
             if (foundItem == null)
             {
@@ -207,7 +210,6 @@ namespace MisFinder.Areas.User.Controllers
 
             return View(foundItem);
         }
-        
 
         // POST: FoundItems/Delete/5
         [HttpGet, ActionName("Delete")]
@@ -230,13 +232,29 @@ namespace MisFinder.Areas.User.Controllers
             foundItem.DeletedOn = DateTime.UtcNow;
             repository.Save();
             return RedirectToAction(nameof(Index));
-
         }
+
+        public async Task<IActionResult> Claims(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            var claims = await claimRepository.GetFoundItemClaimsbyFoundItemId(id);
+            return View(claims);
+        }
+
         private bool FoundItemExists(int id)
         {
             return repository.FoundItemExists(id);
         }
 
-
+        public async Task<IActionResult> Validate(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            var claim = await claimRepository.GetFoundItemClaimById(id);
+            claim.IsValidated = true;
+            claimRepository.Save();
+            return RedirectToAction("Claims", new { Id = claim.FoundItemId });
+        }
     }
 }

@@ -11,23 +11,25 @@ using MisFinder.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Utility;
+using MisFinder.Data.Notification.Email;
 
 namespace MisFinder.Areas.User.Controllers
 
 {
-
     [Area("User")]
-    [Authorize(Roles = "User")]
     public class LostItemClaimController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IEmailNotifier emailNotifier;
         private readonly IUtility utility;
         private readonly ILostItemRepository lostItemRepository;
         private readonly ILostItemClaimRepository claimRepository;
 
-        public LostItemClaimController(UserManager<ApplicationUser> userManager, IUtility utility, ILostItemRepository lostItemRepository, ILostItemClaimRepository claimRepository)
+        public LostItemClaimController(UserManager<ApplicationUser> userManager,
+            IEmailNotifier emailNotifier, IUtility utility, ILostItemRepository lostItemRepository, ILostItemClaimRepository claimRepository)
         {
             this.userManager = userManager;
+            this.emailNotifier = emailNotifier;
             this.utility = utility;
             this.lostItemRepository = lostItemRepository;
             this.claimRepository = claimRepository;
@@ -35,7 +37,10 @@ namespace MisFinder.Areas.User.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<LostItemClaim> claims = await claimRepository.GetAllLostItemClaims();
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+                return NotFound();
+            var claims = await claimRepository.GetLostItemClaimsByUser(user);
             return View(claims);
         }
 
@@ -47,13 +52,20 @@ namespace MisFinder.Areas.User.Controllers
 
             return View(claim);
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(LostItemClaimViewModel model)
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
-
+            var lostItem = await lostItemRepository.GetLostItemById(model.LostItemId);
+            if (user == null || user == lostItem.LostItemUser)
+            {
+                ModelState.AddModelError("", "You Cant Claim an Item you Logged");
+                return View();
+            }
             if (ModelState.IsValid)
             {
+                Image image = null;
                 if (model.Image != null)
                 {
                     if (!utility.IsSizeAllowed(model.Image))
@@ -67,8 +79,9 @@ namespace MisFinder.Areas.User.Controllers
                         ModelState.AddModelError("Photo", "Please only file of type:.jpg, .jpeg, .gif, .png, .bmp  are allowed");
                         return View(model);
                     }
+                    var photopath = utility.SaveImageToFolder(model.Image);
+                    image = new Image { ImagePath = photopath };
                 }
-                var photopath = utility.SaveImageToFolder(model.Image);
                 user.PhoneNumber = model.PhoneNumber;
 
                 user.PhoneNumber = user.PhoneNumber ?? model.PhoneNumber;
@@ -77,16 +90,28 @@ namespace MisFinder.Areas.User.Controllers
                     ApplicationUser = user,
                     LostItemId = model.LostItemId,
                     Description = model.Description,
-
+                    DateFound = model.DateFound,
+                    WhereItemWasFound = model.WhereItemWasFound,
+                    Image = image
                 };
                 claimRepository.Create(claim);
+                //send mail
+                var ConfirmEmail = Url.Action("Claims", "LostItem",
+                      new { area = User, id = lostItem.Id }, Request.Scheme);
+                var message = new Dictionary<string, string>
+                    {
+                        {"UName",$"{user.FirstName}" },
+                        { "FName",$"{lostItem.LostItemUser.FirstName}" },
+                        {"ClaimLink", $"{ConfirmEmail}" }
+                    };
+
+                await emailNotifier.SendEmailAsync(lostItem.LostItemUser.Email, "New Claim", message, "LostItemClaim");
                 claimRepository.Save();
 
                 return RedirectToAction(nameof(Index));
             }
+
             return View(model);
-
-
         }
 
         [AcceptVerbs("Get", "Post")]
@@ -97,7 +122,8 @@ namespace MisFinder.Areas.User.Controllers
             if (user == null || user != lostItem.LostItemUser)
                 return RedirectToAction("Create", "LostItemClaim", new { Id = id });
             //.FindByEmailAsync();
-            return Json("You cant Claim to have Found what you declared you lost");
+            // return Json("You cant Claim to have Found what you declared you lost");
+            return View();
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -116,6 +142,7 @@ namespace MisFinder.Areas.User.Controllers
 
             return View(lostItemClaim);
         }
+
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -132,6 +159,7 @@ namespace MisFinder.Areas.User.Controllers
             }
             return View(lostItem);
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(int id, LostItemClaim model, IFormFile file = null)
         {
@@ -158,7 +186,6 @@ namespace MisFinder.Areas.User.Controllers
                     var photoPath = utility.SaveImageToFolder(file);
                     image = new Image { ImagePath = photoPath };
                     lostItemClaim.Image = image;
-
                 }
                 try
                 {
@@ -183,7 +210,7 @@ namespace MisFinder.Areas.User.Controllers
             }
             return View(model);
         }
-        
+
         // POST: lostItems/Delete/5
         [HttpGet, ActionName("Delete")]
         // [ValidateAntiForgeryToken]
@@ -205,8 +232,8 @@ namespace MisFinder.Areas.User.Controllers
             lostItem.DeletedOn = DateTime.UtcNow;
             claimRepository.Save();
             return RedirectToAction(nameof(Index));
-
         }
+
         //private bool LostItemExists(int id)
         //{
         //    return claimRepository.LostItemClaimExists(id);
@@ -217,6 +244,5 @@ namespace MisFinder.Areas.User.Controllers
             var claims = await claimRepository.GetLostItemClaimsById(id);
             return View(claims);
         }
-
     }
 }

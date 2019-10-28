@@ -2,7 +2,6 @@
 @{
     Layout = null;}
 
-
 @*<div>
         <h1>Login</h1>
         <form asp-action="Login" method="post">
@@ -22,10 +21,7 @@
             <div asp-validation-summary="All"></div>
         </form>
         <a asp-action="ForgotPassword">Forgot Password?</a>
-
     </div>*@
-
-
 
 <!--===============================================================================================-->
 
@@ -64,7 +60,6 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <form class="login100-form validate-form" asp-controller="Account" asp-action="Register" method="post">
-                    <div asp-validation-summary="All"></div>
                     <a asp-controller="Home" asp-action="Index">
                         <span class="login100-form-title p-b-26">
                             Welcome to MisFinder
@@ -102,6 +97,8 @@
 
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
+                            <div asp-validation-summary="All"></div>
+
                             <div class="login100-form-bgbtn"></div>
                             <button type="submit" class="login100-form-btn">
                                 Register
@@ -110,19 +107,18 @@
                     </div>
 
                     @*<div class="text-center p-t-115">
-            <span class="txt1">
-                Don’t have an account?
-            </span>
+                            <span class="txt1">
+                                Don’t have an account?
+                            </span>
 
-            <a class="txt2" asp-action="Register">
-                Sign Up
-            </a>
-        </div>*@
+                            <a class="txt2" asp-action="Register">
+                                Sign Up
+                            </a>
+                        </div>*@
                 </form>
             </div>
         </div>
     </div>
-
 
     <div id="dropDownSelect1"></div>
 
@@ -142,16 +138,8 @@
     <script src="~/Login/vendor/countdowntime/countdowntime.js"></script>
     <!--===============================================================================================-->
     <script src="~/Login/js/main.js"></script>
-
 </body>
 </html>
-
-
-
-
-
-
-
 
 @*@model RegisterViewModel
 

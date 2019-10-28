@@ -1,0 +1,125 @@
+﻿@model IEnumerable<MisFinder.Domain.Models.FoundItemClaim>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoundItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhereItemWasLost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateLost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsValidated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsEditedCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoundItemId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhereItemWasLost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateLost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsValidated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEditedCount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

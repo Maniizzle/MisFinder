@@ -62,6 +62,7 @@
         #icon:hover .tooltiptext {
             visibility: visible;
         }
+
     .card {
         background: #272c33;
         position: relative;
@@ -83,24 +84,28 @@
     *, ::after, ::before {
         box-sizing: border-box;
     }
+
+    .card-body {
+        border-radius: 3px;
+        5px;
+    }
 </style>
 
-
-
 @*<div class="row">
-    <div class="column"></div>
-    <div class="column"></div>
-</div>*@
+        <div class="column"></div>
+        <div class="column"></div>
+    </div>*@
 <div>
-    Cant Find your Lost Item?
-    <a asp-area="User" asp-action="Create" asp-controller="LostItem"><span> Register your Lost Item </span> </a>
+    Cant find the Item You found?
+    <a asp-area="User" asp-action="Create" asp-controller="FoundItem"><span> Register your Found Item </span> </a>
 </div>
 @if (Model.Count() == 0)
 {
     <div>No Lost Item Matches </div>
 }
 else
-{
+{<br />
+    <br />
     <h4>Lost Items Found</h4>
     <div class="contacts row">
 
@@ -108,43 +113,39 @@ else
         {
             var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
 
-
             <div class="col-lg-3 col-md-6">
                 <!-- Card -->
                 <div class="card">
-                    <img class="card-img-top img-responsive" src="~/@photopath" alt="Card image cap">
+                    <img class="card-img-top img-responsive" style="height:200px;" src="~/@photopath" alt="Card image cap">
                     <div class="card-body">
                         <h4 class="card-title">@item.NameOfLostItem</h4>
                         <li class="p-l-0">@item.DateMisplaced.ToShortDateString()</li>
                         <p class="card-text">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
                         <a href="#" class="btn btn-primary">Go somewhere</a>
-                        <a class="float-right" asp-controller="FoundItemClaim" title="Claim" asp-action="SameUser" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
-
+                        <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
                     </div>
                 </div>
                 <!-- Card -->
             </div>
         }
 
-            @*<div class="col-xl-2 col-lg-3 col-sm-4 col-5">
+        @*<div class="col-xl-2 col-lg-3 col-sm-4 col-5">
             <div class="contacts__item">
               <a href=@photopath class="contacts__img">
                         <img src=@photopath alt="" />
                     </a>}
 
-
                 <div class="contacts__info">
                     <strong>@item.NameOfLostItem</strong>
                     <small>@item.Description</small>
                     <small>@item.ExactArea</small>
-
                 </div>
                 <a asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
 
                 @*                    <button class="contacts__btn">Following</button>*@
         @*</div>
             </div>*@
-            @*<div class="container">
+        @*<div class="container">
                 <div class="row">
 
                     <div class="col">
@@ -156,14 +157,10 @@ else
                                 <a id="icon"><img src="~/img/icon/lostclaimicon.png" /></a>
                                 <span class="tooltiptext">Tooltip text</span>
                                 <a href="#" class="card-link">Another link</a>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>*@
-        
     </div>
 }
-
-

@@ -1,4 +1,7 @@
-﻿@model IEnumerable<LostItem>
+﻿@model PaginatedList<LostItem>
+@{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 <div class="page-wrapper" style="min-height: 261px;">
     <!-- ============================================================== -->
     <!-- Container fluid  -->
@@ -9,14 +12,14 @@
         <!-- ============================================================== -->
         <div class="row page-titles">
             <div class="col-md-5 align-self-center">
-                <h3 class="text-themecolor">Found Items</h3>
+                <h3 class="text-themecolor">Lost Items</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Found Items</li>
+                    <li class="breadcrumb-item active">Lost Items</li>
                 </ol>
             </div>
             <div class="col-md-7 align-self-center text-right d-none d-md-block">
-                <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Create New</button>
+                <a class="btn btn-info text-white" asp-area="User" asp-action="Create" asp-controller="LostItem"> <i class="fa fa-plus-circle"></i> Create New </a>
             </div>
             <div class="">
                 <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
@@ -29,17 +32,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex">
-                            <div>
-                                <h5 class="card-title">Projects of the Month</h5>
-                            </div>
-                            <div class="ml-auto">
-                                <select class="custom-select b-0">
-                                    <option selected="">January</option>
-                                    <option value="1">February</option>
-                                    <option value="2">March</option>
-                                    <option value="3">April</option>
-                                </select>
-                            </div>
+
+                            @*<div class="ml-auto">
+                                    <select class="custom-select b-0">
+                                        <option selected="">January</option>
+                                        <option value="1">February</option>
+                                        <option value="2">March</option>
+                                        <option value="3">April</option>
+                                    </select>
+                                </div>*@
                         </div>
                         <div class="table-responsive m-t-20 no-wrap">
                             <table class="table vm no-th-brd pro-of-month">
@@ -64,87 +65,31 @@
                                             <td>@item.DateMisplaced.ToShortDateString()</td>
                                         </tr>
                                     }
-                                    @*<tr class="active">
-                                            <td><span class="round"><img src="../assets/images/users/2.jpg" alt="user" width="50"></span></td>
-                                            <td>
-                                                <h6>Andrew</h6><small class="text-muted">Project Manager</small>
-                                            </td>
-                                            <td>Real Homes</td>
-                                            <td><span class="label label-info label-rounded">Medium</span></td>
-                                            <td>$23.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-success">B</span></td>
-                                            <td>
-                                                <h6>Bhavesh patel</h6><small class="text-muted">Developer</small>
-                                            </td>
-                                            <td>MedicalPro Theme</td>
-                                            <td><span class="label label-primary label-rounded">High</span></td>
-                                            <td>$12.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-primary">N</span></td>
-                                            <td>
-                                                <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small>
-                                            </td>
-                                            <td>Elite Admin</td>
-                                            <td><span class="label label-danger label-rounded">Low</span></td>
-                                            <td>$10.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-warning">M</span></td>
-                                            <td>
-                                                <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small>
-                                            </td>
-                                            <td>Helping Hands</td>
-                                            <td><span class="label label-success label-rounded">High</span></td>
-                                            <td>$12.9K</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="round round-danger">N</span></td>
-                                            <td>
-                                                <h6>Johnathan</h6><small class="text-muted">Graphic</small>
-                                            </td>
-                                            <td>Digital Agency</td>
-                                            <td><span class="label label-info label-rounded">High</span></td>
-                                            <td>$2.6K</td>
-                                        </tr>*@
                                 </tbody>
                             </table>
                         </div>
+                        <a asp-action="LostItems"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @prevDisabled">
+                            Previous
+                        </a>
+                        <a asp-action="LostItems"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @nextDisabled">
+                            Next
+                        </a>
                     </div>
                 </div>
             </div>
             <!-- Column -->
-
         </div>
-        <!-- ============================================================== -->
-        <!-- End Projects of the Month -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Comment - chats -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- End Comment - chats -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- End Page Content -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right sidebar -->
-        <!-- ============================================================== -->
-        <!-- .right-sidebar -->
-        <!-- ============================================================== -->
-        <!-- End Right sidebar -->
-        <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <footer class="footer"> © 2017 Adminwrap by wrappixel.com </footer>
+    <footer class="footer"> © @DateTime.UtcNow MisFinder </footer>
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->

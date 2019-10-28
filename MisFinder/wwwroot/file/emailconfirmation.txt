@@ -1,0 +1,3 @@
+
+<div> <h1 style="float:left"> Dear FName <h1>
+<p>	click the link to confirm Registration EmailLink  </p> 

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Create";
 }
 @{
-Layout="_LayoutUser";
+    Layout = "_LayoutUser";
 }
 <h2>Create Claim</h2>
 
@@ -13,11 +13,10 @@ Layout="_LayoutUser";
             <input type="hidden" asp-for="LostItemId" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-            <label asp-for="Name" class="control-label">Name of Item Found</label>
-            <input asp-for="Name" class="form-control" placeholder="" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>*@
-
+                    <label asp-for="Name" class="control-label">Name of Item Found</label>
+                    <input asp-for="Name" class="form-control" placeholder="" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>*@
 
             <div class="form-group">
                 <label class="control-label">Detailed Description  </label>
@@ -30,7 +29,6 @@ Layout="_LayoutUser";
                 <input placeholder="Selected date" id="datePickerId" type="date" name="DateFound" class="form-control daterangepicker">
                 @*<input type="date" asp-for="DateFound.Date" class="form-control" />*@
                 <span asp-validation-for="DateFound" class="text-danger"></span>
-
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
@@ -38,8 +36,8 @@ Layout="_LayoutUser";
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WhereItemWasFound" class="control-label">Phone Number</label>
-                <input asp-for="WhereItemWasFound" class="form-control" placeholder="09056463632" />
+                <label asp-for="WhereItemWasFound" class="control-label">Location Item Was Found</label>
+                <input asp-for="WhereItemWasFound" class="form-control" placeholder="E.g Alausa" />
                 <span asp-validation-for="WhereItemWasFound" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,5 +53,4 @@ Layout="_LayoutUser";
 </div>
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];
-
 </script>

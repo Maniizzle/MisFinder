@@ -1,0 +1,113 @@
+﻿@model PaginatedList<FoundItemClaim>
+@{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="page-wrapper" style="min-height: 261px;">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Found Items</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item active">Found Items</li>
+                </ol>
+            </div>
+            <div class="col-md-7 align-self-center text-right d-none d-md-block">
+                <a class="btn btn-info text-white"> <i class="fa fa-plus-circle"></i> Create New </a>
+            </div>
+            <div class="">
+                <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <div class="row">
+            <!-- Column -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="card-title">Projects of the Month</h5>
+                            </div>
+                            <div class="ml-auto">
+                                <select class="custom-select b-0">
+                                    <option selected="">January</option>
+                                    <option value="1">February</option>
+                                    <option value="2">March</option>
+                                    <option value="3">April</option>
+                                </select>
+                            </div>
+                        </div>
+                        @*<form asp-action="Index" method="get">
+                                <div class="form-actions no-color">
+                                    <p>
+                                        Find by name: <input type="text" class="form-control" name="SearchString"  value="@ViewData["currentFilter"]" />
+                                        <input type="submit" value="Search" class="btn btn-default" /> |
+                                        <a asp-action="FoundItems">Back to Full List</a>
+                                    </p>
+                                </div>
+                            </form>*@
+                        <div class="table-responsive m-t-20 no-wrap">
+                            <table class="table vm no-th-brd pro-of-month">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2"><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.NameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Assigned</a></th>
+                                        <th>Name</th>
+                                        <th>Priority</th>
+                                        <th><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Misplaced </a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="width:50px;"><span class="round">S</span></td>
+                                            <td>
+                                                <h6>@item.FoundItem.NameOfFoundItem</h6><small class="text-muted">@item.Description</small>
+                                            </td>
+                                            <td>Elite Admin</td>
+                                            <td><span class="label label-success label-rounded">Low</span></td>
+                                            <td>@item.DateLost.ToShortDateString()</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <a asp-action="FoundItemClaims"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @prevDisabled">
+                            Previous
+                        </a>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @nextDisabled">
+                            Next
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <footer class="footer"> © @DateTime.UtcNow.Year MisFinder  </footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+</div>

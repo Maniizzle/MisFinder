@@ -3,7 +3,6 @@
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and stuff
 
-
 .modal-open {
   // Kill the scroll on the body
   overflow: hidden;
@@ -164,7 +163,6 @@
     &::before {
       height: calc(100vh - (#{$modal-dialog-margin-y-sm-up} * 2));
     }
-
   }
 
   .modal-content {
@@ -172,7 +170,6 @@
   }
 
   .modal-sm { max-width: $modal-sm; }
-
 }
 
 @include media-breakpoint-up(lg) {

@@ -1,116 +1,114 @@
-﻿
+﻿@model MisFinder.Domain.Models.ViewModel.DashIndexViewModel
 
-
-
-
-@*<div class="container-fluid">
-    <div class="row page-titles">
-        <div class="col p-md-0">
-            <h4>Misfinder</h4>
+<div class="page-wrapper" style="min-height: 261px;">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col p-md-0">
+                <h4>Misfinder</h4>
+            </div>
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:void(0)">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a href="">MisFinder</a>
+                    </li>
+                </ol>
+            </div>
         </div>
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="javascript:void(0)">Home</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <a href="">MisFinder</a>
-                </li>
-            </ol>
-        </div>
-    </div>
-    <div class="row" id="dragdrop">
-        <div class="col-md-4 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-two">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="mt-0 mb-1 text-info">2,02,150</h2><span class="">Total Lost Items</span>
+        <div class="row" id="dragdrop">
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-two">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="mt-0 mb-1 text-info">@Model.LostItemsCount </h2><span class="">Total Lost Items</span>
+                                </div>
+                                <img class="ml-3" src="~/Admin/assets/images/icons/1.png" alt="">
                             </div>
-                            <img class="ml-3" src="~/Admin/assets/images/icons/1.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-two">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="mt-0 mb-1 text-danger">@Model.FoundItemCount</h2><span class="">Total Found Items</span>
+                                </div>
+                                <img class="ml-3" src="~/Admin/assets/images/icons/2.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-two">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="mt-0 mb-1 text-warning">@Model.FOundItemClaimCount</h2><span class="">Total Claims of Found Items</span>
+                                </div>
+                                <img class="ml-3" src="~/Admin/assets/images/icons/3.png" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-two">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="mt-0 mb-1 text-danger">2,02,150</h2><span class="">Total Orders</span>
-                            </div>
-                            <img class="ml-3" src="~/Admin/assets/images/icons/2.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-two">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="mt-0 mb-1 text-warning">2,02,150</h2><span class="">Total Orders</span>
-                            </div>
-                            <img class="ml-3" src="~/Admin/assets/images/icons/3.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-
-    <div class="row justify-content-between">
-        <!-- <div class="col-lg-12 d-flex"> -->
-        <div class="col-lg-9">
-            <div class="card">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <div class="col-sm-3 mb-sm-0">
-                            <div class="stat-widget-three py-2">
-                                <div class="media">
-                                    <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/4.png" alt="">
-                                    <div class="media-body">
-                                        <h2 class="mt-0 mb-1 text-info">62,150</h2>
-                                        <span class="text-pale-sky ">Total Orders</span>
+        <div class="row justify-content-between">
+            <!-- <div class="col-lg-12 d-flex"> -->
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-sm-3 mb-sm-0">
+                                <div class="stat-widget-three py-2">
+                                    <div class="media">
+                                        <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/4.png" alt="">
+                                        <div class="media-body">
+                                            <h2 class="mt-0 mb-1 text-info">@Model.LostItemClaimCount</h2>
+                                            <span class="text-pale-sky ">Total Claims of Lost Item</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3 mb-sm-0">
-                            <div class="stat-widget-three py-2">
-                                <div class="media">
-                                    <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/5.png" alt="">
-                                    <div class="media-body">
-                                        <h2 class="mt-0 mb-1 text-success">9,750</h2>
-                                        <span class="text-pale-sky ">Total Delivery</span>
+                            <div class="col-sm-3 mb-sm-0">
+                                <div class="stat-widget-three py-2">
+                                    <div class="media">
+                                        <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/5.png" alt="">
+                                        <div class="media-body">
+                                            <h2 class="mt-0 mb-1 text-success">9,750</h2>
+                                            <span class="text-pale-sky ">Total Delivery</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="stat-widget-three py-2">
-                                <div class="media">
-                                    <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/6.png" alt="">
-                                    <div class="media-body">
-                                        <h2 class="mt-0 mb-1 text-danger">4,250</h2>
-                                        <span class="text-pale-sky ">Pending Orders</span>
+                            <div class="col-sm-3">
+                                <div class="stat-widget-three py-2">
+                                    <div class="media">
+                                        <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/6.png" alt="">
+                                        <div class="media-body">
+                                            <h2 class="mt-0 mb-1 text-danger">4,250</h2>
+                                            <span class="text-pale-sky ">Pending Orders</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="stat-widget-three py-2">
-                                <div class="media">
-                                    <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/7.png" alt="">
-                                    <div class="media-body">
-                                        <h2 class="mt-0 mb-1 text-warning">4,250</h2>
-                                        <span class="text-pale-sky ">Orders Hold</span>
+                            <div class="col-sm-3">
+                                <div class="stat-widget-three py-2">
+                                    <div class="media">
+                                        <img class="mr-4 mt-3" src="~/Admin/assets/images/icons/7.png" alt="">
+                                        <div class="media-body">
+                                            <h2 class="mt-0 mb-1 text-warning">4,250</h2>
+                                            <span class="text-pale-sky ">Orders Hold</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -118,68 +116,66 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <div class="stat-widget-three py-2">
-                        <div class="media">
-                            <img class="mr-4" src="~/Admin/assets/images/icons/8.png" alt="">
-                            <div class="media-body">
-                                <div class="rating d-flex align-items-center">
-                                    <span class="m-0">
-                                        <span class="text-warning"><i class="fa fa-star"></i></span>
-                                        <span class="text-warning"><i class="fa fa-star"></i></span>
-                                        <span class="text-warning"><i class="fa fa-star"></i></span>
-                                        <span class="text-warning"><i class="fa fa-star"></i></span>
-                                        <span class=""><i class="fa fa-star"></i></span>
-                                    </span>
-                                    <h2 class="mt-0 mb-0 ml-3 text-warning">4.0</h2>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="stat-widget-three py-2">
+                            <div class="media">
+                                <img class="mr-4" src="~/Admin/assets/images/icons/8.png" alt="">
+                                <div class="media-body">
+                                    <div class="rating d-flex align-items-center">
+                                        <span class="m-0">
+                                            <span class="text-warning"><i class="fa fa-star"></i></span>
+                                            <span class="text-warning"><i class="fa fa-star"></i></span>
+                                            <span class="text-warning"><i class="fa fa-star"></i></span>
+                                            <span class="text-warning"><i class="fa fa-star"></i></span>
+                                            <span class=""><i class="fa fa-star"></i></span>
+                                        </span>
+                                        <h2 class="mt-0 mb-0 ml-3 text-warning">4.0</h2>
+                                    </div>
+                                    <span class="text-pale-sky ">Customer Satisfaction</span>
                                 </div>
-                                <span class="text-pale-sky ">Customer Satisfaction</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- </div> -->
         </div>
-        <!-- </div> -->
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card transparent-card">
-                <div class="card-header pb-0">
-                    <h4 class="card-title mt-2"> Recent Orders List</h4>
-                    <div class="table-action float-sm-right mt-4 mt-sm-0">
-                        <form action="#">
-                            <div class="form-row">
-                                <div class="form-group mr-3">
-                                    <div class="dropdown bootstrap-select show-tick dropup" style="width: 131px;">
-                                        <select class="selectpicker show-tick" data-width="auto" tabindex="-98">
-                                            <option selected="selected">Russia</option>
-                                            <option>USA</option>
-                                            <option>Canada</option>
-                                            <option>Australia</option>
-                                        </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Russia"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Russia</div></div> </div></button><div class="dropdown-menu " role="combobox" style="min-width: 0px; max-height: 1207px; overflow: hidden; min-height: 91px;"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 1195px; overflow-y: auto; min-height: 79px;"><ul class="dropdown-menu inner show"></ul></div></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card transparent-card">
+                    <div class="card-header pb-0">
+                        <h4 class="card-title mt-2"> Recent Orders List</h4>
+                        <div class="table-action float-sm-right mt-4 mt-sm-0">
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group mr-3">
+                                        <div class="dropdown bootstrap-select show-tick dropup" style="width: 131px;">
+                                            <select class="selectpicker show-tick" data-width="auto" tabindex="-98">
+                                                <option selected="selected">Russia</option>
+                                                <option>USA</option>
+                                                <option>Canada</option>
+                                                <option>Australia</option>
+                                            </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Russia"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Russia</div></div> </div></button><div class="dropdown-menu " role="combobox" style="min-width: 0px; max-height: 1207px; overflow: hidden; min-height: 91px;"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 1195px; overflow-y: auto; min-height: 79px;"><ul class="dropdown-menu inner show"></ul></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="dropdown bootstrap-select show-tick dropup" style="width: 152px;">
+                                            <select class="selectpicker show-tick" data-width="auto" tabindex="-98">
+                                                <option selected="selected">Last 30 Days</option>
+                                                <option>Last 1 MOnth</option>
+                                                <option>Last 6 MOnth</option>
+                                                <option>Last Year</option>
+                                            </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Last 30 Days"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Last 30 Days</div></div> </div></button><div class="dropdown-menu " role="combobox" style="min-width: 0px; max-height: 1207px; overflow: hidden; min-height: 91px;"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 1195px; overflow-y: auto; min-height: 79px;"><ul class="dropdown-menu inner show"></ul></div></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="dropdown bootstrap-select show-tick dropup" style="width: 152px;">
-                                        <select class="selectpicker show-tick" data-width="auto" tabindex="-98">
-                                            <option selected="selected">Last 30 Days</option>
-                                            <option>Last 1 MOnth</option>
-                                            <option>Last 6 MOnth</option>
-                                            <option>Last Year</option>
-                                        </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="Last 30 Days"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Last 30 Days</div></div> </div></button><div class="dropdown-menu " role="combobox" style="min-width: 0px; max-height: 1207px; overflow: hidden; min-height: 91px;"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 1195px; overflow-y: auto; min-height: 79px;"><ul class="dropdown-menu inner show"></ul></div></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
-</div>*@
+</div>

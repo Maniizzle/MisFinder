@@ -3,6 +3,7 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <div class="page-wrapper" style="min-height: 261px;">
+
     <!-- ============================================================== -->
     <!-- Container fluid  -->
     <!-- ============================================================== -->
@@ -19,7 +20,7 @@
                 </ol>
             </div>
             <div class="col-md-7 align-self-center text-right d-none d-md-block">
-                <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Create New</button>
+                <a class="btn btn-info text-white"> <i class="fa fa-plus-circle"></i> Create New </a>
             </div>
             <div class="">
                 <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
@@ -35,14 +36,14 @@
                             <div>
                                 <h5 class="card-title">Projects of the Month</h5>
                             </div>
-                            <div class="ml-auto">
-                                <select class="custom-select b-0">
-                                    <option selected="">January</option>
-                                    <option value="1">February</option>
-                                    <option value="2">March</option>
-                                    <option value="3">April</option>
-                                </select>
-                            </div>
+                            @*<div class="ml-auto">
+                                    <select class="custom-select b-0">
+                                        <option selected="">January</option>
+                                        <option value="1">February</option>
+                                        <option value="2">March</option>
+                                        <option value="3">April</option>
+                                    </select>
+                                </div>*@
                         </div>
                         @*<form asp-action="Index" method="get">
                                 <div class="form-actions no-color">
@@ -76,18 +77,17 @@
                                             <td>@item.DateFound.ToShortDateString()</td>
                                         </tr>
                                     }
-                                    
                                 </tbody>
                             </table>
                         </div>
-                        <a asp-action="Index"
+                        <a asp-action="FoundItem"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
                            class="btn btn-default @prevDisabled">
                             Previous
                         </a>
-                        <a asp-action="Index"
+                        <a asp-action="FoundItem"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex + 1)"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]"
@@ -98,30 +98,7 @@
                 </div>
             </div>
             <!-- Column -->
-
         </div>
-
-
-
-        <!-- ============================================================== -->
-        <!-- End Projects of the Month -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Comment - chats -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- End Comment - chats -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- End Page Content -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right sidebar -->
-        <!-- ============================================================== -->
-        <!-- .right-sidebar -->
-        <!-- ============================================================== -->
-        <!-- End Right sidebar -->
-        <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- End Container fluid  -->

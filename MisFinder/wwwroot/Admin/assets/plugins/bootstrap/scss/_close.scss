@@ -8,7 +8,6 @@
   opacity: .5;
 
   &:not(:disabled):not(.disabled) {
-
     @include hover-focus {
       color: $close-color;
       text-decoration: none;

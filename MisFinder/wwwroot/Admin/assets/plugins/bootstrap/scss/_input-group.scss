@@ -58,7 +58,6 @@
   }
 }
 
-
 // Prepend and append
 //
 // While it requires one extra layer of HTML for each, dedicated prepend and
@@ -88,7 +87,6 @@
 .input-group-prepend { margin-right: -$input-border-width; }
 .input-group-append { margin-left: -$input-border-width; }
 
-
 // Textual addons
 //
 // Serves as a catch-all element for any text or radio/checkbox input you wish
@@ -115,7 +113,6 @@
     margin-top: 0;
   }
 }
-
 
 // Sizing
 //
@@ -146,13 +143,11 @@
   @include border-radius($input-border-radius-sm);
 }
 
-
 // Prepend and append rounded corners
 //
 // These rulesets must come after the sizing ones to properly override sm and lg
 // border-radius values when extending. They're more specific than we'd like
 // with the `.input-group >` part, but without it, we cannot override the sizing.
-
 
 .input-group > .input-group-prepend > .btn,
 .input-group > .input-group-prepend > .input-group-text,

@@ -3,78 +3,106 @@
 @{
     ViewData["Title"] = "Index";
 }
-@{ 
+@{
     Layout = "_LayoutUser";
 }
+<style>
+    .smallModal {
+        width: 300px;
+    }
+</style>
 
+<h3 class="container"> <a asp-action="Create">Register your Item</a> </h3>
 
-<p>
-    <a asp-action="Create" asp-route-id="">Create New</a>
-</p>
 @if (Model.Count() == 0 || Model == null)
 {
     <Div><h4>No Found Items </h4> </Div>
 }
 else
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NameOfFoundItem)
-            </th>
-            <th>
-                Local Government
-            </th>
-            <th>
-                Community Found
-            </th>
-            <th>
-                Date Found
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsClaimed)
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NameOfFoundItem)
+                </th>
+                <th>
+                    Local Government
+                </th>
+                <th>
+                    Community Found
+                </th>
+                <th>
+                    Date Found
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsClaimed)
 
-            </th>
-            <th>
-                Claims
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameOfFoundItem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LocalGovernment.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExactArea)
-            </td>
-            <td>
-                @item.DateFound.ToShortDateString()
-            </td>
+                </th>
+                <th>
+                    Claims
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content smallModal">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-            @{if (item.IsClaimed == true)
-                {
-                    <td>  Closed </td>}
-                else
-                {
-                    <td> Pending </td>}
+                            <div class="modal-body">
+                                <p>Are you sure you Want to Delete the Item</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form asp-action="Deletes" method="post">
+                                    <input type="hidden" name="@item.Id" value="" />
+                                    <input type="submit" value="Delete" class="btn btn-success" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NameOfFoundItem)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocalGovernment.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExactArea)
+                    </td>
+                    <td>
+                        @item.DateFound.ToShortDateString()
+                    </td>
+
+                    @{if (item.IsClaimed == true)
+                        {
+                            <td>  Closed </td>}
+                        else
+                        {
+                            <td> Pending </td>}
+                    }
+
+                    <td>
+                        <a asp-action="Claims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.FoundItemClaims.Count</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><img src="~/img/edit.svg" style="height:20px;width:20px;" /></a> |
+                        <a asp-action="Details" asp-route-id="@item.Id"><img src="~/img/eye.svg" style="height:20px;width:20px;" /></a> |
+                        <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
+                    </td>
+                </tr>
             }
-
-            <td>
-                <a asp-action="FoundItemClaims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.FoundItemClaims.Count</a>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>}
+        </tbody>
+    </table>}

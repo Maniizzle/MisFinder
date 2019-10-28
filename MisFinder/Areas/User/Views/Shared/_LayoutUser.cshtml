@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
+
     <title>@ViewData["Title"] - MisFinder</title>
     <link rel="stylesheet" href="~/css/lostitem.css" />
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -16,10 +17,18 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <style>
+        footer {
+            width: 100%;
+            text-align: center;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <nav style="position:fixed" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container" id="topheader">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -31,28 +40,42 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Items</a></li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="Admin" asp-controller="DashBoard" asp-action="Index">Dashboard</a></li>
+
+                    }
+
+                    <li><a asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Items<span class="sr-only">(current)</span></a></li>
                     <li><a asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Items</a></li>
                     <li><a asp-area="User" asp-controller="FoundItemClaim" asp-action="Index">Found Items Claims</a></li>
-                    <li><a asp-area="User" asp-controller="LostItemClaim" asp-action="Index">Lost Items Claims</a></li></ul>
-                  <ul class="nav navbar-nav float-right">  @if (User.Identity.IsAuthenticated)
-                    {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>}
+                    <li><a asp-area="User" asp-controller="LostItemClaim" asp-action="Index">Lost Items Claims</a></li>
+                </ul>
 
+                <ul class="nav navbar-nav navbar-right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li style="float:right"><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>}
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container body-content">
-        <div class="container">@RenderBody()
-        </div>  
-        <hr />
-        <footer>
-            <p>&copy; 2017 - WebApp</p>
-        </footer>
+    <div style="position:relative; z-index:1; " class="container body-content">
+        <div class="container">
+            @RenderBody()
+        </div>
     </div>
-
+    <footer style="position:relative;">
+        <hr />
+        <p>&copy; @DateTime.Now.Year - MisFinder</p>
+    </footer>
     <environment include="Development">
+        <script>
+            $('#topheader .navbar-nav a').on('click', function () {
+                $('#topheader .navbar-nav').find('li.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+            });
+        </script>
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
@@ -72,7 +95,6 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

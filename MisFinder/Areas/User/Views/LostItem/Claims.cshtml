@@ -1,0 +1,109 @@
+﻿@model IEnumerable<LostItemClaim>
+@{
+    ViewData["Title"] = "Claim";
+}
+<style>
+    @@media(min-width: 852px) {
+        .col-md-12 {
+            width: 70%;
+        }
+    }
+
+    .col-md-12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .accordion .panel {
+        border: 0;
+        box-shadow: none;
+    }
+
+    .panel-group .panel {
+        margin-bottom: 0;
+        border-radius: 4px;
+    }
+
+    .accordion .panel-heading {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .panel-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: inherit;
+    }
+
+    .panel-body {
+        border: 1px solid #6a737c;
+        border-radius: 5px;
+        color: black;
+        background-color: #f6f6f6;
+    }
+
+    .accordion .panel-heading a {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        padding: 10px 40px 10px 15px;
+        color: #333;
+        background-color: #007bff;
+    }
+</style>
+
+<h1>Claim</h1>
+@if (Model == null || Model.Count() == 0)
+{
+    <div>
+        No claims Found
+    </div>
+}
+<div class="ui-tabs-accordion my-90 ">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel-group accordion accordion-gray" id="accordion-gray">
+                @foreach (var item in Model)
+                {
+                    var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="collapsed" aria-expanded="false" data-toggle="collapse" data-parent="#accordion-gray" href="#@item.Id" style="text-decoration:none; color:white">
+                                    @item.ApplicationUser.FirstName
+                                    <span style="float:right"><small style="color:white">found On: </small>@item.DateFound.ToShortDateString()</span>
+                                </a>
+                            </h4>
+                            <p style="float:right;"></p>
+                            <!-- /.panel-title -->
+                        </div><!-- /.panel-heading -->
+                        <div aria-expanded="false" id="@item.Id" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body text-black">
+                                <a class="pull-left" href="~/@photopath">
+                                    <img class="media-object img-circle" style="width:150px;height:150px;" src="~/@photopath" alt="profile">
+                                </a>
+                                <p style="float:right"><Small class="btn btn-circle-sm">found at: </Small>@item.WhereItemWasFound</p>
+                                <h3 style="color:black">How far </h3>
+                                <p> @item.Description </p>
+                                @if (item.IsValidated)
+                                {
+                                    <button type="submit" class="btn btn-primary btn" style="float:right;" disabled>Validate</button>
+
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary btn" style="float:right;">Validate</button>
+                                }
+                            </div><!-- /.panel-body -->
+                        </div><!-- /.panel-collapse -->
+                    </div><!-- /.panel -->
+                }
+            </div>
+        </div>
+    </div>
+</div>

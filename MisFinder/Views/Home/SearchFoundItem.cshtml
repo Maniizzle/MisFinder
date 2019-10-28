@@ -39,10 +39,7 @@
         flex-direction: column;
         min-width: 0;
         word-wrap: break-word;
-        /*background-color: #fff;*/
-        /*background-clip: border-box;
-        border: 1px solid rgba(0,0,0,.125);
-        border-radius: .25rem;*/
+       
         border-radius: 5px;
     }
     .card-header {
@@ -51,8 +48,11 @@
         border-bottom: 1px solid rgba(0,0,0,.125);
         background: #745af2;
         border-color: #745af2;
+        color: #fff;
     }
-
+    .card-header span{
+        float:right;
+    }
         .card-header:first-child {
             border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
         }
@@ -63,11 +63,17 @@
         padding: 1.25rem;
         color:floralwhite;
     }
+    .btn-inverse {
+        color: #fff;
+        background-color: #bd2130;
+        border-color: #b21f2d;
+      
+    }
 
 </style>
 
 <div>
-    <h3> Cant Find the Item you Found?</h3>
+    <h3> Cant Find the Item you Lost?</h3>
     <a asp-area="User" asp-controller="LostItem" asp-action="Create"><span> Register your Lost Item </span> </a>
 </div>
 @if (Model.Count() == 0)
@@ -76,20 +82,23 @@
 }
 else
 {
-
+    <h4> Found Items </h4>
+    <hr />
     <div class="row">
         @foreach (var item in Model)
         {
         <div class="col-md-3">
             <div class="card card-outline-primary">
                 <div class="card-header">
-                    <h4 class="m-b-0 text-white">@item.NameOfFoundItem</h4>
+                          <h4 class="m-b-0"> @item.NameOfFoundItem <span>@item.LocalGovernment.State.Name</span> </h4>
+                      
+                    
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title text-white">@item.DateFound</h3>
+                    <h4 class="card-title text-white">@item.DateFound.ToShortDateString()</h4>
                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-inverse">Go somewhere</a>
-                    <a asp-controller="FoundItemClaim" title="Claim" asp-action="SameUser" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
+                    <a href="#" class="btn btn-inverse">Its Yours. Claim</a>
+                    <a asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
 
                 </div>
             </div>
