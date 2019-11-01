@@ -47,22 +47,66 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2"><a asp-action="LostItems" asp-route-sortOrder="@ViewBag.NameSortParm">Name/LGA</a></th>
-                                        <th>Name</th>
-                                        <th>Priority</th>
+                                        <th>Location</th>
+                                        <th>State</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Claims </th>
                                         <th><a asp-action="LostItems" asp-route-sortOrder="@ViewBag.DateSortParm">Date Misplaced </a></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content smallModal">
+                                                    <div class="modal-header text-center">
+                                                        <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you Want to Delete the Item</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form asp-action="Deletes" asp-controller="FoundItem" asp-area="User" method="post">
+                                                            <input type="hidden" name="Id" value="@item.Id" />
+                                                            <input type="submit" value="Delete" class="btn btn-success" />
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <tr>
-                                            <td style="width:50px;"><span class="round">S</span></td>
+                                            <td style="width:50px;"><span class="round">@item.LostItemUser.FirstName[0]</span></td>
                                             <td>
                                                 <h6>@item.NameOfLostItem</h6><small class="text-muted">@item.LocalGovernment.Name</small>
                                             </td>
-                                            <td>Elite Admin</td>
-                                            <td><span class="label label-success label-rounded">Low</span></td>
+                                            <td>@item.WhereItemWasLost</td>
+                                            <td>@item.LocalGovernment.State.Name</td>
+                                            <td>@item.ItemCategory</td>
+                                            <td>
+                                                @if (item.IsFound == true)
+                                                {
+                                                    <span class="label label-success label-rounded">Cleared</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-warning label-rounded">Pending</span>
+                                                }
+                                            </td>
+                                            <td><span class="round">@item.LostItemClaims.Count</span></td>
                                             <td>@item.DateMisplaced.ToShortDateString()</td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id" value="@item.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
+                                            </td>
+                                            <td><a href=""><img src="~/img/mo.svg" title="Details" style=" width:30px; height:30px;" /></a></td>
                                         </tr>
                                     }
                                 </tbody>

@@ -46,7 +46,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form asp-area="Admin" asp-controller="RoleAdmin" asp-action="Delete" method="post">
-                                                                    <input type="hidden" name="@rolee" />
+                                                                    <input type="hidden" name="Id" value="@role.Id" />
                                                                     <input type="submit" value="Delete" class="btn btn-success" />
                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                                                 </form>
@@ -66,7 +66,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a class="btn btn-info text-white"> <i class="fa fa-plus-circle"></i> Create New </a>
                         </div>
                     </div>
                 </div>
@@ -77,14 +76,14 @@
                             <h4 class="card-title">Create Role</h4>
 
                             <div asp-validation-summary="All" class="text-danger"></div>
-                            @*<form asp-action="Create" method="post">
-                                    <div class="form-group">
-                                        <label for="name"></label>
-                                        <input name="name" class="form-control" />
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create</button>
-                                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-                                </form>*@
+                            <form asp-action="Create" method="post">
+                                <div class="form-group">
+                                    <label for="name"></label>
+                                    <input name="name" class="form-control" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                            </form>
                         </div>
                     </div>
                 </div>

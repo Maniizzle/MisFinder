@@ -1,17 +1,19 @@
 ﻿@model FoundItemClaimViewModel
 @{
     ViewData["Title"] = "Create";
+    var image = "Photos/home 1081.jpg";
 }
 
 <h3 class="container">  </h3>
 
 <div class="row" onload="ola()">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+        <div class="col-md-6">
             <input type="hidden" asp-for="FoundItemId" />
             <div class="form-group">
                 <label asp-for="Description" class="control-label"> </label>
-                <textarea asp-for="Description" class="form-control" placeholder="Brief details "></textarea>
+                <textarea asp-for="Description" class="form-control" placeholder=" Detailed Description of Item you lost "></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
@@ -41,11 +43,6 @@
                 <input asp-for="PhoneNumber" class="form-control" placeholder="08023455432" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for=" Image" class="control-label">Image</label>
-                <input asp-for="Image" type="file" class="form-control" placeholder="upload Image" />
-            </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
 
             @*<div class="form-group">
                     <label asp-for=" SpecificLocation" class="control-label"></label>
@@ -55,8 +52,16 @@
             <div class="form-group">
                 <input type="submit" value="Register" class="btn btn-default" />
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @*   <label asp-for=" Image" class="control-label"></label>*@
+                <img class="rounded-circle" src="~/@image" style="margin-left:70px; margin-bottom:10px;" height="200" width="200" id="imagePreview" />
+                <input asp-for="Image" type="file" class="form-control" style="margin-left:70px; width:200px;" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" /> @*placeholder="upload Image" />*@
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </form>
 </div>
 
 <div>
@@ -64,4 +69,11 @@
 </div>
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];
+    function ShowImagePreview(imageUploader, previewImage) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewImage).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(imageUploader.files[0]);
+    }
 </script>

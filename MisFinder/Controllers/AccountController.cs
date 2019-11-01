@@ -124,7 +124,7 @@ namespace MisFinder.Controllers
                     }
                     if (user.IsBlackListed)
                     {
-                        ModelState.AddModelError("", "Account has been Suspended Due to ");
+                        ModelState.AddModelError("", "Account has been Suspended  ");
                         return View();
                     }
 
@@ -182,6 +182,7 @@ namespace MisFinder.Controllers
                     ModelState.AddModelError("", "Invalid Email Address");
                     // or send dem mail that they dont have an account with your company
                 }
+                ViewBag.Comment = "Check your mail for Password reset link ";
 
                 return View("Success", new { comment = "Check your mail for Password reset link" });
             }
@@ -219,6 +220,7 @@ namespace MisFinder.Controllers
                     {
                         await userManager.SetLockoutEndDateAsync(user, DateTime.UtcNow);
                     }
+                    ViewBag.Comment = "Kindly Go ahead to Login";
                     return View("Success", new { comment = "Kindly Go ahead to Login" });
                 }
                 ModelState.AddModelError("", "Invalid Request");

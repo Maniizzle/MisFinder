@@ -5,6 +5,8 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var img = "Photos/" + (Model.Image?.ImagePath ?? "home 1081.jpg");
+
 }
 
 <h2>Edit</h2>
@@ -12,11 +14,11 @@
 <h4>LostItem</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            
+
             @*//  <input type="hidden" asp-for="LostItemUser" />*@
             <div class="form-group">
                 <label class="control-label"> Category</label>
@@ -24,38 +26,37 @@
                     <option selected="selected" name="" value="">Please select a Category</option>
                 </select>
                 <span asp-validation-for="ItemCategory" class="text-danger"></span>
-
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <label asp-for="DateFound" class="control-label">Date Found</label>
                 <input asp-for="DateFound" id="datePickerId" type="date" class="form-control daterangepicker">
                 <span asp-validation-for="DateFound" class="text-danger"></span>
             </div>
-
-
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <label asp-for=" Image" class="control-label">Replace Previous Image ?</label>
+                <img class="rounded-circle" src="~/@img" style="margin-left:70px; margin-bottom:10px;" height="200" width="200" id="imagePreview" />
                 <input name="file" type="file" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+        </div>
+        @*<div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+               <select asp-for="State" class="form-control" asp-items="@Html.GetEnumSelectList<State>()"></select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>*@
 
-            @*<div class="form-group">
-            <label asp-for="State" class="control-label"></label>
-           <select asp-for="State" class="form-control" asp-items="@Html.GetEnumSelectList<State>()"></select>
-            <span asp-validation-for="State" class="text-danger"></span>
-        </div>*@
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </form>
 </div>
 
 <div>
@@ -64,5 +65,11 @@
 
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];
-
+    function ShowImagePreview(imageUploader, previewImage) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewImage).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(imageUploader.files[0]);
+    }
 </script>

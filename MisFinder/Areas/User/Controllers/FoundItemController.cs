@@ -12,6 +12,7 @@ using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Utility;
 using Microsoft.AspNetCore.Http;
+using MisFinder.Data.Notification.Email;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -25,10 +26,11 @@ namespace MisFinder.Areas.User.Controllers
         private readonly IStateRepository staterepository;
         private readonly IFoundItemClaimRepository claimRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IEmailNotifier emailNotifier;
 
         public FoundItemController(MisFinderDbContext context, IUtility utility,
             IFoundItemRepository repository, IStateRepository staterepository, IFoundItemClaimRepository claimRepository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, IEmailNotifier emailNotifier)
         {
             this.context = context;
             this.utility = utility;
@@ -36,6 +38,7 @@ namespace MisFinder.Areas.User.Controllers
             this.staterepository = staterepository;
             this.claimRepository = claimRepository;
             this.userManager = userManager;
+            this.emailNotifier = emailNotifier;
         }
 
         public async Task<IActionResult> Index()
@@ -213,6 +216,7 @@ namespace MisFinder.Areas.User.Controllers
 
         // POST: FoundItems/Delete/5
         [HttpGet, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -253,7 +257,17 @@ namespace MisFinder.Areas.User.Controllers
                 return NotFound();
             var claim = await claimRepository.GetFoundItemClaimById(id);
             claim.IsValidated = true;
+            claim.ValidatedOn = DateTime.Now;
+            string to = claim.FoundItem.FoundItemUser.Email;
+            var link = Url.Action("Meeting", "MeeetingManagement", new { area = "Admin" });
+            var message = new Dictionary<string, string>
+            {
+                {"FName",$"{claim.FoundItem.FoundItemUser.FirstName}"},
+                {"EMailLink",$"{link}" }
+            };
+            await emailNotifier.SendEmailAsync(to, "Meeting Date", message, "SetUpMeeting");
             claimRepository.Save();
+
             return RedirectToAction("Claims", new { Id = claim.FoundItemId });
         }
     }

@@ -34,16 +34,15 @@
                     <div class="card-body">
                         <div class="d-flex">
                             <div>
-                                <h5 class="card-title">Projects of the Month</h5>
                             </div>
-                            <div class="ml-auto">
-                                <select class="custom-select b-0">
-                                    <option selected="">January</option>
-                                    <option value="1">February</option>
-                                    <option value="2">March</option>
-                                    <option value="3">April</option>
-                                </select>
-                            </div>
+                            @*<div class="ml-auto">
+                                    <select class="custom-select b-0">
+                                        <option selected="">January</option>
+                                        <option value="1">February</option>
+                                        <option value="2">March</option>
+                                        <option value="3">April</option>
+                                    </select>
+                                </div>*@
                         </div>
                         @*<form asp-action="Index" method="get">
                                 <div class="form-actions no-color">
@@ -58,10 +57,12 @@
                             <table class="table vm no-th-brd pro-of-month">
                                 <thead>
                                     <tr>
-                                        <th colspan="2"><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.NameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Assigned</a></th>
-                                        <th>Name</th>
-                                        <th>Priority</th>
-                                        <th><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Misplaced </a></th>
+
+                                        <th colspan="2"><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.NameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Description</a></th>
+                                        <th>Location</th>
+                                        <th>Item Claiming</th>
+                                        <th><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Lost </a></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,10 +73,39 @@
                                             <td>
                                                 <h6>@item.FoundItem.NameOfFoundItem</h6><small class="text-muted">@item.Description</small>
                                             </td>
-                                            <td>Elite Admin</td>
-                                            <td><span class="label label-success label-rounded">Low</span></td>
+                                            <td>@item.WhereItemWasLost</td>
+                                            <td>@item.FoundItem.NameOfFoundItem </td>
+                                            @* <td><span class="label label-success label-rounded">Low</span></td>*@
                                             <td>@item.DateLost.ToShortDateString()</td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id" value="@item.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
+                                            </td>
                                         </tr>
+                                        <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content smallModal">
+                                                    <div class="modal-header text-center">
+                                                        <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you Want to Delete the Item</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form asp-action="Deletes" asp-controller="FoundItemClaim" asp-area="User" method="post">
+                                                            <input type="hidden" name="Id" value="@item.Id" />
+                                                            <input type="submit" value="Delete" class="btn btn-success" />
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     }
                                 </tbody>
                             </table>

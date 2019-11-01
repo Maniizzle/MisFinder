@@ -35,10 +35,14 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Sorted)
+            Status
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Sorted)
+            @if (Model.Sorted == true)
+            {<button class="btn btn-warning btn-rounded">Pending </button>}
+            else
+
+            { <button class="btn btn-warning btn-rounded"> Sorted </button>}
         </dd>
         @*<dt>
                 @Html.DisplayNameFor(model => model.DateMisplaced)

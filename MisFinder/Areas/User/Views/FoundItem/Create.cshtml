@@ -3,14 +3,20 @@
 @{
     ViewData["Title"] = "Create";
 }
-@{ 
+@{
     Layout = "_LayoutUser";
+    var image = "Photos/home 1081.jpg";
+
 }
+<link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+
 <h4 class="mb-2">Register <span>Found Item</span></h4>
 <hr />
-<div class="row" onload="ola()">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+
+    <div class="row" onload="ola()">
+
+        <div class="col-lg-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Name of Item Found</label>
@@ -24,11 +30,10 @@
                 </select>
 
                 <span asp-validation-for="ItemCategory" class="text-danger"></span>
-
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"> </label>
-                <input asp-for="Description" class="form-control" placeholder="An IPhone 6,Cracked screen" />
+                <textarea asp-for="Description" class="form-control" placeholder="An IPhone 6,Cracked screen"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,7 +42,7 @@
               new SelectList(ViewBag.StateList, "Id", "Name"),
               "Select state",
               new { @class = "form-control", @onchange="FillCity()",id="state" })
-               
+
                 <span asp-validation-for="StateId" class="text-danger"></span>
             </div>
 
@@ -48,7 +53,6 @@
                 </select>
 
                 <span asp-validation-for="LocalGovernmentId" class="text-danger"></span>
-
             </div>
 
             <div class="form-group">
@@ -56,15 +60,21 @@
                 <input placeholder="Selected date" id="datePickerId" type="date" name="DateFound" class="form-control daterangepicker">
                 @*<input type="date" asp-for="DateFound.Date" class="form-control" />*@
                 <span asp-validation-for="DateFound" class="text-danger"></span>
-
             </div>
-
 
             <div class="form-group">
                 <label asp-for="Colour" class="control-label"></label>
                 <input asp-for="Colour" class="form-control" />
                 <span asp-validation-for="Colour" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                @*   <label asp-for=" Image" class="control-label"></label>*@
+                <img src="~/@image" style="margin-left:70px; margin-bottom:10px;" height="200" width="250" id="imagePreview" class="rounded-circle" />
+                <input asp-for="Photo" type="file" class="form-control" style="margin-left:70px; width:200px;" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" /> @*placeholder="upload Image" />*@
+            </div>
+
             <div class="form-group">
                 <label asp-for=" WhereItemWasFound" class="control-label"></label>
                 <input asp-for="WhereItemWasFound" class="form-control" placeholder="e.g, In a bus" />
@@ -81,25 +91,26 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Image</label>
-                <input name="Photo" class="form-control" type="file" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
 <div>
     <a asp-action="Profile">Back to List</a>
 </div>
 
-
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];
 
+    function ShowImagePreview(imageUploader, previewImage) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewImage).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(imageUploader.files[0]);
+    }
 
     function FillCity() {
         $("#state").on('change', function () {
@@ -113,7 +124,7 @@
             dataType: "JSON",
             data: { id: stateId },
             success: function (cities) {
-                $("#lga").html(""); // clear before appending new list 
+                $("#lga").html(""); // clear before appending new list
                 $("#lga").append($('<option></option>').val("").html("Please select LGA"));
                 $.each(cities, function (i, city) {
                     $("#lga").append(
@@ -123,5 +134,12 @@
             }
         });
     }
-
 </script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#state,#lga").select2();
+    });
+</script>
+<script src="~/lib/select2/dist/js/select2.min.js"></script>

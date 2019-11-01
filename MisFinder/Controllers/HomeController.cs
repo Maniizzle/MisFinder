@@ -21,8 +21,8 @@ namespace MisFinder.Controllers
         private readonly ILostItemRepository lostItemRepository;
         private readonly IStateRepository stateRepository;
 
-        public HomeController(IFoundItemRepository repository,ILocalGovernmentRepository localGovernmentRepository,
-            UserManager<ApplicationUser> userManager, ILostItemRepository lostItemRepository,IStateRepository stateRepository)
+        public HomeController(IFoundItemRepository repository, ILocalGovernmentRepository localGovernmentRepository,
+            UserManager<ApplicationUser> userManager, ILostItemRepository lostItemRepository, IStateRepository stateRepository)
         {
             this.repository = repository;
             this.localGovernmentRepository = localGovernmentRepository;
@@ -30,8 +30,8 @@ namespace MisFinder.Controllers
             this.lostItemRepository = lostItemRepository;
             this.stateRepository = stateRepository;
         }
-        [AllowAnonymous]
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             TempData["States"]
@@ -44,38 +44,38 @@ namespace MisFinder.Controllers
         //{
         //  var result=  context.LostItems.
         //        Where(c=>(c.NameOfLostItem.ToLower().Contains(name.ToLower())||c.Description.ToLower().Contains(name.ToLower()) ));
-        //    return View(result); 
+        //    return View(result);
         //}
         [AllowAnonymous]
-
         public async Task<IActionResult> SearchFoundItem(SearchViewModel model)
         {
-            if (ModelState.IsValid) {
-           var result=  repository.SearchFoundItem(model);
+            if (model == null)
+                return NotFound();
+            if (ModelState.IsValid)
+            {
+                var result = repository.SearchFoundItem(model);
                 return View(await result.AsNoTracking().ToListAsync());
             }
-            return View("Index",model);
+            return View("Index", model);
         }
-        [AllowAnonymous]
 
+        [AllowAnonymous]
         public async Task<IActionResult> SearchLostItem(SearchViewModel model)
         {
             if (model == null)
                 return NotFound();
             if (ModelState.IsValid)
             {
-
-                var result =  lostItemRepository.SearchLostItem(model);
+                var result = lostItemRepository.SearchLostItem(model);
                 return View(await result.AsNoTracking().ToListAsync());
             }
-          // TempData["States"]
-          //=  await stateRepository.GetAllStates();
+            // TempData["States"]
+            //=  await stateRepository.GetAllStates();
 
             return View("Index", model);
-
         }
-        [AllowAnonymous]
 
+        [AllowAnonymous]
         public async Task<IEnumerable<LocalGovernment>> LocalGovernments(int id)
         {
             return await localGovernmentRepository.GetAllLGAByStateId(id);
@@ -85,7 +85,6 @@ namespace MisFinder.Controllers
         ///[HttpGet]
         //public IActionResult FoundItems()
         //{
-
         //    IEnumerable<FoundItem> foundItems = context.FoundItems.ToList();
         //    return View(foundItems);
         //}

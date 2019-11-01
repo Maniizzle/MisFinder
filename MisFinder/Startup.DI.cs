@@ -30,7 +30,6 @@ namespace MisFinder
             var config = new EmailConfiguration();
             Configuration.Bind("EmailData", config);
             services.AddSingleton(config);
-
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿
-@model FoundItem
+﻿@model FoundItem
 
 @{
     Layout = "_LayoutUser";
     ViewData["Title"] = "Edit";
+
 }
 
+<link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
 <h2>Edit</h2>
 
 <h4>FoundItem</h4>
@@ -23,11 +24,10 @@
             </div>
             <div class="form-group">
                 <label class="control-label"> Category</label>
-                <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                <select class="form-control" asp-for="ItemCategory" id="lga" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
                     <option selected="selected" name="" value="">Please select a Category</option>
                 </select>
                 <span asp-validation-for="ItemCategory" class="text-danger"></span>
-
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -54,7 +54,7 @@
                 @Html.DropDownListFor(m => m.LocalGovernmentId,
               new SelectList(ViewBag.LGA, "Id", "Name"),
               "Select state",
-              new { @class = "form-control"})
+              new { @class = "form-control", id ="state"})
                 <span asp-validation-for="LocalGovernmentId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -62,8 +62,6 @@
                 <input asp-for="Colour" class="form-control" />
                 <span asp-validation-for="Colour" class="text-danger"></span>
             </div>
-            
-           
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -75,4 +73,10 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script>
 
+    $(document).ready(function () {
+        $("#lga").select2();
+    });
+</script>
+<script src="~/lib/select2/dist/js/select2.min.js"></script>

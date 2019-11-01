@@ -1,0 +1,58 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "AssignRole";
+}
+<link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    #select, #select1 {
+        background-color: white;
+    }
+
+    .select2-container {
+        background-color: white;
+    }
+</style>
+<div class="page-wrapper" style="min-height: 283px;">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="row" style="width:1069px; height:329px;">
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Assign Role</h4>
+
+                            <form asp-area="Admin" asp-controller="RoleAdmin" asp-action="AssignRole" method="post">
+
+                                <div class="form-group">
+                                    <label asp-for="Id" class="control-label"> Role </label>
+                                    @Html.DropDownListFor(m => m.Id,
+                                    new SelectList(ViewBag.Roles, "Name", "Name"),
+                                        "Select Role",new {@class= "form-control", @id="select", @style ="width:150px;" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"> User </label>
+                                    @Html.DropDownListFor(m => m.Email,
+                                     new SelectList(ViewBag.Users, "Email", "Email"),
+                                     "Select User",new { @class = "form-control", @id="select1"})
+                                </div>
+                                <div asp-validation-summary="All"></div>
+
+                                <input type="submit" value="AssignUser" class="btn btn-success" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#select,#select1").select2();
+    });
+</script>
+<script src="~/lib/select2/dist/js/select2.min.js"></script>

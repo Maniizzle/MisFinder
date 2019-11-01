@@ -1308,7 +1308,7 @@ Notify
       margin-top: 5px;
       margin-bottom: 5px; }
       .page-titles .breadcrumb li a {
-        color: #67757c; }
+        color: #fff; }
     .page-titles .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
       content: "\e649";
       font-family: themify;
@@ -2694,7 +2694,9 @@ Form addons page
     line-height: 38px; }
   .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 33px; }
-
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+      background-color: beige;
+    }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
   float: right;
   color: #ffffff;
@@ -4772,7 +4774,7 @@ File: scss
 .bg-light {
   background: #323840 !important; }
 
-.card-outline-danger, .card-outline-info, .card-outline-warning, .card-outline-success, .card-outline-primary, .popover-title, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple, .bootstrap-tagsinput, .footable .pagination li a, .select2-container--default .select2-selection--single .select2-selection__rendered, .ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection, .jsgrid-row > .jsgrid-cell, .page-item .page-link, .page-item.disabled .page-link, .minimal-faq .card .card-header, .mega-dropdown .nav-accordion .card-header {
+.card-outline-danger, .card-outline-info, .card-outline-warning, .card-outline-success, .card-outline-primary, .popover-title, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple, .bootstrap-tagsinput, .footable .pagination li a, .ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection, .jsgrid-row > .jsgrid-cell, .page-item .page-link, .page-item.disabled .page-link, .minimal-faq .card .card-header, .mega-dropdown .nav-accordion .card-header {
   background-color: #263238; }
 
 .right-sidebar, .select2-dropdown, .dropify-wrapper, .dropify-wrapper .dropify-preview, .wizard-content .wizard > .steps > ul > li.current .step, .wizard-content .wizard > .steps > ul > li .step, .wizard-content .wizard.wizard-circle > .steps > ul > li.current:after, .wizard-content .wizard.wizard-circle > .steps > ul > li.current ~ li:after, .wizard-content .wizard.wizard-circle > .steps > ul > li.current ~ li:before, .note-editor.note-frame .note-editing-area .note-editable, .modal-content, .jsgrid-alt-row > .jsgrid-cell, .css-bar:after {

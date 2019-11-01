@@ -2,6 +2,12 @@
 @{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
+<style>
+
+    .hiddenRow {
+        padding: 0 !important;
+    }
+</style>
 <div class="page-wrapper" style="min-height: 261px;">
     <!-- ============================================================== -->
     <!-- Container fluid  -->
@@ -12,10 +18,10 @@
         <!-- ============================================================== -->
         <div class="row page-titles">
             <div class="col-md-5 align-self-center">
-                <h3 class="text-themecolor">Lost Items</h3>
+                <h3 class="text-themecolor">Lost Item Claims</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Lost Items</li>
+                    <li class="breadcrumb-item active">Lost Item Claims</li>
                 </ol>
             </div>
             <div class="col-md-7 align-self-center text-right d-none d-md-block">
@@ -46,28 +52,68 @@
                             <table class="table vm no-th-brd pro-of-month">
                                 <thead>
                                     <tr>
-                                        <th colspan="2"><a asp-action="LostItemClaimss" asp-route-sortOrder="@ViewBag.NameSortParm">Name/LGA</a></th>
-                                        <th>Name</th>
-                                        <th>Priority</th>
-                                        <th><a asp-action="LostItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm">Date Misplaced </a></th>
+                                        <th colspan="2"><a asp-action="LostItemClaims" asp-route-sortOrder="@ViewBag.NameSortParm">Name </a></th>
+                                        <th>Location</th>
+                                        @*<th>Category</th>*@
+                                        <th><a asp-action="LostItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Misplaced </a></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        <tr>
-                                            <td style="width:50px;"><span class="round">S</span></td>
+                                        <tr data-toggle="collapse" data-target="#@item.Id" class="accordion-toggle">
+                                            <td style="width:50px;"><span class="round">@item.LostItem.NameOfLostItem[0]</span></td>
                                             <td>
-                                                <h6>@item.Description</h6><small class="text-muted">@item.WhereItemWasFound</small>
+                                                <h6>@item.LostItem.NameOfLostItem</h6>
                                             </td>
-                                            <td>Elite Admin</td>
-                                            <td><span class="label label-success label-rounded">Low</span></td>
+                                            <td>@item.WhereItemWasFound</td>
+                                            @* <td></td>*@
+                                            @*  <td><span class="label label-success label-rounded">Low</span></td>*@
                                             <td>@item.DateFound.ToShortDateString()</td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id" value="@item.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
+                                            </td>
+
+                                            <td><a href=""><img src="~/img/mo.svg" style=width:30px; title="Details" height:30px;" /></a></td>
                                         </tr>
+                                        <tr>
+                                            <td colspan="6" class="hiddenRow"><div class="accordian-body collapse" id="demo1"> Demo1 </div> </td>
+                                        </tr>
+                                        <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content smallModal">
+                                                    <div class="modal-header text-center">
+                                                        <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you Want to Delete the Item</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form asp-action="Deletes" asp-controller="FoundItemClaim" asp-area="User" method="post">
+                                                            <input type="hidden" name="Id" value="@item.Id" />
+                                                            <input type="submit" value="Delete" class="btn btn-success" />
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     }
                                 </tbody>
                             </table>
                         </div>
+                        @*<a asp-route-pageNumber="@(Model.PageIndex-1)" class="btn btn-default @prevDisabled"></a>
+                            <a asp-route-pageNumber="@(Model.PageIndex+1)" class="btn btn-default @nextDisabled"></a>
+                            <a asp-route-pageNumber="@(Model.PageIndex+2)" class="btn btn-default @nextDisabled"></a>*@
+
                         <a asp-action="LostItemClaims"
                            asp-route-sortOrder="@ViewData["CurrentSort"]"
                            asp-route-pageNumber="@(Model.PageIndex - 1)"

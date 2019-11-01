@@ -38,9 +38,10 @@ namespace MisFinder.Areas.Admin.Controllers
             var lostItem = await lostrepository.GetFilterLostItems().CountAsync();
             var founditem = await foundrepository.GetFilterFoundItems().CountAsync();
             var foundClaim = await claimRepository.GetFilterFoundItemClaims().CountAsync();
-            var lostClaim = await lostItemClaimRepo.GetFilterFoundItemClaims().CountAsync();
+            var lostClaim = await lostItemClaimRepo.GetFilterLostItemClaims().CountAsync();
+            var activeClaims = await lostItemClaimRepo.GetFilterLostItemClaims().Where(c => c.IsValidated).CountAsync();
 
-            return View(new DashIndexViewModel { LostItemsCount = lostItem, FoundItemCount = founditem, FOundItemClaimCount = foundClaim, LostItemClaimCount = lostClaim });
+            return View(new DashIndexViewModel { LostItemsCount = lostItem, FoundItemCount = founditem, FOundItemClaimCount = foundClaim, LostItemClaimCount = lostClaim, ActiveClaimCount = activeClaims });
         }
 
         public async Task<IActionResult> LostItems(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -59,7 +60,7 @@ namespace MisFinder.Areas.Admin.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            var lostItems = lostrepository.GetFilterLostItems();
+            var lostItems = lostrepository.GetFilterLostItems().Where(c => c.IsDeleted == false);
             if (!String.IsNullOrEmpty(searchString))
             {
                 lostItems = lostItems.
@@ -83,7 +84,7 @@ namespace MisFinder.Areas.Admin.Controllers
                     lostItems = lostItems.OrderBy(c => c.NameOfLostItem);
                     break;
             }
-            int pageSize = 1;
+            int pageSize = 2;
             return View(await PaginatedList<LostItem>.CreateAsync(lostItems.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
@@ -104,7 +105,7 @@ namespace MisFinder.Areas.Admin.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            var foundItems = foundrepository.GetFilterFoundItems();
+            var foundItems = foundrepository.GetFilterFoundItems().Where(c => c.IsDeleted == false);
             if (!String.IsNullOrEmpty(searchString))
             {
                 foundItems = foundItems.
@@ -137,6 +138,7 @@ namespace MisFinder.Areas.Admin.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            //ViewBag.DeleteSortParm = sortOrder == "True" ? "True" : "False";
             ViewBag.Action = "FoundItems";
 
             if (searchString != null)
@@ -149,32 +151,36 @@ namespace MisFinder.Areas.Admin.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            var foundItems = claimRepository.GetFilterFoundItemClaims();
+            var foundItemClaims = claimRepository.GetFilterFoundItemClaims().Where(c => c.IsDeleted == false);
             if (!String.IsNullOrEmpty(searchString))
             {
-                foundItems = foundItems.
+                foundItemClaims = foundItemClaims.
                     Where(c => c.ApplicationUser.FirstName.Contains(searchString) || c.Description.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    foundItems = foundItems.OrderByDescending(c => c.ApplicationUser.FirstName);
+                    foundItemClaims = foundItemClaims.OrderByDescending(c => c.ApplicationUser.FirstName);
                     break;
 
+                //case "True":
+                //    foundItemClaims = foundItemClaims.OrderBy(c => c.IsDeleted);
+                //    break;
+
                 case "Date":
-                    foundItems = foundItems.OrderBy(s => s.DateLost);
+                    foundItemClaims = foundItemClaims.OrderBy(s => s.DateLost);
                     break;
 
                 case "date_desc":
-                    foundItems = foundItems.OrderByDescending(c => c.DateLost);
+                    foundItemClaims = foundItemClaims.OrderByDescending(c => c.DateLost);
                     break;
 
                 default:
-                    foundItems = foundItems.OrderBy(c => c.ApplicationUser.FirstName);
+                    foundItemClaims = foundItemClaims.OrderBy(c => c.ApplicationUser.FirstName);
                     break;
             }
             int pageSize = 1;
-            return View(await PaginatedList<FoundItemClaim>.CreateAsync(foundItems.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<FoundItemClaim>.CreateAsync(foundItemClaims.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> LostItemClaims(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -194,32 +200,32 @@ namespace MisFinder.Areas.Admin.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            var foundItems = lostItemClaimRepo.GetFilterFoundItemClaims();
+            var lostItemClaim = lostItemClaimRepo.GetFilterLostItemClaims().Where(c => c.IsDeleted == false);
             if (!String.IsNullOrEmpty(searchString))
             {
-                foundItems = foundItems.
+                lostItemClaim = lostItemClaim.
                     Where(c => c.ApplicationUser.FirstName.Contains(searchString) || c.Description.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    foundItems = foundItems.OrderByDescending(c => c.ApplicationUser.FirstName);
+                    lostItemClaim = lostItemClaim.OrderByDescending(c => c.ApplicationUser.FirstName);
                     break;
 
                 case "Date":
-                    foundItems = foundItems.OrderBy(s => s.DateFound);
+                    lostItemClaim = lostItemClaim.OrderBy(s => s.DateFound);
                     break;
 
                 case "date_desc":
-                    foundItems = foundItems.OrderByDescending(c => c.DateFound);
+                    lostItemClaim = lostItemClaim.OrderByDescending(c => c.DateFound);
                     break;
 
                 default:
-                    foundItems = foundItems.OrderBy(c => c.ApplicationUser.FirstName);
+                    lostItemClaim = lostItemClaim.OrderBy(c => c.ApplicationUser.FirstName);
                     break;
             }
-            int pageSize = 1;
-            return View(await PaginatedList<LostItemClaim>.CreateAsync(foundItems.AsNoTracking(), pageNumber ?? 1, pageSize));
+            int pageSize = 2;
+            return View(await PaginatedList<LostItemClaim>.CreateAsync(lostItemClaim.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
     }
 }

@@ -16,18 +16,21 @@
             max-width: 25%;
         }
     }
+
     .col-md-3 {
         position: relative;
         width: 100%;
         min-height: 1px;
         padding-right: 15px;
         padding-left: 15px;
-        border-radius:5px;
+        border-radius: 5px;
     }
+
     .card-outline-primary {
         background-color: #263238;
         border-radius: 5px;
     }
+
     .card {
         position: relative;
         /*display: -webkit-box;*/
@@ -39,42 +42,50 @@
         flex-direction: column;
         min-width: 0;
         word-wrap: break-word;
-       
         border-radius: 5px;
     }
+
     .card-header {
         padding: .75rem 1.25rem;
         margin-bottom: 0;
         border-bottom: 1px solid rgba(0,0,0,.125);
-        background: #745af2;
-        border-color: #745af2;
+        background: #007bff;
+        border-color: #007bff;
         color: #fff;
     }
-    .card-header span{
-        float:right;
-    }
+
+        .card-header span {
+            float: right;
+        }
+
         .card-header:first-child {
             border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
         }
+
     .card-body {
         -webkit-box-flex: 1;
         -ms-flex: 1 1 auto;
         flex: 1 1 auto;
         padding: 1.25rem;
-        color:floralwhite;
+        color: floralwhite;
     }
+
     .btn-inverse {
         color: #fff;
         background-color: #bd2130;
         border-color: #b21f2d;
-      
     }
 
+    #h44 {
+        width: 70%;
+    }
 </style>
 
 <div>
-    <h3> Cant Find the Item you Lost?</h3>
-    <a asp-area="User" asp-controller="LostItem" asp-action="Create"><span> Register your Lost Item </span> </a>
+    <h3>
+        Cant Find the Item you Lost?
+        <a asp-area="User" asp-controller="LostItem" asp-action="Create" class="btn btn-primary"><span> Register It </span> </a>
+    </h3>
 </div>
 @if (Model.Count() == 0)
 {
@@ -87,28 +98,25 @@ else
     <div class="row">
         @foreach (var item in Model)
         {
-        <div class="col-md-3">
-            <div class="card card-outline-primary">
-                <div class="card-header">
-                          <h4 class="m-b-0"> @item.NameOfFoundItem <span>@item.LocalGovernment.State.Name</span> </h4>
-                      
-                    
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title text-white">@item.DateFound.ToShortDateString()</h4>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-inverse">Its Yours. Claim</a>
-                    <a asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
-
+            <div class="col-md-3">
+                <div class="card card-outline-primary">
+                    <div class="card-header">
+                        <h4 class="m-b-0"> @item.NameOfFoundItem <span>@item.LocalGovernment.State.Name</span> </h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" style="float:right"><small>found at: </small> @item.ExactArea </p>
+                        <h4 class="card-title text-white" id="h44" style="float:left"><small>Date found: </small>@item.DateFound.ToShortDateString()</h4>
+                        <div style="float:right;">
+                            <a asp-area="User" asp-controller="FoundItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-                        @*<div class="progress-bar bg-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:70%; height:3px;"> <span class="sr-only">50% Complete</span></div>
+            @*<div class="progress-bar bg-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:70%; height:3px;"> <span class="sr-only">50% Complete</span></div>
                     </div>
                     <a asp-controller="FoundItemClaim" title="Claim" asp-action="SameUser" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
-
                 </div>*@
-            
+
         }
     </div>
 }

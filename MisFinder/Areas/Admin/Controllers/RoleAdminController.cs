@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MisFinder.Domain.Models;
+using MisFinder.Domain.Models.ViewModel;
 
 namespace MisFinder.Areas.Admin.Controllers
 {
@@ -99,10 +101,38 @@ namespace MisFinder.Areas.Admin.Controllers
         //    }
         //    else { return await Edit(model.RoleId); }
         //}
-        [HttpPost]
-        public async Task<IActionResult> Delete([Bind]string rolee)
+        public async Task<IActionResult> AssignRole()
         {
-            IdentityRole role = await roleManager.FindByIdAsync(rolee);
+            IEnumerable<IdentityRole> roles = await roleManager.Roles.ToListAsync();
+
+            ViewBag.Roles = roles;
+            IEnumerable<UserViewModel> users = await userManager.Users.Select(c => new UserViewModel { Email = c.Email, Id = c.Id }).ToListAsync();
+            ViewBag.Users = users;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "UserName doesnt Exist");
+                    return View();
+                }
+                await userManager.AddToRoleAsync(user, model.Id);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([Bind]string Id)
+        {
+            IdentityRole role = await roleManager.FindByIdAsync(Id);
             if (role != null)
             {
                 IdentityResult result = await roleManager.DeleteAsync(role);

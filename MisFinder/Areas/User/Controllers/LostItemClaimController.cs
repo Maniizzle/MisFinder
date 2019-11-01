@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MisFinder.Data.Notification.Email;
 using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 using MisFinder.Domain.Models.ViewModel;
 using MisFinder.Utility;
-using MisFinder.Data.Notification.Email;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -65,6 +64,15 @@ namespace MisFinder.Areas.User.Controllers
             }
             if (ModelState.IsValid)
             {
+                //Check if user has claimed Item before
+                foreach (var clam in lostItem.LostItemClaims)
+                {
+                    if (user.Id == clam.ApplicationUserId)
+                    {
+                        ModelState.AddModelError("", "You Cant claim an Item twice");
+                        return View();
+                    }
+                }
                 Image image = null;
                 if (model.Image != null)
                 {
@@ -97,11 +105,13 @@ namespace MisFinder.Areas.User.Controllers
                 claimRepository.Create(claim);
                 //send mail
                 var ConfirmEmail = Url.Action("Claims", "LostItem",
-                      new { area = User, id = lostItem.Id }, Request.Scheme);
+                      new { area = "User", id = lostItem.Id }, Request.Scheme);
+
+                System.IO.File.WriteAllText("resetlink.txt", ConfirmEmail);
                 var message = new Dictionary<string, string>
                     {
-                        {"UName",$"{user.FirstName}" },
-                        { "FName",$"{lostItem.LostItemUser.FirstName}" },
+                        {"UName",$"{lostItem.LostItemUser.FirstName}" },
+                        { "FName",$"{user.FirstName}" },
                         {"ClaimLink", $"{ConfirmEmail}" }
                     };
 
@@ -213,6 +223,8 @@ namespace MisFinder.Areas.User.Controllers
 
         // POST: lostItems/Delete/5
         [HttpGet, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
+
         // [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
         {

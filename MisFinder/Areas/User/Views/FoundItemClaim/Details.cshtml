@@ -1,11 +1,12 @@
 ﻿@{
     Layout = "_LayoutUser";
 }
-@model LostItem
+@model FoundItemClaim
 
 @{
     ViewData["Title"] = "Details";
     var photopath = "Photos/" + (Model.Image?.ImagePath ?? "home 1081.jpg");
+    var lostphotopath = "Photos/" + (Model.FoundItem.Image?.ImagePath ?? "home 1081.jpg");
 
 }
 
@@ -16,32 +17,31 @@
     <hr />
     <dl class="dl-horizontal">
         <dd>
-            <a href="~/@photopath" target="_blank"> <img style="width:150px;height:150px;" src="~/@photopath" /></a>
-
+            <a href="~/@photopath" target="_blank"> <img class="img-circle" style="width:200px;height:200px;" src="~/@photopath" /></a>
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.NameOfLostItem)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NameOfLostItem)
+            @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LocalGovernment.State.Name)
+            @Html.DisplayNameFor(model => model.ItemCategory)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LocalGovernment.State.Name)
+            @Html.DisplayFor(model => model.ItemCategory)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LocalGovernment)
+            @Html.DisplayNameFor(model => model.WhereItemWasLost)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LocalGovernment.Name)
+            @Html.DisplayFor(model => model.WhereItemWasLost)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DateMisplaced)
+            @Html.DisplayNameFor(model => model.DateLost)
         </dt>
         <dd>
-            @Model.DateMisplaced.ToShortDateString()
+            @Model.DateLost.ToShortDateString()
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Color)
@@ -55,20 +55,51 @@
         <dd>
             @Html.DisplayFor(model => model.WhereItemWasLost)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ExactArea)
-        </dt>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.ExactArea)
+            </dt>*@
         <dd>
-            @Html.DisplayFor(model => model.ExactArea)
+            <br />
         </dd>
         <dt>
-            Claims
+            Name of Found Item
         </dt>
         <dd>
-            <a asp-action="FoundItemClaims" title="Claims" asp-route-id="@Model.Id" class="btn btn-info" role="button">@Model.LostItemClaims.Count</a>
+            @Html.DisplayFor(model => model.FoundItem.NameOfFoundItem)
+        </dd>
+
+        <dd>
+            <a class="btn btn-warning btn-circle text-uppercase collapsed" data-toggle="collapse" href="#replyOne"><span class="glyphicon"></span>Details</a>
         </dd>
     </dl>
 </div>
+<div class="collapse" id="replyOne" style="height: 0px;">
+    <ul class="media-list">
+        <li class="media media-replied">
+            <a class="pull-left" href="~/@lostphotopath">
+                <img class="media-object img-circle" style="width:150px;height:150px;" src="~/@lostphotopath" alt="profile">
+            </a>
+            <div class="media-body">
+                <div class="well well-lg">
+                    <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span>@Model.FoundItem.NameOfFoundItem</h4>
+                    @*<ul class="media-date text-uppercase reviews list-inline">
+                            <li class="dd">22</li>
+                            <li class="mm">09</li>
+                            <li class="aaaa">2014</li>
+                        </ul>*@
+                    <p class="media-comment">
+                        @Model.FoundItem.Description
+                    </p>
+                    <span>@Model.FoundItem.DateFound.ToShortDateString()</span>
+                    <p>@Model.FoundItem.ExactArea</p>
+                    <p>@Model.FoundItem.LocalGovernment.State.Name</p>
+                    <p>@Model.FoundItem.ItemCategory</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

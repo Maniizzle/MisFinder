@@ -58,13 +58,23 @@ namespace MisFinder.Areas.User.Controllers
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
             var foundItem = await foundItemRepository.GetFoundItemById(model.FoundItemId);
+
             if (user == null || user == foundItem.FoundItemUser)
             {
                 ModelState.AddModelError("", "You Cant Claim an Item you Logged");
                 return View();
             }
+
             if (ModelState.IsValid)
             {
+                foreach (var clam in foundItem.FoundItemClaims)
+                {
+                    if (user == clam.ApplicationUser)
+                    {
+                        ModelState.AddModelError("", "You Cant claim an Item twice");
+                        return View();
+                    }
+                }
                 Image image = null;
                 if (model.Image != null)
                 {
@@ -99,8 +109,8 @@ namespace MisFinder.Areas.User.Controllers
                      new { area = User, id = foundItem.Id }, Request.Scheme);
                 var message = new Dictionary<string, string>
                     {
-                        {"UName",$"{user.FirstName}" },
-                        { "FName",$"{foundItem.FoundItemUser.FirstName}" },
+                        {"UName",$"{foundItem.FoundItemUser.FirstName}" },
+                        { "FName",$"{user.FirstName}" },
                         {"ClaimLink", $"{ConfirmEmail}" }
                     };
 

@@ -1,10 +1,7 @@
-﻿@model  SearchViewModel
-
+﻿@model SearchViewModel
 @*@{
-    ViewData["Title"] = "Home";
-}*@
-
-
+        ViewData["Title"] = "Home";
+    }*@
 
 @*<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 text-center">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center pd0"> <a href="" onclick="bindsearchparcial(true);" id="btn_lostpopup" class="btn btn-primary mt10" data-toggle="modal" data-target="#lost_search">Lost Something</a> </div>
@@ -29,26 +26,22 @@
                         <label asp-for="Name" class="control-label">Name of Lost Item</label>
                         <input type="text" id="form3" asp-for="Name" placeholder="Name of LostItem" class="form-control validate">
                         <span asp-validation-for="Name" class="text-danger"></span>
-
                     </div>
-                    <div class="md-form mb-3" >
-                        <label class="control-label"> Category</label>
-                        <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
-                            <option selected="selected" name="" value="">Please select a Category</option>
-                        </select>
+                    @*<div class="md-form mb-3">
+                            <label class="control-label"> Category</label>
+                            <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
+                                <option selected="selected" name="" value="">Please select a Category</option>
+                            </select>
 
-                        <span asp-validation-for="ItemCategory" class="text-danger"></span>
-
-                    </div>
+                            <span asp-validation-for="ItemCategory" class="text-danger"></span>
+                        </div>*@
                     <div class="md-form mb-3">
                         <label class="control-label"> State </label>
                         @Html.DropDownListFor(m => m.StateId,
                       new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
                       "Select state", new  { @class = "form-control" })
                         <span asp-validation-for="StateId" class="text-danger"></span>
-
                     </div>
-
 
                     <div class="md-form mb-3">
                         <label asp-for="Date" class="control-label">Date Lost</label>
@@ -56,21 +49,18 @@
                         <span asp-validation-for="Date" class="text-danger"></span>
 
                         @*<div class="md-form mb-4">
-                <i class="fas fa-envelope prefix grey-text"></i>
-                <input type=" id="form2" class="form-control validate">
-            </div>*@
-
+                                <i class="fas fa-envelope prefix grey-text"></i>
+                                <input type=" id="form2" class="form-control validate">
+                            </div>*@
                     </div>
                     @*<div class="md-form mb-4">
-            <i class="fas fa-envelope prefix grey-text"></i>
-            <input type=" id="form2" class="form-control validate">
-        </div>*@
-
+                            <i class="fas fa-envelope prefix grey-text"></i>
+                            <input type=" id="form2" class="form-control validate">
+                        </div>*@
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
 
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
                 </div>
             </form>
         </div>
@@ -94,17 +84,14 @@
                         <i class="fas fa-user prefix grey-text"></i>
                         <input type="text" id="form3" asp-for="Name" placeholder="Name of Found Item" class="form-control validate">
                         <span asp-validation-for="Name" class="text-danger"></span>
-
                     </div>
-                    <div class="md-form mb-3">
+                    @*<div class="md-form mb-3">
                         <label class="control-label"> Category</label>
                         <select class="form-control" asp-for="ItemCategory" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
                             <option selected="selected" name="" value="">Please select a Category</option>
-                        </select>
+                        </select>*@
 
-                        <span asp-validation-for="ItemCategory" class="text-danger"></span>
-
-                    </div>
+                    <span asp-validation-for="ItemCategory" class="text-danger"></span>
                     <div class="md-form mb-3">
                         <label class="control-label"> State </label>
                         @Html.DropDownListFor(m => m.StateId,
@@ -112,14 +99,12 @@
                       "Select state",
                       new { @class = "form-control", @onchange="FillCity()",id="state" })
                         <span asp-validation-for="StateId" class="text-danger"></span>
-
                     </div>
                     <div class="md-form mb-3">
                         <label class="control-label"> LGA</label>
                         <select id="lga" class="form-control" name="LocalGovernmentId">
                             <option selected="selected" name="" value="">Please select LGA</option>
                         </select>
-
                     </div>
 
                     <div class="md-form mb-3">
@@ -128,59 +113,53 @@
                         <span asp-validation-for="Date" class="text-danger"></span>
 
                         @*<div class="md-form mb-4">
-                <i class="fas fa-envelope prefix grey-text"></i>
-                <input type=" id="form2" class="form-control validate">
-            </div>*@
-
+                                <i class="fas fa-envelope prefix grey-text"></i>
+                                <input type=" id="form2" class="form-control validate">
+                            </div>*@
                     </div>
                     <div asp-validation-summary="All"></div>
                 </div>
-                    <div class="modal-footer d-flex justify-content-center">
+                <div class="modal-footer d-flex justify-content-center">
 
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
-                    </div>
-</form>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-    <div class="text-center">
-        <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modalSubscriptionForm">
-            Lost Something?
-        </a>
+<div class="text-center">
+    <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modalSubscriptionForm">
+        Lost Something?
+    </a>
 
+    <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#foundmodalSubscriptionForm">
+        Found Something?
+    </a>
+</div>
+<script>
+    datePickerId.max = new Date().toISOString().split("T")[0];
+    datePickerId2.max = new Date().toISOString().split("T")[0];
 
-        <a href="" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#foundmodalSubscriptionForm">
-            Found Something?
-        </a>
-    </div>
-    <script>
-        datePickerId.max = new Date().toISOString().split("T")[0];
-        datePickerId2.max = new Date().toISOString().split("T")[0];
+    function FillCity() {
+        $("#state").on('change', function () {
+            var val = this.value;
+        });
+        var stateId = $("#state").val();
+        //var selectedCountry = $("#state").children("option:selected").val()
+        $.ajax({
+            url: '/Home/LocalGovernments',
+            type: "GET",
+            dataType: "JSON",
+            data: { id: stateId },
+            success: function (cities) {
+                $("#lga").html(""); // clear before appending new list
+                $("#lga").append($('<option></option>').val("").html("Please select LGA"));
+                $.each(cities, function (i, city) {
+                    $("#lga").append(
+                        $('<option></option>').val(city.id).html(city.name));
+                });
 
-
-        function FillCity() {
-            $("#state").on('change', function () {
-                var val = this.value;
-            });
-            var stateId = $("#state").val();
-            //var selectedCountry = $("#state").children("option:selected").val()
-            $.ajax({
-                url: '/Home/LocalGovernments',
-                type: "GET",
-                dataType: "JSON",
-                data: { id: stateId },
-                success: function (cities) {
-                    $("#lga").html(""); // clear before appending new list
-                    $("#lga").append($('<option></option>').val("").html("Please select LGA"));
-                    $.each(cities, function (i, city) {
-                        $("#lga").append(
-                            $('<option></option>').val(city.id).html(city.name));
-                    });
-
-                }
-            });
-        }
-
-        
-    </script>
+            }
+        });
+    }
+</script>

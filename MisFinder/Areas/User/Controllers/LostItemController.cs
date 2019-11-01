@@ -12,6 +12,7 @@ using MisFinder.Data.Data.Context;
 using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Utility;
 using Microsoft.AspNetCore.Http;
+using MisFinder.Data.Notification.Email;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -21,16 +22,20 @@ namespace MisFinder.Areas.User.Controllers
     {
         private readonly IStateRepository stateRepository;
         private readonly ILocalGovernmentRepository lgaRepository;
+        private readonly IEmailNotifier emailNotifier;
         private readonly IUtility utility;
         private readonly ILostItemRepository repository;
         private readonly ILostItemClaimRepository claimRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public LostItemController(IStateRepository stateRepository, ILocalGovernmentRepository lgaRepository, IUtility utility,
+        public LostItemController(IStateRepository stateRepository,
+            ILocalGovernmentRepository lgaRepository,
+            IEmailNotifier emailNotifier, IUtility utility,
             ILostItemRepository repository, ILostItemClaimRepository claimRepository, UserManager<ApplicationUser> userManager)
         {
             this.stateRepository = stateRepository;
             this.lgaRepository = lgaRepository;
+            this.emailNotifier = emailNotifier;
             this.utility = utility;
             this.repository = repository;
             this.claimRepository = claimRepository;
@@ -211,7 +216,7 @@ namespace MisFinder.Areas.User.Controllers
 
         // POST: lostItems/Delete/5
         [HttpGet, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int? id)
         {
             if (id == null)
@@ -246,14 +251,32 @@ namespace MisFinder.Areas.User.Controllers
             return View(claims);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Validate(int? id)
         {
             if (id == null)
                 return NotFound();
             var claim = await claimRepository.GetLostItemClaimById(id);
-            claim.IsValidated = true;
-            claimRepository.Save();
-            return RedirectToAction("Claims", new { Id = claim.LostItemId });
+            try
+            {
+                claim.IsValidated = true;
+                claim.ValidatedOn = DateTime.Now;
+                string to = claim.ApplicationUser.Email;
+                var link = Url.Action("Meeting", "MeeetingManagement", new { area = "Admin" });
+                var message = new Dictionary<string, string>
+            {
+                {"FName",$"{claim.ApplicationUser.FirstName}"},
+                {"EMailLink",$"{link}" }
+            };
+                await emailNotifier.SendEmailAsync(to, "Meeting Date", message, "SetUpMeeting");
+
+                claimRepository.Save();
+                return RedirectToAction("Claims", new { Id = claim.LostItemId });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //public async Task<IActionResult> Claims(int id)

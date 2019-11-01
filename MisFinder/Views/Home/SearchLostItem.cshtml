@@ -121,8 +121,10 @@ else
                         <h4 class="card-title">@item.NameOfLostItem</h4>
                         <li class="p-l-0">@item.DateMisplaced.ToShortDateString()</li>
                         <p class="card-text">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                        <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
+                        <p>@item.ExactArea</p>
+                      @*  <a href="#" class="btn btn-primary">Go somewhere</a>*@
+
+                        <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img src="~/img/refund.svg" style="width:50px;height:50px;" /></a>
                     </div>
                 </div>
                 <!-- Card -->
