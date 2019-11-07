@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MisFinder.Data.Notification.Email;
+using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
-using MisFinder.Data.Data.Context;
-using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Utility;
-using Microsoft.AspNetCore.Http;
-using MisFinder.Data.Notification.Email;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -235,7 +233,12 @@ namespace MisFinder.Areas.User.Controllers
             { return NotFound(); }
             var lostItem = await repository.GetLostItemById(id);
             lostItem.IsDeleted = true;
-            lostItem.DeletedOn = DateTime.UtcNow;
+            lostItem.DeletedOn = DateTime.Now;
+
+            foreach (var claim in lostItem.LostItemClaims)
+            {
+                claim.Status = ClaimStatus.Invalid;
+            }
             repository.Save();
             return RedirectToAction(nameof(Index));
         }
@@ -252,23 +255,36 @@ namespace MisFinder.Areas.User.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Validate(int? id)
+        public async Task<IActionResult> Validate(int? id, string status)
         {
             if (id == null)
                 return NotFound();
             var claim = await claimRepository.GetLostItemClaimById(id);
             try
             {
-                claim.IsValidated = true;
+                if (status == "Valid")
+                { claim.Status = ClaimStatus.Valid; }
+                if (status == "InValid")
+                { claim.Status = ClaimStatus.Invalid; }
                 claim.ValidatedOn = DateTime.Now;
-                string to = claim.ApplicationUser.Email;
-                var link = Url.Action("Meeting", "MeeetingManagement", new { area = "Admin" });
+
+                // string to = claim.ApplicationUser.Email;
+                var link = Url.Action("Index", "ClaimManagement", new { area = "Admin" });
                 var message = new Dictionary<string, string>
-            {
-                {"FName",$"{claim.ApplicationUser.FirstName}"},
-                {"EMailLink",$"{link}" }
-            };
-                await emailNotifier.SendEmailAsync(to, "Meeting Date", message, "SetUpMeeting");
+                {
+                   {"ITEM",$"Lost Item" },
+
+                   {"EmailLink",$"{link}" }
+                };
+
+                var usersInAdmin = await userManager.GetUsersInRoleAsync("Admin");
+                List<string> emails = new List<string>();
+                foreach (var user in usersInAdmin)
+                {
+                    emails.Add(user.Email);
+                }
+
+                await emailNotifier.SendManyEmailAsync(emails, "Validation", message, "AlertAdmin");
 
                 claimRepository.Save();
                 return RedirectToAction("Claims", new { Id = claim.LostItemId });

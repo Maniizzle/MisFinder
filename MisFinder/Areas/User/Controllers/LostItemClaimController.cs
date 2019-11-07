@@ -103,16 +103,16 @@ namespace MisFinder.Areas.User.Controllers
                     Image = image
                 };
                 claimRepository.Create(claim);
+                //  System.IO.File.WriteAllText("resetlink.txt", ConfirmEmail);
                 //send mail
-                var ConfirmEmail = Url.Action("Claims", "LostItem",
+                var ConfirmClaim = Url.Action("Claims", "LostItem",
                       new { area = "User", id = lostItem.Id }, Request.Scheme);
 
-                System.IO.File.WriteAllText("resetlink.txt", ConfirmEmail);
                 var message = new Dictionary<string, string>
                     {
                         {"UName",$"{lostItem.LostItemUser.FirstName}" },
                         { "FName",$"{user.FirstName}" },
-                        {"ClaimLink", $"{ConfirmEmail}" }
+                        {"ClaimLink", $"{ConfirmClaim}" }
                     };
 
                 await emailNotifier.SendEmailAsync(lostItem.LostItemUser.Email, "New Claim", message, "LostItemClaim");
@@ -124,16 +124,43 @@ namespace MisFinder.Areas.User.Controllers
             return View(model);
         }
 
-        [AcceptVerbs("Get", "Post")]
-        public async Task<IActionResult> SameUser([Bind(Prefix = "id")] int id)
+        //[AcceptVerbs("Get", "Post")]
+        //public async Task<IActionResult> SameUser([Bind(Prefix = "id")] int id)
+        //{
+        //    var user = await userManager.GetUserAsync(HttpContext.User);
+        //    var lostItem = await lostItemRepository.GetLostItemById(id);
+        //    if (user == null || user != lostItem.LostItemUser)
+        //        return RedirectToAction("Create", "LostItemClaim", new { Id = id });
+        //    //.FindByEmailAsync();
+        //    // return Json("You cant Claim to have Found what you declared you lost");
+        //    return View();
+        //}
+
+        public async Task<IActionResult> MakePayment()
         {
-            var user = await userManager.GetUserAsync(HttpContext.User);
-            var lostItem = await lostItemRepository.GetLostItemById(id);
-            if (user == null || user != lostItem.LostItemUser)
-                return RedirectToAction("Create", "LostItemClaim", new { Id = id });
-            //.FindByEmailAsync();
-            // return Json("You cant Claim to have Found what you declared you lost");
-            return View();
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+
+            CyberPay cyberPay = new CyberPay
+            {
+                Amount = 1500 * 100,
+                Description = "Delivery Payment ",
+                MerchantRef = Guid.NewGuid().ToString(),
+                ReturnUrl = @"https://localhost:5001/User/LostItemClaim/Index",
+                CustomerEmail = user.Email,
+                CustomerMobile = user.PhoneNumber ?? "",
+                CustomerName = $"{user.LastName} {user.FirstName}"
+            };
+            var res = await Processing.MakePaymentAsync(cyberPay);
+            if (res.Succeeded)
+            {
+                return Redirect(res.Data.RedirectUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public async Task<IActionResult> Details(int? id)

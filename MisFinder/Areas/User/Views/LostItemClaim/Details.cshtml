@@ -15,7 +15,7 @@
 </style>
 <h2>Details</h2>
 
-<div style="position:relative; z-index:3">
+<div style="position:relative; margin-left:20px; margin-right:20px" z-index:3">
     <h4>Lost Item</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -23,7 +23,7 @@
             <a href="~/@photopath" target="_blank"> <img style="width:150px;height:150px;" src="~/@photopath" /></a>
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ItemCategory)
+            @*  @Html.DisplayNameFor(model => model.ItemCategory)*@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.ItemCategory)
@@ -38,11 +38,12 @@
             Status
         </dt>
         <dd>
-            @if (Model.Sorted == true)
+            @if (Model.Status == ClaimStatus.Pending)
             {<button class="btn btn-warning btn-rounded">Pending </button>}
-            else
-
-            { <button class="btn btn-warning btn-rounded"> Sorted </button>}
+            @if (Model.Status == ClaimStatus.Valid)
+            {<button class="btn btn-success btn-rounded">Valid </button>}
+            @if (Model.Status == ClaimStatus.Invalid)
+            {<button class="btn btn-danger btn-rounded"> InValid </button>}
         </dd>
         @*<dt>
                 @Html.DisplayNameFor(model => model.DateMisplaced)
@@ -73,11 +74,30 @@
             Lost Item
         </dt>
         <dd>
-            <a class="btn btn-warning btn-circle text-uppercase collapsed" data-toggle="collapse" href="#replyOne"><span class="glyphicon"></span>Details</a>
-
+            @{ if (Model.LostItem.IsDeleted == true)
+                {
+                    <a class="btn btn-warning btn-circle text-uppercase collapsed" data-toggle="collapse" href="#replytwo"><span class="glyphicon"></span>Details</a>
+                }
+                else
+                {
+                    <a class="btn btn-warning btn-circle text-uppercase collapsed" data-toggle="collapse" href="#replyOne"><span class="glyphicon"></span>Details</a>
+                }
+            }
             @* <a asp-action="#" title="Claims" asp-route-id="@Model.Id" class="btn btn-info" role="button">Details</a>*@
         </dd>
     </dl>
+</div>
+
+<div class="collapse" id="replytwo" style="height: 0px;">
+    <ul class="media-list">
+        <li class="media media-replied">
+            <div class="media-body">
+                <div class="well well-lg">
+                    <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span>Not Available</h4>
+                </div>
+            </div>
+        </li>
+    </ul>
 </div>
 
 <div class="collapse" id="replyOne" style="height: 0px;">

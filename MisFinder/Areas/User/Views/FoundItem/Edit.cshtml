@@ -3,17 +3,20 @@
 @{
     Layout = "_LayoutUser";
     ViewData["Title"] = "Edit";
+    var img = "Photos/" + (Model.Image?.ImagePath ?? "home 1081.jpg");
 
 }
-
-<link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
-<h2>Edit</h2>
-
-<h4>FoundItem</h4>
+<style>
+    .form-control {
+        border-radius: 31px;
+    }
+</style>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<form asp-action="Edit">
+
+    <div class="row" style=" margin-left:20px; margin-right:20px">
+
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
 
@@ -25,22 +28,24 @@
             <div class="form-group">
                 <label class="control-label"> Category</label>
                 <select class="form-control" asp-for="ItemCategory" id="lga" asp-items="@Html.GetEnumSelectList<ItemCategory>()">
-                    <option selected="selected" name="" value="">Please select a Category</option>
+                    <option selected="selected" name="" value=""></option>
                 </select>
                 <span asp-validation-for="ItemCategory" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WhereItemWasFound" class="control-label"></label>
+                <label asp-for="WhereItemWasFound" class="control-label">Location</label>
                 <input asp-for="WhereItemWasFound" class="form-control" />
                 <span asp-validation-for="WhereItemWasFound" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-lg-4">
             <div class="form-group">
-                <label asp-for="ExactArea" class="control-label"></label>
+                <label asp-for="ExactArea" class="control-label">Area</label>
                 <input asp-for="ExactArea" class="form-control" />
                 <span asp-validation-for="ExactArea" class="text-danger"></span>
             </div>
@@ -62,13 +67,20 @@
                 <input asp-for="Colour" class="form-control" />
                 <span asp-validation-for="Colour" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <img class="rounded-circle" src="~/@img" style="margin-left:70px; margin-bottom:10px;" height="200" width="200" id="imagePreview" />
+                <input name="file" type="file" />
+                @* <span asp-validation-for="Photo" class="text-danger"></span>*@
+            </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -78,5 +90,13 @@
     $(document).ready(function () {
         $("#lga").select2();
     });
+
+    function ShowImagePreview(imageUploader, previewImage) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewImage).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(imageUploader.files[0]);
+    }
 </script>
 <script src="~/lib/select2/dist/js/select2.min.js"></script>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MisFinder.Data.Pagination;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 namespace MisFinder.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
         private readonly ILostItemRepository lostrepository;
@@ -39,8 +41,9 @@ namespace MisFinder.Areas.Admin.Controllers
             var founditem = await foundrepository.GetFilterFoundItems().CountAsync();
             var foundClaim = await claimRepository.GetFilterFoundItemClaims().CountAsync();
             var lostClaim = await lostItemClaimRepo.GetFilterLostItemClaims().CountAsync();
-            var activeClaims = await lostItemClaimRepo.GetFilterLostItemClaims().Where(c => c.IsValidated).CountAsync();
-
+            var activelostClaims = await lostItemClaimRepo.GetFilterLostItemClaims().Where(c => c.Status == ClaimStatus.Valid).CountAsync();
+            var activefoundclaims = await claimRepository.GetFilterFoundItemClaims().Where(c => c.Status == ClaimStatus.Valid).CountAsync();
+            var activeClaims = activefoundclaims + activelostClaims;
             return View(new DashIndexViewModel { LostItemsCount = lostItem, FoundItemCount = founditem, FOundItemClaimCount = foundClaim, LostItemClaimCount = lostClaim, ActiveClaimCount = activeClaims });
         }
 

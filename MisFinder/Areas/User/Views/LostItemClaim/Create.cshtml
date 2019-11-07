@@ -7,14 +7,19 @@
     var image = "Photos/home 1081.jpg";
 
 }
+<style>
+    .form-control {
+        border-radius: 31px;
+    }
+</style>
 <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
 
 <h2>Create Claim</h2>
 <form asp-action="Create" method="post" enctype="multipart/form-data">
 
-    <div class="row">
+    <div class="row" style=" margin-left:20px; margin-right:20px">
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <input type="hidden" asp-for="LostItemId" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -41,17 +46,13 @@
                 <span asp-validation-for="WhereItemWasFound" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="form-group">
                 @*   <label asp-for=" Image" class="control-label"></label>*@
                 <img src="~/@image" style="margin-left:70px; margin-bottom:10px;" height="200" width="250" id="imagePreview" class="rounded-circle" />
                 <input name="file" type="file" class="form-control" style="margin-left:70px; width:200px;" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" /> @*placeholder="upload Image" />*@
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label">Image</label>
-                <input type="file" name="Image" accept="image/* ">
-                @* <span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Claim" class="btn btn-default" />
             </div>
@@ -61,4 +62,11 @@
 
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];
+    function ShowImagePreview(imageUploader, previewImage) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewImage).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(imageUploader.files[0]);
+    }
 </script>

@@ -6,15 +6,21 @@
     ViewData["Title"] = "Create";
     var image = "Photos/home 1081.jpg";
 }
+<style>
+    .form-control {
+        border-radius: 31px;
+    }
+</style>
+
 <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
 
 <h4>Register Lost Item</h4>
 <hr />
 <form asp-action="Create" method="post" enctype="multipart/form-data">
 
-    <div class="row" onload="ola()">
+    <div class="row" onload="ola() " style=" margin-left:20px; margin-right:20px">
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="NameOfLostItem" class="control-label">Name of Item Lost</label>
@@ -35,7 +41,7 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StateId" class="control-label"> State </label>
+                <label asp-for="StateId" class="control-label"> </label>
                 @Html.DropDownListFor(m => m.StateId,
               new SelectList(ViewBag.StateList, "Id", "Name"),
               "Select state",
@@ -45,13 +51,15 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label"> LGA</label>
+                <label class="control-label"></label>
                 <select id="lga" class="form-control" name="LocalGovernmentId">
                     <option selected="selected" name="" value="">Please select LGA</option>
                 </select>
 
                 <span asp-validation-for="LocalGovernmentId" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-lg-4">
             <div class="form-group">
                 <label asp-for="DateMisplaced" class="control-label">Date Lost</label>
                 <input placeholder="Selected date" id="datePickerId" type="date" name="DateMisplaced" class="form-control">
@@ -62,14 +70,6 @@
                 <input asp-for="ExactArea" class="form-control" placeholder="e.g, Ojota" />
                 <span asp-validation-for="ExactArea" class="text-danger"></span>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                @*   <label asp-for=" Image" class="control-label"></label>*@
-                <img class="rounded-circle" src="~/@image" style="margin-left:70px; margin-bottom:10px;" height="200" width="250" id="imagePreview" />
-                <input asp-for="Photo" type="file" class="form-control" style="margin-left:70px; width:200px;" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" /> @*placeholder="upload Image" />*@
-            </div>
-
             <div class="form-group">
                 <label asp-for="Color" class="control-label"></label>
                 <input asp-for="Color" class="form-control" />
@@ -85,6 +85,13 @@
                 <input asp-for="PhoneNumber" class="form-control" placeholder="08023455432" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                @*   <label asp-for=" Image" class="control-label"></label>*@
+                <img class="rounded-circle" src="~/@image" style="margin-left:70px; margin-bottom:10px;" height="200" width="250" id="imagePreview" />
+                <input asp-for="Photo" type="file" class="form-control" style="margin-left:70px; width:200px;" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" /> @*placeholder="upload Image" />*@
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Register" class="btn btn-default" />
@@ -94,7 +101,7 @@
 </form>
 
 <div>
-    <a asp-action="Profile">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];

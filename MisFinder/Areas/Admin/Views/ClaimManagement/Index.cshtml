@@ -35,14 +35,6 @@
                             <div>
                                 <h5 class="card-title"></h5>
                             </div>
-                            @*<div class="ml-auto">
-                                    <select class="custom-select b-0">
-                                        <option selected="">January</option>
-                                        <option value="1">February</option>
-                                        <option value="2">March</option>
-                                        <option value="3">April</option>
-                                    </select>
-                                </div>*@
                         </div>
 
                         <div class="table-responsive m-t-20 no-wrap">
@@ -67,7 +59,30 @@
                                             <td><img src="~/img/accept.png" style="width:50px;height:50px;"></td>
                                             <td><span class="label label-success label-rounded">Low</span></td>
                                             <td>@item.DateFound.ToShortDateString()</td>
-                                            <td> <a asp-action="ContactUserForMeeting"></a></td>
+                                            <td>
+                                                <form method="post" asp-action="ContactLostFinder">
+                                                    <input type="hidden" name="mail" value="@item.ApplicationUser.Email" />
+                                                    <input type="hidden" name="Id" value="@item.Id" />
+                                                    <input type="hidden" name="Date" value="@item.CreatedOn.ToString()" />
+                                                    <input type="hidden" name="Name" value="@item.ApplicationUser.FirstName" />
+                                                    @if (item.IsAdminValid == true)
+                                                    {
+                                                        <input type="submit" value="Validated" class="btn btn-primary" disabled />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="submit" value="Validate" class="btn btn-primary" />
+                                                    }
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form method="post" asp-action="ContactValidUsers">
+                                                    <input type="hidden" name="id" value="@item.LostItem.Id" />
+                                                </form>
+                                            </td>
+                                            <td><a asp-action="LostDetails" asp-route-id="@item.Id" class="btn btn-primary"> Details </a>  </td>
+
+                                            @* <td> <a asp-action="ContactUserForMeeting"></a></td>*@
                                         </tr>
                                     }
                                 </tbody>

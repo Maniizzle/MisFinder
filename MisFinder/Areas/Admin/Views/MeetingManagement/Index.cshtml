@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "ValidatedFoundItemsClaim";
+}
+
+<h1>ValidatedFoundItemsClaim</h1>
+@model PaginatedList<Meeting>
+@{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="page-wrapper" style="min-height: 261px;">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Lost Item Claim</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item active">Claims</li>
+                </ol>
+            </div>
+            <div class="col-md-7 align-self-center text-right d-none d-md-block">
+            </div>
+            <div class="">
+                <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <div class="row">
+            <!-- Column -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div>
+                                <h5 class="card-title"></h5>
+                            </div>
+                            @*<div class="ml-auto">
+                                    <select class="custom-select b-0">
+                                        <option selected="">January</option>
+                                        <option value="1">February</option>
+                                        <option value="2">March</option>
+                                        <option value="3">April</option>
+                                    </select>
+                                </div>*@
+                        </div>
+
+                        <div class="table-responsive m-t-20 no-wrap">
+                            <table class="table vm no-th-brd pro-of-month">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Selected</a></th>
+                                        <th>Location</th>
+
+                                        <th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="width:50px;"><span class="round">S</span></td>
+                                            <td>
+
+                                                @if (item.LostItem == null)
+                                                {
+                                                    <span>@item.FoundItem.NameOfFoundItem </span>
+                                                }
+                                                @if (item.FoundItem == null)
+                                                {
+                                                    <span> @item.LostItem.NameOfLostItem </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.IsSelectFirstDate == true)
+                                                {
+                                                    <span>@item.UserSelectedDate.ToShortDateString()</span>}
+                                                @if (item.IsSelectSecondDate == true)
+                                                {
+
+                                                    <span>@item.USerSelectedDate2.ToShortDateString()</span>}
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                                                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |*@
+                                                <a asp-action="Details" asp-route-id=""><img src="~/img/mo.svg" style=width:30px; title="Details" height:30px;" /></a>
+                                            </td>
+
+                                            @*   <img src="~/img/accept.png" style="width:50px;height:50px;">*@
+
+                                            <td><a asp-action="FoundDetails" asp-route-id="@item.Id" class="btn btn-primary"> Details </a>  </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @prevDisabled">
+                            Previous
+                        </a>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                           class="btn btn-default @nextDisabled">
+                            Next
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <footer class="footer"> © @DateTime.UtcNow.Year MisFinder  </footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+</div>

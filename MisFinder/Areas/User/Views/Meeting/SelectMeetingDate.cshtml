@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "MeetingDate";
+}
+
+<form asp-action="SelectMeetingDate" method="post">
+    <div class="row" onload="ola()">
+        <div class="col-lg-6">
+            <h5> Kindly Select two different Days which you can be available to return Item </h5>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label name class="control-label">First Day</label>
+                <input placeholder="Selected date" id="datePickerId" type="date" name="firstDate" class="form-control daterangepicker">
+            </div>
+            <div class="form-group">
+                <label class="control-label"> Second Day</label>
+                <input placeholder="Selected date" id="datePickerId2" type="date" name="secondDate" class="form-control daterangepicker">
+            </div>
+            <input type="hidden" name="Id" value="@ViewBag.Id" />
+            <input type="hidden" name="user" value="@ViewBag.User" />
+
+            <input type="Submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+
+<script>
+    //   $('#datePickerId').datepicker('minDate', '0');
+    //document.onload(function () {
+    //    document.getElementById("datePickeerId2").min = new Date().toISOString().split("T")[0];
+    datePickerId.min = new Date().toISOString().split("T")[0];
+    datePickerId2.min = new Date().toISOString().split("T")[0];
+    //});
+</script>

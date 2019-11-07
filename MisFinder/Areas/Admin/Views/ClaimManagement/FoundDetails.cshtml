@@ -1,0 +1,82 @@
+﻿@model FoundItemClaim
+@{
+    ViewData["Title"] = "Details";
+    var photopath = "Photos/" + $"{Model.Image?.ImagePath ?? "home 1081.jpg"}";
+    var phto = "Photos/" + $"{Model.FoundItem.Image?.ImagePath ?? "home 1081.jpg"}";
+
+}
+<div class="page-wrapper" style="min-height: 261px;">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+
+        @* <div class="row page-titles">*@
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Found Item</h3>
+
+                <div class="card" style="background-color:white; border-radius:5px;height:400px;">
+
+                    <div>
+                        <div style="font-size:15px;">
+                            <a href="~/@phto"> <img style="width:150px;height:150px;" src="~/@phto" /></a>
+                        </div>
+                        <span><strong>Name:</strong> @Model.FoundItem.NameOfFoundItem</span><br />
+                        <span>
+                            <strong>Location:</strong>@Model.FoundItem.ExactArea
+                        </span><br />
+                        <span><strong>Area:</strong>  @Model.FoundItem.WhereItemWasFound</span><br />
+                        <span><strong>Description:</strong>  @Model.FoundItem.Description</span><br />
+                    </div>
+                </div>
+                @*  <div class="form-control">*@
+                @*</div>*@
+            </div>
+
+            <div class="col-lg-6">
+
+                @*<div class="form-control">*@
+                <h3> Claim </h3>
+                <div class="card" style="background-color:white; border-radius:5px;height:400px;">
+
+                    <div>
+                        <a href="~/@photopath"> <img style="width:150px;height:150px;" src="~/@photopath" /></a>
+
+                        <span>
+                            <strong></strong>
+                        </span><br />
+                        @*<span>
+                                <strong>Location:</strong>@Model.
+                            </span>*@<br />
+                        <span><strong>Area:</strong>  @Model.WhereItemWasLost</span><br />
+                        <span><strong>Description:</strong>  @Model.Description</span><br />
+                    </div>
+                </div>
+                @*  <div class="form-control">*@
+                @*</div>*@
+            </div>
+            @*</div>*@
+        </div>
+        <div>
+            <form method="post" asp-action="ContactFoundFinder">
+                <input type="hidden" name="mail" value="@Model.FoundItem.FoundItemUser.Email" />
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="Date" value="@Model.CreatedOn.ToString()" />
+                <input type="hidden" name="Name" value="@Model.FoundItem.FoundItemUser.FirstName" />
+                @if (Model.IsAdminValid == true)
+                {
+                    <span>   <input type="submit" value="Validated" class="btn btn-primary" disabled /></span>
+                }
+                else
+                {
+                    <span><input type="submit" value="Validate" class="btn btn-primary" /></span>
+                }
+            </form>
+            <a asp-action="ValidatedFoundItemsClaim" class="btn btn-primary"> Back </a>
+        </div>
+    </div>
+</div>
+</div>

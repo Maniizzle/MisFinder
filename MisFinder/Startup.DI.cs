@@ -27,6 +27,7 @@ namespace MisFinder
             services.AddTransient<IUtility, UtilityService>();
             services.AddTransient<IEmailNotifier, Notifier>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IMeetingRepository, MeetingRepository>();
             var config = new EmailConfiguration();
             Configuration.Bind("EmailData", config);
             services.AddSingleton(config);

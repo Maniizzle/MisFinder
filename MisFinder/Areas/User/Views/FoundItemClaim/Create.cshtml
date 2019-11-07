@@ -3,11 +3,15 @@
     ViewData["Title"] = "Create";
     var image = "Photos/home 1081.jpg";
 }
-
+<style>
+    .form-control {
+        border-radius: 31px;
+    }
+</style>
 <h3 class="container">  </h3>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
 
-<div class="row" onload="ola()">
-    <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row" onload="ola()" style=" margin-left:20px; margin-right:20px">
 
         <div class="col-md-6">
             <input type="hidden" asp-for="FoundItemId" />
@@ -18,13 +22,13 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="DateLost" class="control-label">Date Found</label>
-                <input placeholder="Selected date" id="datePickerId" type="date" name="DateMisplaced" class="form-control daterangepicker">
+                <label asp-for="DateLost" class="control-label">Date Lost</label>
+                <input placeholder="Selected date" id="datePickerId" type="date" name="DateLost" class="form-control daterangepicker">
                 <span asp-validation-for="DateLost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WhereItemWasLost" class="control-label"></label>
-                <input asp-for="WhereItemWasLost" class="form-control" placeholder="e.g, Ojota" />
+                <label asp-for="WhereItemWasLost" class="control-label">Location</label>
+                <input asp-for="WhereItemWasLost" class="form-control" placeholder="e.g  In a bar" />
                 <span asp-validation-for="WhereItemWasLost" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,9 +53,6 @@
                     <input asp-for="SpecificLocation" class="form-control" placeholder="e.g, In a bus" />
                     <span asp-validation-for="SpecificLocation" class="text-danger"></span>
                 </div>*@
-            <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-default" />
-            </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
@@ -59,10 +60,13 @@
                 <img class="rounded-circle" src="~/@image" style="margin-left:70px; margin-bottom:10px;" height="200" width="200" id="imagePreview" />
                 <input asp-for="Image" type="file" class="form-control" style="margin-left:70px; width:200px;" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" /> @*placeholder="upload Image" />*@
             </div>
+            <div class="form-group">
+                <input type="submit" value="Claim" class="btn btn-primary" />
+            </div>
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>

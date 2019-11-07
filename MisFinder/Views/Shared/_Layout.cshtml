@@ -100,14 +100,13 @@
                                             <ul class="dropdown-menu">
                                                 <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Items</a></li>
                                                 <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Items</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItemClaim" asp-action="Index">Lost Item Claims</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItemClaim" asp-action="Index">Found Item Claims</a></li>
 
-                                                <li class="nav-item submenus">
-                                                    <a class="nav-link" id="two" asp-area="User" asp-action="Claims">Claims</a>
-                                                    <ul class="dropdown-menu-right">
-                                                        <li class="nav-it"><a class="nav-link" asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Item Claims</a></li>
-                                                        <li class="nav-it"><a class="nav-link" asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Ite Claims</a></li>
-                                                    </ul>
-                                                </li>
+                                                @*<li class="nav-item submenus">
+                                                        <a class="nav-link" id="two" asp-area="User" asp-action="Claims">Claims</a>
+                                                        <ul class="dropdown-menu-right"></ul>
+                                                    </li>*@
                                             </ul>
                                         }
                                         else
@@ -116,6 +115,10 @@
 
                                             <ul class="dropdown-menu">
                                                 <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItem" asp-action="Index">Lost Items</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItem" asp-action="Index">Found Items</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="LostItemClaim" asp-action="Index">Lost Item Claims</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-area="User" asp-controller="FoundItemClaim" asp-action="Index">Found Item Claims</a></li>
                                             </ul>
                                         }
                                     </li>

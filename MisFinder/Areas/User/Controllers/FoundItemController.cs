@@ -13,6 +13,7 @@ using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Utility;
 using Microsoft.AspNetCore.Http;
 using MisFinder.Data.Notification.Email;
+using System.ComponentModel.DataAnnotations;
 
 namespace MisFinder.Areas.User.Controllers
 
@@ -24,18 +25,22 @@ namespace MisFinder.Areas.User.Controllers
         private readonly IUtility utility;
         private readonly IFoundItemRepository repository;
         private readonly IStateRepository staterepository;
+        private readonly ILocalGovernmentRepository lgaRepository;
         private readonly IFoundItemClaimRepository claimRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IEmailNotifier emailNotifier;
 
         public FoundItemController(MisFinderDbContext context, IUtility utility,
-            IFoundItemRepository repository, IStateRepository staterepository, IFoundItemClaimRepository claimRepository,
+            IFoundItemRepository repository, IStateRepository staterepository,
+            ILocalGovernmentRepository lgaRepository,
+            IFoundItemClaimRepository claimRepository,
             UserManager<ApplicationUser> userManager, IEmailNotifier emailNotifier)
         {
             this.context = context;
             this.utility = utility;
             this.repository = repository;
             this.staterepository = staterepository;
+            this.lgaRepository = lgaRepository;
             this.claimRepository = claimRepository;
             this.userManager = userManager;
             this.emailNotifier = emailNotifier;
@@ -120,15 +125,15 @@ namespace MisFinder.Areas.User.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var foundItem = repository.GetFoundItemById(id);
-
+            var foundItem = await repository.GetFoundItemById(id);
+            ViewBag.LGA = await lgaRepository.GetAllLGAByStateId(foundItem.LocalGovernment.StateId);
             if (foundItem == null)
             {
                 return NotFound();
@@ -251,21 +256,38 @@ namespace MisFinder.Areas.User.Controllers
             return repository.FoundItemExists(id);
         }
 
-        public async Task<IActionResult> Validate(int? id)
+        public async Task<IActionResult> Validate(int? id, string status)
         {
             if (id == null)
                 return NotFound();
             var claim = await claimRepository.GetFoundItemClaimById(id);
-            claim.IsValidated = true;
+            if (claim == null)
+                return NotFound();
+
+            if (status == "Valid")
+            { claim.Status = ClaimStatus.Valid; }
+            if (status == "InValid")
+            { claim.Status = ClaimStatus.Invalid; }
             claim.ValidatedOn = DateTime.Now;
-            string to = claim.FoundItem.FoundItemUser.Email;
-            var link = Url.Action("Meeting", "MeeetingManagement", new { area = "Admin" });
+
+            var link = Url.Action("ValidatedFoundItemsClaim", "ClaimManagement", new { area = "Admin" }, Request.Scheme);
+            System.IO.File.WriteAllText("validation.txt", link);
             var message = new Dictionary<string, string>
+                {
+                   {"ITEM",$"Found Item" },
+
+                   {"EmailLink",$"{link}" }
+                };
+
+            var usersInAdmin = await userManager.GetUsersInRoleAsync("Admin");
+            List<string> emails = new List<string>();
+            foreach (var user in usersInAdmin)
             {
-                {"FName",$"{claim.FoundItem.FoundItemUser.FirstName}"},
-                {"EMailLink",$"{link}" }
-            };
-            await emailNotifier.SendEmailAsync(to, "Meeting Date", message, "SetUpMeeting");
+                emails.Add(user.Email);
+            }
+
+            await emailNotifier.SendManyEmailAsync(emails, "Validation", message, "AlertAdmin");
+
             claimRepository.Save();
 
             return RedirectToAction("Claims", new { Id = claim.FoundItemId });

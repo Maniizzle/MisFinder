@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using MisFinder.Domain.Models.ViewModel;
 namespace MisFinder.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleAdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -23,7 +25,7 @@ namespace MisFinder.Areas.Admin.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Index() => View(roleManager.Roles);
+        public IActionResult Index() => View(roleManager.Roles.Where(c => c.Name != "System Admin"));
 
         //  public IActionResult Create() => View();
 
@@ -124,7 +126,8 @@ namespace MisFinder.Areas.Admin.Controllers
                     return View();
                 }
                 await userManager.AddToRoleAsync(user, model.Id);
-                return RedirectToAction("Index");
+                TempData["success"] = $"<script >alert(User Succeeessfully Added to {model.Id});</script>";
+                return RedirectToAction("Index", "UserManagement");
             }
             return View();
         }

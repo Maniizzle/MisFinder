@@ -1,4 +1,8 @@
 ﻿@model PaginatedList<ApplicationUser>
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@inject ILostItemRepository LostItemRepository
+@inject IFoundItemRepository FoundItemRepository
 @{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var secondpage = !Model.SecondPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -58,7 +62,11 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2"><a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Name</a></th>
-                                        <th>Blacklisted</th>
+                                        <th>Role</th>
+                                        <th>User Status</th>
+                                        <th>Lost Items</th>
+                                        <th>Found Items</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,15 +101,36 @@
                                             <td>
                                                 <h6>@item.FullName</h6>@*<small class="text-muted">@item.LocalGovernment.Name</small>*@
                                             </td>
+                                            <td>
+                                                @{
+                                                    var user = await UserManager.FindByIdAsync(item.Id);
+                                                    var roles = await UserManager.GetRolesAsync(user);
+                                                    foreach (var role in roles)
+                                                    {
+                                                        @role;
+                                                    }
+                                                }
+                                            </td>
                                             @if (item.IsBlackListed)
                                             {
-                                                <td><img src="~/img/accept.png" style="width:30px;height:30px;" /></td>}
+                                                <td><img src="~/img/del.png" style="width:30px;height:30px;" /></td>}
                                             else
                                             {
-                                                <td><img src="~/img/wrong.svg" style="width:30px;height:30px;" /></td>}
-                                            <td>
-                                                <a href="" data-toggle="modal" data-target="#DeleteModal"><img src="~/img/del.png" style="height:30px;width:30px;" /></a>
+                                                <td><img src="~/img/boy.svg" style="width:30px;height:30px;" /></td>}
+                                            <td style="width:50px;">
+                                                @{var lost = await LostItemRepository.GetLostItemsByUser(user);
+                                                    var count = lost.Count(); }
+                                                <span class="round">  @count</span>
                                             </td>
+                                            <td style="width:50px;">
+                                                @{var found = await FoundItemRepository.GetFoundItemsByUser(user);
+                                                    var fcount = lost.Count(); }
+                                                <span class="round">  @fcount</span>
+                                            </td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#DeleteModal" class="btn btn-primary">BlackList User </a>
+                                            </td>
+                                            @* <td><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit Role</a></td>*@
                                         </tr>
                                     }
                                 </tbody>
@@ -111,7 +140,7 @@
                         @*  <a asp-route-pageNumber="@(Model.PageIndex+1)" class="btn btn-default @secondpage">2</a>*@
                         <a asp-route-pageNumber="@(Model.PageIndex+1)" class="btn btn-default @nextDisabled">Next</a>
 
-                        @*<a asp-action="Index"
+                        @*<a asp-action="Index"nm
                                asp-route-sortOrder="@ViewData["CurrentSort"]"
                                asp-route-pageNumber="@(Model.PageIndex - 1)"
                                asp-route-currentFilter="@ViewData["CurrentFilter"]"

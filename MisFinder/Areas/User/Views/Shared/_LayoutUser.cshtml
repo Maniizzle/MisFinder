@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
-    <title>@ViewData["Title"] - CoreSamuraiWebApp</title>
+    <title>@ViewData["Title"] - Misfinder</title>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -17,6 +17,16 @@
         .container a {
             text-decoration: none;
         }
+
+        /*.footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: inherit;
+            color: inherit;
+            text-align: center;
+        }*/
     </style>
 </head>
 <body>
@@ -68,13 +78,11 @@
 
     @* <div style="position:relative; z-index:1; " class="container body-content">*@
     <div>
-        <div class="container">
-            @RenderBody()
-        </div>
+        @RenderBody()
     </div>
-    <footer style="position:relative;">
+    <footer>
         <hr />
-        <p>&copy; @DateTime.Now.Year - MisFinder</p>
+        <p style="text-align:center">&copy; @DateTime.Now.Year - MisFinder</p>
     </footer>
     <environment include="Development">
 

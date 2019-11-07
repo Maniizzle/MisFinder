@@ -105,6 +105,7 @@ namespace MisFinder.Areas.User.Controllers
                 };
                 claimRepository.Create(claim);
                 claimRepository.Save();
+
                 var ConfirmEmail = Url.Action("Claims", "FoundItem",
                      new { area = User, id = foundItem.Id }, Request.Scheme);
                 var message = new Dictionary<string, string>
@@ -210,6 +211,33 @@ namespace MisFinder.Areas.User.Controllers
             //            var twitter= new MiTwitter()
 
             return View(foundItemClaim);
+        }
+
+        public async Task<IActionResult> MakePayment()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+
+            CyberPay cyberPay = new CyberPay
+            {
+                Amount = 1500 * 100,
+                Description = "Delivery Payment ",
+                MerchantRef = Guid.NewGuid().ToString(),
+                ReturnUrl = @"https://localhost:5001/User/LostItemClaim/Index",
+                CustomerEmail = user.Email,
+                CustomerMobile = user.PhoneNumber ?? "",
+                CustomerName = $"{user.LastName} {user.FirstName}"
+            };
+            var res = await Processing.MakePaymentAsync(cyberPay);
+            if (res.Succeeded)
+            {
+                return Redirect(res.Data.RedirectUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         // POST: FoundItems/Delete/5

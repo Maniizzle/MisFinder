@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/Admin/assets/node_modules/jquery/jquery.min.js"></script>
-
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <link href="~/lib/DataTables/datatables.css" rel="stylesheet" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
     <title>MisFinder - Admin</title>
@@ -325,6 +325,14 @@
                                         <li><a href="app-compose.html">Compose Mail</a></li>*@
                                 </ul>
                             </li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-Box-Full"></i><span class="hide-menu">Meeting Management</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a asp-area="Admin" asp-controller="MeetingManagement" asp-action="Index">Meetings</a></li>
+                                    @*<li><a href="app-email-detail.html">Processed Claim </a></li>
+                                        <li><a href="app-compose.html">Compose Mail</a></li>*@
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                     <!-- End Sidebar navigation -->
@@ -364,6 +372,8 @@
         <!-- Style switcher -->
         <!-- ============================================================== -->
         <script src="~/Admin/assets/node_modules/styleswitcher/jQuery.style.switcher.js"></script>
+        @Html.Raw(TempData["success"])
+        @RenderSection("Scripts", false);
     </div>
 </body>
 </html>

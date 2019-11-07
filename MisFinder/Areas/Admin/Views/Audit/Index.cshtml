@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<div class="page-wrapper" style="min-height: 261px;">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+
+        @* <div class="row page-titles">*@
+
+        <div class="row">
+
+            <div class="card-body">
+                <form method="post" asp-controller="Company" asp-action="AddDriver" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div style="margin-bottom:10px;">
+                                <label \ class="required">First Name</label>
+                                <input type="text" style="border:1px solid gray; border-radius:5px; width: 350px;" />
+                            </div>
+                            <div validate-input m-b-16" data-validate="This field is required" style="margin-bottom:10px;">
+                                <label for="LastName" class="required">Last Name </label>
+                                <input type="text" style="border:1px solid gray; border-radius:5px; width: 350px;" />
+                            </div>
+                            <div validate-input m-b-16" data-validate="This field is required" style="margin-bottom:10px;">
+                                <label for="Email" class="required">Email</label>
+                                <input type="text" style="border:1px solid gray; border-radius:5px; width: 350px;" />
+                            </div>
+                            <div validate-input m-b-16" data-validate="This field is required" style="margin-bottom:10px;">
+                                <label for="PhoneNumber" class="required">Phone Number</label>
+                                <input type="text" style="border:1px solid gray; border-radius:5px; width: 350px;" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-left:40px;">
+                            <div validate-input m-b-16" data-validate="This field is required" style="margin-bottom:10px;">
+                                <label for="Address" class="required">Address</label>
+                                <input type="text" style="border:1px solid gray; border-radius:5px; width: 350px;" />
+                            </div>
+                            <div validate-input m-b-16" data-validate="This field is required" style="margin-bottom:10px;">
+                                <label for="Password" class="required">Password</label>
+                                <input type="text" style="border:1px solid gray; border-radius:5px; width: 350px;" />
+                            </div>
+                            <div validate-input m-b-16" style="margin-bottom:10px;">
+                                <label for="Image" class="required">Passport Photograph</label>
+                                <div>
+                                    <div class="value">
+                                        <div class="input-group js-input-file">
+                                            <input class="input-file" type="file" id="file">
+                                            <label class="label--file" for="file">Choose file</label>
+                                            <span class="input-file__info">No file chosen</span>
+                                        </div>
+                                        <div class="label--desc">Upload driver's passport photograph. Jpeg or Png format with a max file size 30 KB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn--radius btn--blue-2" type="submit" style="align-self:center;">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
