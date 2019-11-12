@@ -12,105 +12,109 @@
     .smallModal {
         width: 300px;
     }
+
+    .container-fluid {
+        font-family: cursive serif sans-serif;
+    }
 </style>
+<div class="container-fluid">
+    <h3 class="container"> <a asp-action="Create" class="btn btn-outline-primary">Register your Item</a> </h3>
+    @if (Model.Count() == 0 || Model == null)
+    {
+        <Div><h4>No Lost Items </h4> </Div>
+    }
+    else
+    {
 
-<h3 class="container"> <a asp-action="Create" class="btn btn-outline-primary">Register your Item</a> </h3>
-@if (Model.Count() == 0 || Model == null)
-{
-    <Div><h4>No Lost Items </h4> </Div>
-}
-else
-{
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Lost Item
+                        @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
+                    </th>
+                    <th>
+                        State
+                    </th>
+                    <th>
+                        Location
+                        @*@Html.DisplayNameFor(model => model.IsFound)*@
+                    </th>
+                    <th>
+                        Date Misplaced
+                    </th>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Lost Item
-                    @*  @Html.DisplayNameFor(model => model.NameOfLostItem)*@
-                </th>
-                <th>
-                    State
-                </th>
-                <th>
-                    Location
-                    @*@Html.DisplayNameFor(model => model.IsFound)*@
-                </th>
-                <th>
-                    Date Misplaced
-                </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Claims
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content smallModal">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
 
-                <th>
-                    Status
-                </th>
-                <th>
-                    Claims
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content smallModal">
-                            <div class="modal-header text-center">
-                                <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                <p>Are you sure you Want to Delete the Item</p>
-                            </div>
-                            <div class="modal-footer">
-                                <form asp-action="Deletes" method="post">
-                                    <input type="hidden" name="Id" value="@item.Id" />
-                                    <input type="submit" value="Delete" class="btn btn-success" />
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </form>
+                                <div class="modal-body">
+                                    <p>Are you sure you Want to Delete the Item</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form asp-action="Deletes" method="post">
+                                        <input type="hidden" name="Id" value="@item.Id" />
+                                        <input type="submit" value="Delete" class="btn btn-success" />
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NameOfLostItem)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LocalGovernment.State.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ExactArea)
-                    </td>
-                    <td>
-                        @item.DateMisplaced.ToShortDateString()
-                    </td>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameOfLostItem)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LocalGovernment.State.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExactArea)
+                        </td>
+                        <td>
+                            @item.DateMisplaced.ToShortDateString()
+                        </td>
 
-                    @{if (item.IsFound == true)
-                        {
-                            <td>  Closed </td>}
-                        else
-                        {
-                            <td> Pending </td>}
-                    }
+                        @{if (item.IsFound == true)
+                            {
+                                <td>  Closed </td>}
+                            else
+                            {
+                                <td> Pending </td>}
+                        }
 
-                    <td>
-                        <a asp-area="User" asp-controller="LostItem" asp-action="Claims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id"><img src="~/img/edit.svg" style="height:20px;width:20px;" /></a> |
-                        <a asp-action="Details" asp-route-id="@item.Id"><img src="~/img/eye.svg" style="height:20px;width:20px;" /></a> |
+                        <td>
+                            <a asp-area="User" asp-controller="LostItem" asp-action="Claims" asp-route-id="@item.Id" class="btn btn-info" role="button">@item.LostItemClaims.Count</a>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id"><img src="~/img/edit.svg" style="height:20px;width:20px;" /></a> |
+                            <a asp-action="Details" asp-route-id="@item.Id"><img src="~/img/eye.svg" style="height:20px;width:20px;" /></a> |
 
-                        <a data-toggle="modal" data-target="#DeleteModal"><img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
+                            <a data-toggle="modal" data-target="#DeleteModal"><img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 @*<script src="~/lib/jquery/dist/jquery.js"></script>*@

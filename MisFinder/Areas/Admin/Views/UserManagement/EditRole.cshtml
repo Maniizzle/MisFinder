@@ -1,0 +1,115 @@
+﻿@*@model EditRoleViewModel
+    @{
+        ViewData["Title"] = "EditRole";
+    }
+
+    <div class="page-wrapper" style="min-height: 261px;">
+
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Users</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Home</a></li>
+                        <li class="breadcrumb-item active">Edit Role</li>
+                    </ol>
+                </div>
+                <div class="col-md-7 align-self-center text-right d-none d-md-block">
+                </div>
+                <div class="">
+                    <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                </div>
+                <div class="row" style="width:1069px; height:329px;">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Roles</h4>
+                                <div class="table-responsive">
+                                    <table class="table color-table purple-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Role</th>
+                                                <th>Users</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.Roles.Count == 0)
+                                            {
+                                                <tr><td colspan="4" class="text-center">No Roles</td></tr>
+                                            }
+                                            else
+                                            {
+                                                foreach (var role in Model.Roles)
+                                                {
+                                                    // var rolee = role.Id;
+                                                    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content smallModal">
+                                                                <div class="modal-header text-center">
+                                                                    <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <p>Are you sure you Want to Delete the Role</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form asp-area="Admin" asp-controller="RoleAdmin" asp-action="Delete" method="post">
+                                                                        <input type="hidden" name="Id" value="" />
+                                                                        <input type="submit" value="Delete" class="btn btn-success" />
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <tr>
+                                                        <td>@role.Id</td>
+                                                        <td>@role.Name</td>
+                                                        <td> <a asp-action="EditRole" asp-route-id="@role.Id" title="Edit"><img src="~/img/edit.svg" style="height:20px;width:20px;" /></a></td>
+
+                                                        <td> <a href="" data-toggle="modal" data-target="#DeleteModal" name="@role.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a></td>
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Create Role</h4>
+
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <form asp-action="Create" method="post">
+                                    <div class="form-group">
+                                        <label for="name"></label>
+                                        <input name="name" class="form-control" />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

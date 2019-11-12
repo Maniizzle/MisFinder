@@ -1,19 +1,34 @@
-﻿@{
+﻿@model MeetingDateViewModel
+@{
     ViewData["Title"] = "MeetingDate";
 }
 
 <form asp-action="SelectMeetingDate" method="post">
-    <div class="row" onload="ola()">
+    <div class="row" onload="ola()" style=" margin-left:20px; margin-right:20px">
         <div class="col-lg-6">
-            <h5> Kindly Select two different Days which you can be available to return Item </h5>
+            <h5> Kindly Select two different Days and a Local Government which you can be available to return Item </h5>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label name class="control-label">First Day</label>
-                <input placeholder="Selected date" id="datePickerId" type="date" name="firstDate" class="form-control daterangepicker">
+                <input placeholder="Selected date" id="datePickerId" type="date" asp-for="FirstDate" class="form-control daterangepicker">
             </div>
             <div class="form-group">
                 <label class="control-label"> Second Day</label>
-                <input placeholder="Selected date" id="datePickerId2" type="date" name="secondDate" class="form-control daterangepicker">
+                <input placeholder="Selected date" id="datePickerId2" type="date" asp-for="SecondDate" class="form-control daterangepicker">
+            </div>
+            <div class="md-form mb-3">
+                <label class="control-label"> State </label>
+                @Html.DropDownListFor(m => m.StateId,
+              new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
+              "Select state",
+              new { @class = "form-control", @onchange="FillCity()",id="state" })
+                <span asp-validation-for="StateId" class="text-danger"></span>
+            </div>
+            <div class="md-form mb-3">
+                <label class="control-label"> LGA</label>
+                <select id="lga" class="form-control" asp-for="LGAId ">
+                    <option selected="selected" name="" value="">Please select LGA</option>
+                </select>
             </div>
             <input type="hidden" name="Id" value="@ViewBag.Id" />
             <input type="hidden" name="user" value="@ViewBag.User" />
@@ -30,4 +45,27 @@
     datePickerId.min = new Date().toISOString().split("T")[0];
     datePickerId2.min = new Date().toISOString().split("T")[0];
     //});
+
+    function FillCity() {
+        $("#state").on('change', function () {
+            var val = this.value;
+        });
+        var stateId = $("#state").val();
+        //var selectedCountry = $("#state").children("option:selected").val()
+        $.ajax({
+            url: '/Home/LocalGovernments',
+            type: "GET",
+            dataType: "JSON",
+            data: { id: stateId },
+            success: function (cities) {
+                $("#lga").html(""); // clear before appending new list
+                $("#lga").append($('<option></option>').val("").html("Please select LGA"));
+                $.each(cities, function (i, city) {
+                    $("#lga").append(
+                        $('<option></option>').val(city.id).html(city.name));
+                });
+
+            }
+        });
+    }
 </script>

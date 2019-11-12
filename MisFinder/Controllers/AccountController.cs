@@ -128,7 +128,7 @@ namespace MisFinder.Controllers
                         return View();
                     }
 
-                    var result = await signInManager.PasswordSignInAsync(user, model.Password, true, false);
+                    var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
                     if (result.Succeeded)
                     {   //resetting their lockout count
                         await userManager.ResetAccessFailedCountAsync(user);

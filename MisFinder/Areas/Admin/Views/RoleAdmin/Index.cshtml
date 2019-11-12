@@ -17,6 +17,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Role</th>
+                                            <th>Users</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -58,6 +59,8 @@
                                                 <tr>
                                                     <td>@role.Id</td>
                                                     <td>@role.Name</td>
+                                                    <td> <a asp-action="EditRole" asp-route-id="@role.Id" title="Edit"><img src="~/img/edit.svg" style="height:20px;width:20px;" /></a></td>
+
                                                     <td> <a href="" data-toggle="modal" data-target="#DeleteModal" name="@role.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a></td>
                                                 </tr>
 
@@ -88,41 +91,6 @@
                     </div>
                 </div>
             </div>
-
-            @*<div class="bg-primary m-1 p-1"><h4>Roles</h4></div>
-                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                            <table class="table table-sm table-bordered table-bordered">
-                                <tr><th>ID</th><th>Name</th><th>Users</th><th></th></tr>
-                                @if (Model.Count() == 0)
-                                {
-                                    <tr><td colspan="4" class="text-center">No Roles</td></tr>
-                                }
-                                else
-                                {
-                                    foreach (var role in Model)
-                                    {
-                                        <tr>
-                                            <td>@role.Id</td>
-                                            <td>@role.Name</td>
-                                            <td identity-role="@role.Id"></td>
-                                            <td>
-                                                <form asp-action="Delete" asp-route-id="@role.Id" method="post">
-                                                    <a class="btn btn-sm btn-primary" asp-action="Edit"
-                                                       asp-route-id="@role.Id"><img src="~/img/edit.svg" style="height:20px;width:20px;" /></a>
-                                                    <button type="submit"
-                                                            class="btn btn-sm btn-danger">
-                                                        Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </table>
-                            <a class="btn btn-primary" asp-action="Create">Create</a>
-                        </div>
-                    </div>
-                </div>*@
         </div>
     </div>
 </div>

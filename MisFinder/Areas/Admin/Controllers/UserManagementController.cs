@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MisFinder.Data.Pagination;
 using MisFinder.Domain.Models;
+using MisFinder.Domain.Models.ViewModel;
 
 namespace MisFinder.Areas.Admin.Controllers
 {
@@ -16,10 +17,12 @@ namespace MisFinder.Areas.Admin.Controllers
     public class UserManagementController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public UserManagementController(UserManager<ApplicationUser> userManager)
+        public UserManagementController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -58,15 +61,48 @@ namespace MisFinder.Areas.Admin.Controllers
             return View(await PaginatedList<ApplicationUser>.CreateAsync(users.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        [HttpPost, ActionName("Deletes")]
-        public async Task<IActionResult> SoftDelete(string id)
+        [HttpPost, ActionName("BlackList")]
+        public async Task<IActionResult> BlackListUser(string id)
         {
             if (id == null)
             { return NotFound(); }
             var user = await userManager.FindByIdAsync(id);
             user.IsBlackListed = true;
             await userManager.UpdateAsync(user);
+            return RedirectToAction(nameof(Index), new { pageNumber = 2 });
+        }
+
+        public async Task<IActionResult> Approve(string id)
+        {
+            if (id == null)
+            { return NotFound(); }
+            var user = await userManager.FindByIdAsync(id);
+            user.IsBlackListed = false;
+            await userManager.UpdateAsync(user);
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> EditRole(string id)
+        {
+            if (id == null)
+                return NotFound();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+            //var rol=roleManager.
+            var roles = await userManager.GetRolesAsync(user);
+            var nroles = roles.ToList();
+            //var model = new EditRoleViewModel
+            //{
+            //    Id = id,
+            //    Roles = nroles,
+            //    User = user.FullName
+            //};
+            return View();
+        }
+
+        //public IActionResult RemoveRole(string id, string Role)
+        //{
+        //}
     }
 }

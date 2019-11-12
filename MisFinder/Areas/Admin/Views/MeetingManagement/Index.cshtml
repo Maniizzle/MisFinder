@@ -18,10 +18,12 @@
         <!-- ============================================================== -->
         <div class="row page-titles">
             <div class="col-md-5 align-self-center">
-                <h3 class="text-themecolor">Lost Item Claim</h3>
+                <h3 class="text-themecolor">Meetings</h3>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Claims</li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="Index" asp-controller="Dashboard">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Meetings</li>
                 </ol>
             </div>
             <div class="col-md-7 align-self-center text-right d-none d-md-block">
@@ -55,18 +57,17 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Status</th>
+                                        <th> Status </th>
+                                        <th>Item Type</th>
                                         <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Selected</a></th>
-                                        <th>Location</th>
-
-                                        <th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td style="width:50px;"><span class="round">S</span></td>
                                             <td>
 
                                                 @if (item.LostItem == null)
@@ -79,24 +80,45 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.IsSelectFirstDate == true)
-                                                {
-                                                    <span>@item.UserSelectedDate.ToShortDateString()</span>}
-                                                @if (item.IsSelectSecondDate == true)
-                                                {
-
-                                                    <span>@item.USerSelectedDate2.ToShortDateString()</span>}
+                                                @item.Status
                                             </td>
-                                            <td></td>
                                             <td>
-                                                @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                                                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |*@
-                                                <a asp-action="Details" asp-route-id=""><img src="~/img/mo.svg" style=width:30px; title="Details" height:30px;" /></a>
+                                                @if (item.LostItem == null)
+                                                {
+                                                    <span>Found </span>
+                                                }
+                                                @if (item.FoundItem == null)
+                                                {
+                                                    <span> Lost </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @{ if (item.IsSelectFirstDate == true)
+                                                    {
+                                                        <span>@item.UserSelectedDate.ToShortDateString()</span>}
+                                                    else if (item.IsSelectSecondDate == true)
+                                                    {
+
+                                                        <span>@item.USerSelectedDate2.ToShortDateString()</span>}
+                                                    else
+                                                    {<span> Pending </span> }
+                                                }
                                             </td>
 
                                             @*   <img src="~/img/accept.png" style="width:50px;height:50px;">*@
+                                            <td>
+                                                <a asp-action="Details" asp-route-id="@item.Id"><img src="~/img/mo.svg" style=width:30px; title="Details" height:30px;" /></a>
+                                            </td>
+                                            <td style="width:150px;">
+                                                <form asp-action="UpdateResult" method="post">
 
-                                            <td><a asp-action="FoundDetails" asp-route-id="@item.Id" class="btn btn-primary"> Details </a>  </td>
+                                                    <select class="form-control" name="status" asp-items="@Html.GetEnumSelectList<MeetingStatus>()">
+                                                        <option selected="selected" name="status" value="">Update Status</option>
+                                                    </select>
+                                                    <input type="hidden" name="Id" value="@item.Id" />
+                                                    <input type="submit" value="Update Status" />                                                    @*<a asp-action="FoundDetails" asp-route-id="@item.Id" class="btn btn-primary"> Update </a>*@
+                                                </form>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

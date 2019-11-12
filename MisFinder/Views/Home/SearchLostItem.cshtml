@@ -14,6 +14,10 @@
         margin: 2px;
     }
 
+    /*.card {
+        line-height: 0px;
+        font-size: 12px;
+    }*/
     /* Create four equal columns that floats next to each other */
     .column {
         float: left;
@@ -32,6 +36,12 @@
     @@media screen and (max-width: 900px) {
         .column {
             width: 50%;
+        }
+
+        @@media (min-width: 1200px) {
+            .container {
+                max-width: 1300px;
+            }
         }
         /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
         @@media screen and (max-width: 600px) {
@@ -63,31 +73,16 @@
             visibility: visible;
         }
 
-    .card {
-        background: #272c33;
-        position: relative;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        min-width: 0;
-        word-wrap: break-word;
-        /*background-color: #fff;*/
-        background-clip: border-box;
-        border: 1px solid rgba(0,0,0,.125);
-        border-radius: .25rem;
-    }
-
     *, ::after, ::before {
         box-sizing: border-box;
     }
 
     .card-body {
         border-radius: 3px;
-        5px;
+        background-color: #fff;
+        color: black;
+        padding: 0.9rem;
+        font-family: cursive,serif,sans-serif;
     }
 </style>
 
@@ -107,91 +102,64 @@
     {<br />
         <br />
         <h4>Lost Items Found</h4>
-        <div class="contacts row">
 
-            @foreach (var item in Model)
-            {
-                var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
+        @foreach (var item in Model)
+        {
+            var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
 
-                <div class="col-lg-3 col-md-6">
-                    <!-- Card -->
-                    <div class="card">
-                        <img class="card-img-top img-responsive" style="height:200px;" src="~/@photopath" alt="Card image cap">
-                        <div class="card-body">
-                            <h4 class="card-title">@item.NameOfLostItem</h4>
-                            <li class="p-l-0">@item.DateMisplaced.ToShortDateString()</li>
-                            <p class="card-text">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
-                            <p>@item.ExactArea</p>
-                            @*  <a href="#" class="btn btn-primary">Go somewhere</a>*@
+            <div class="col-lg-6">
+                <!-- Card -->
 
-                            <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img src="~/img/refund.svg" style="width:50px;height:50px;" /></a>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4" style="padding-right:0px;">
+                                <img class="card-img-top img-responsive" style="padding:0px;" width="100" src="~/@photopath" alt="Card image cap">
+                            </div>
+                            <div class="col-lg-7" style="padding-right:0px;">
+                                <h4 class="card-title" style="margin-bottom:0px;">
+                                    @item.NameOfLostItem
+                                </h4>
+                                <span style="float:right;">@item.DateMisplaced.ToShortDateString()</span>
+                                <p class="card-text" style="clear:right;">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
+                                <p style="float:left;font-size:small"><small>lost at: </small>@item.ExactArea</p>
+                                @*  <a href="#" class="btn btn-primary">Go somewhere</a>*@
+
+                                <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img src="~/img/refund.svg" style="width:50px;height:50px;" /></a>
+                            </div>
                         </div>
                     </div>
                     <!-- Card -->
                 </div>
-            }
+            </div>
+        }
 
-            @*<div class="col-xl-2 col-lg-3 col-sm-4 col-5">
-                <div class="contacts__item">
-                  <a href=@photopath class="contacts__img">
-                            <img src=@photopath alt="" />
-                        </a>}
-
-                    <div class="contacts__info">
-                        <strong>@item.NameOfLostItem</strong>
-                        <small>@item.Description</small>
-                        <small>@item.ExactArea</small>
-                    </div>
-                    <a asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img style="height:40px; width: 40px" src="~/img/icon/lostclaimicon.png" /></a>
-
-                    @*                    <button class="contacts__btn">Following</button>*@
-            @*</div>
-                </div>*@
-            @*<div class="container">
-                    <div class="row">
-
-                        <div class="col">
-                            <div class="card ola" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h1 class="card-body">@item.Description</h1>
-                                   <p>@item.ExactArea </p>
-                                    <p>@item.DateMisplaced.ToShortDateString()</p>
-                                    <a id="icon"><img src="~/img/icon/lostclaimicon.png" /></a>
-                                    <span class="tooltiptext">Tooltip text</span>
-                                    <a href="#" class="card-link">Another link</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-
-            <script>
-                datePickerId.max = new Date().toISOString().split("T")[0];
-                datePickerId2.max = new Date().toISOString().split("T")[0];
-
-                function FillCity() {
-                    $("#state").on('change', function () {
-                        var val = this.value;
-                    });
-                    var stateId = $("#state").val();
-                    //var selectedCountry = $("#state").children("option:selected").val()
-                    $.ajax({
-                        url: '/Home/LocalGovernments',
-                        type: "GET",
-                        dataType: "JSON",
-                        data: { id: stateId },
-                        success: function (cities) {
-                            $("#lga").html(""); // clear before appending new list
-                            $("#lga").append($('<option></option>').val("").html("Please select LGA"));
-                            $.each(cities, function (i, city) {
-                                $("#lga").append(
-                                    $('<option></option>').val(city.id).html(city.name));
-                            });
-
-                        }
-                    });
-                }
-            </script>
-        </div>
     }
 </div>
+<script>
+    datePickerId.max = new Date().toISOString().split("T")[0];
+    datePickerId2.max = new Date().toISOString().split("T")[0];
+
+    function FillCity() {
+        $("#state").on('change', function () {
+            var val = this.value;
+        });
+        var stateId = $("#state").val();
+        //var selectedCountry = $("#state").children("option:selected").val()
+        $.ajax({
+            url: '/Home/LocalGovernments',
+            type: "GET",
+            dataType: "JSON",
+            data: { id: stateId },
+            success: function (cities) {
+                $("#lga").html(""); // clear before appending new list
+                $("#lga").append($('<option></option>').val("").html("Please select LGA"));
+                $.each(cities, function (i, city) {
+                    $("#lga").append(
+                        $('<option></option>').val(city.id).html(city.name));
+                });
+
+            }
+        });
+    }
+</script>

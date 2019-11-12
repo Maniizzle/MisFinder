@@ -20,7 +20,7 @@
             <div class="col-md-5 align-self-center">
                 <h3 class="text-themecolor">Lost Item Claims</h3>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Home</a></li>
                     <li class="breadcrumb-item active">Lost Item Claims</li>
                 </ol>
             </div>
@@ -55,6 +55,7 @@
                                         <th colspan="2"><a asp-action="LostItemClaims" asp-route-sortOrder="@ViewBag.NameSortParm">Name </a></th>
                                         <th>Location</th>
                                         @*<th>Category</th>*@
+                                        <th>Status</th>
                                         <th><a asp-action="LostItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Misplaced </a></th>
                                         <th></th>
                                         <th></th>
@@ -73,10 +74,33 @@
                                             @*  <td><span class="label label-success label-rounded">Low</span></td>*@
                                             <td>@item.DateFound.ToShortDateString()</td>
                                             <td>
+                                                @if (item.Status == ClaimStatus.Successful)
+                                                {
+                                                    <span class="label label-success label-rounded">Cleared</span>
+
+                                                }
+                                                @if (item.Status == ClaimStatus.Pending)
+                                                {
+                                                    <span class="label label-warning label-rounded">Pending</span>
+
+                                                }
+                                                @if (item.Status == ClaimStatus.Invalid)
+                                                {
+                                                    <span class="label label-danger label-rounded">Invalid</span>
+
+                                                }
+
+                                                @if (item.Status == ClaimStatus.Valid)
+                                                {
+                                                    <span class="label label-success label-rounded">Valid</span>
+
+                                                }
+                                            </td>
+                                            <td>
                                                 <a href="" data-toggle="modal" data-target="#DeleteModal" name="@item.Id" value="@item.Id"> <img src="~/img/delete.svg" style="height:20px;width:20px;" /></a>
                                             </td>
 
-                                            <td><a href=""><img src="~/img/mo.svg" style=width:30px; title="Details" height:30px;" /></a></td>
+                                            @* <td><a href=""><img src="~/img/mo.svg" style=width:30px; title="Details" height:30px;" /></a></td>*@
                                         </tr>
                                         <tr>
                                             <td colspan="6" class="hiddenRow"><div class="accordian-body collapse" id="demo1"> Demo1 </div> </td>

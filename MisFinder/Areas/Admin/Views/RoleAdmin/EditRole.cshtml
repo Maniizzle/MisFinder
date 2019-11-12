@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "EditRole";
+}
+
+@model EditRoleViewModel
+@{
+    ViewData["Title"] = "EditRole";
+}
+<link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    #select, #select1 {
+        background-color: white;
+        color: black;
+    }
+
+    .select2-container {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+<div class="page-wrapper" style="min-height: 261px;">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Users</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Edit Role</li>
+                </ol>
+            </div>
+            <div class="col-md-7 align-self-center text-right d-none d-md-block">
+            </div>
+            <div class="">
+                <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+            </div>
+            <div class="row" style="width:1069px; height:329px;">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Role : @Model.RoleName</h3>
+                            <hr />
+                            <h4>Users</h4>
+
+                            @foreach (var user in Model.Users)
+                            {
+                                <p>  @user </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <form asp-action="RemoveFromRole" method="post">
+                                <input type="hidden" asp-for="Id" />
+                                <h4 class="card-title">Users in @Model.RoleName</h4>
+                                <hr />
+                                <div class="form-group">
+                                    @*  <label asp-for="UserName" class="control-label"> </label>*@
+
+                                    @Html.DropDownListFor(m => m.UserName,
+                                    new SelectList(Model.Users, "Email", "Email"),
+                                        "Remove User from Role",new {@class= "form-control", @id="select", @style ="width:250px; color:Black;" })
+                                </div>
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Remove " />
+                                @*<a asp-action="Index" class="btn btn-secondary">Cancel</a>*@
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#select,#select1").select2();
+    });
+</script>
+<script src="~/lib/select2/dist/js/select2.min.js"></script>

@@ -3,6 +3,8 @@
 @inject RoleManager<IdentityRole> RoleManager
 @inject ILostItemRepository LostItemRepository
 @inject IFoundItemRepository FoundItemRepository
+@inject IFoundItemClaimRepository FoundItemClaimRepository
+@inject ILostItemClaimRepository LostItemClaimRepository
 @{ var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var secondpage = !Model.SecondPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -20,7 +22,7 @@
             <div class="col-md-5 align-self-center">
                 <h3 class="text-themecolor">Users</h3>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Home</a></li>
                     <li class="breadcrumb-item active">Users</li>
                 </ol>
             </div>
@@ -66,6 +68,8 @@
                                         <th>User Status</th>
                                         <th>Lost Items</th>
                                         <th>Found Items</th>
+                                        <th>Lost Item Claims</th>
+                                        <th>Found Item Claims</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -87,7 +91,7 @@
                                                         <p>Are you sure you Want to BlackList the User</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form asp-action="Deletes" method="post">
+                                                        <form asp-action="BlackList" method="post">
                                                             <input type="hidden" name="Id" value="@item.Id" />
                                                             <input type="submit" value="BlackList" class="btn btn-success" />
                                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -97,7 +101,7 @@
                                             </div>
                                         </div>
                                         <tr>
-                                            <td style="width:50px;"><span class="round">S</span></td>
+                                            <td style="width:50px;"><span class="round">@item.FullName[0]</span></td>
                                             <td>
                                                 <h6>@item.FullName</h6>@*<small class="text-muted">@item.LocalGovernment.Name</small>*@
                                             </td>
@@ -107,9 +111,10 @@
                                                     var roles = await UserManager.GetRolesAsync(user);
                                                     foreach (var role in roles)
                                                     {
-                                                        @role;
+                                                        <span> @role </span>
                                                     }
                                                 }
+                                                <a asp-action="EditRole" asp-route-id="@item.Id" title="Edit"><img src="~/img/edit.svg" style="height:10px;width:10px;" /></a>
                                             </td>
                                             @if (item.IsBlackListed)
                                             {
@@ -127,8 +132,21 @@
                                                     var fcount = lost.Count(); }
                                                 <span class="round">  @fcount</span>
                                             </td>
+                                            <td style="width:50px;">
+                                                @{var founditem = await FoundItemClaimRepository.GetFoundItemClaimsByUser(user);
+                                                    var ficount = founditem.Count(); }
+                                                <span class="round">  @ficount</span>
+                                            </td>
+                                            <td style="width:50px;">
+                                                @{var lostitemc = await LostItemClaimRepository.GetLostItemClaimsByUser(user);
+                                                    var loicount = founditem.Count(); }
+                                                <span class="round">  @loicount</span>
+                                            </td>
                                             <td>
-                                                <a href="" data-toggle="modal" data-target="#DeleteModal" class="btn btn-primary">BlackList User </a>
+                                                <a href="" data-toggle="modal" data-target="#DeleteModal" class="btn btn-primary">BlackList </a>
+                                            </td>
+                                            <td>
+                                                <a asp-action="Approve" asp-route-id="@item.Id" class="btn btn-primary">Approve </a>
                                             </td>
                                             @* <td><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit Role</a></td>*@
                                         </tr>

@@ -1,0 +1,76 @@
+﻿@model Meeting
+@{
+    ViewData["Title"] = "Details";
+    var name = "";
+    int? id = 0;
+    var reciever = Model.FoundItem.FoundItemClaims.Where(c => c.IsAdminValid == true);
+    foreach (var recieve in reciever)
+    {
+        name = recieve.ApplicationUser.FullName;
+        id = recieve.Id;
+    };
+    var venue = Model.MeetingVenue ?? "";
+    var admin = Model.IsAdminIncluded ? "Yes" : "No";
+}
+<style>
+    .row {
+        margin-left: 0px;
+    }
+</style>
+
+<div class="page-wrapper" style="min-height: 261px;">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Users</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+        </div>
+        <div class="col-md-7 align-self-center text-right d-none d-md-block">
+        </div>
+        <div class="">
+            <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+        </div>
+        <div class="row" style="width:969px; height:329px;">
+            <div class="col-lg-6">
+
+                <div class="card" style="padding:10px; font-family:cursive;font-size:16px;">
+                    <h4 style="font-family:cursive;">Item: @Model.FoundItem.NameOfFoundItem </h4>
+                    <hr />
+                    <p>Item Type: Found </p>
+                    <p>Meeting Date : @Model.MeeetingTime.ToShortDateString() </p>
+                    <p>Giver: @Model.FoundItem.FoundItemUser.FullName</p>
+                    <p>Receiver:@name </p>
+                    <p>Venue:@venue </p>
+                    <p>Admin Presence: No</p>
+                    <p>Status: @Model.Status</p>
+
+                    <a asp-action=""> </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" style="padding:10px;">
+                    <form asp-action="SetMeetingVenue" method="post">
+                        <input type="hidden" name="id" value="@id" />
+                        <input type="hidden" name="meetingid" value="@Model.Id" />
+                        <h3 style="padding:10px;">Message</h3>
+                        <select class="select" name="option">
+                            <option name="Venue" value="venue"> Choose Venue   </option>
+                            <option name="user" value="contactuser"> Contact Users </option>
+                        </select>
+                        <div>
+
+                            <textarea name="message" style=" width:400px; height:100px; border-radius:10px;"> </textarea>
+                        </div>
+                        <input type="submit" value="Send" class="btn btn-primary" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

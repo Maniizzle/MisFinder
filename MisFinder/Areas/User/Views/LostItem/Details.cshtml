@@ -10,65 +10,65 @@
 }
 
 <h2>Details</h2>
-<div class="row" style=" margin-left:20px; margin-right:20px">
+<div style=" margin-left:20px; margin-right:20px">
 
-    <div>
-        <h4>Lost Item</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dd>
-                <a href="~/@photopath" target="_blank"> <img class="rounded-circle" style="width:200px;height:150px;" src="~/@photopath" /></a>
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.NameOfLostItem)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.NameOfLostItem)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.LocalGovernment.State.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.LocalGovernment.State.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.LocalGovernment)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.LocalGovernment.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.DateMisplaced)
-            </dt>
-            <dd>
-                @Model.DateMisplaced.ToShortDateString()
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Color)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Color)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.WhereItemWasLost)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.WhereItemWasLost)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.ExactArea)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.ExactArea)
-            </dd>
-            <dt>
-                Claims
-            </dt>
-            <dd>
-                <a asp-action="FoundItemClaims" title="Claims" asp-route-id="@Model.Id" class="btn btn-info" role="button">@Model.LostItemClaims.Count</a>
-            </dd>
-        </dl>
-    </div>
+    @*<div>*@
+    <h4>Lost Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            <a href="~/@photopath" target="_blank"> <img class="rounded-circle" style="width:200px;height:150px;" src="~/@photopath" /></a>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NameOfLostItem)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NameOfLostItem)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalGovernment.State.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalGovernment.State.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalGovernment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalGovernment.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateMisplaced)
+        </dt>
+        <dd>
+            @Model.DateMisplaced.ToShortDateString()
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhereItemWasLost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhereItemWasLost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExactArea)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExactArea)
+        </dd>
+        <dt>
+            Claims
+        </dt>
+        <dd>
+            <a asp-action="FoundItemClaims" title="Claims" asp-route-id="@Model.Id" class="btn btn-info" role="button">@Model.LostItemClaims.Count</a>
+        </dd>
+    </dl>
+    @*</div>*@
     <div>
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>

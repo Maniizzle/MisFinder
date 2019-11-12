@@ -13,10 +13,10 @@
         <!-- ============================================================== -->
         <div class="row page-titles">
             <div class="col-md-5 align-self-center">
-                <h3 class="text-themecolor">Found Items</h3>
+                <h3 class="text-themecolor">Found Item Claims</h3>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Found Items</li>
+                    <li class="breadcrumb-item"><a asp-action="Home" asp-controller="Dashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Found Item Claims</li>
                 </ol>
             </div>
             <div class="col-md-7 align-self-center text-right d-none d-md-block">
@@ -61,6 +61,7 @@
                                         <th colspan="2"><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.NameSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Description</a></th>
                                         <th>Location</th>
                                         <th>Item Claiming</th>
+                                        <th>Status </th>
                                         <th><a asp-action="FoundItemClaims" asp-route-sortOrder="@ViewBag.DateSortParm" asp-route-currentFilter="@ViewBag.CurrentFilter">Date Lost </a></th>
                                         <th></th>
                                     </tr>
@@ -75,6 +76,29 @@
                                             </td>
                                             <td>@item.WhereItemWasLost</td>
                                             <td>@item.FoundItem.NameOfFoundItem </td>
+                                            <td>
+                                                @if (item.Status == ClaimStatus.Successful)
+                                                {
+                                                    <span class="label label-success label-rounded">Cleared</span>
+
+                                                }
+                                                @if (item.Status == ClaimStatus.Pending)
+                                                {
+                                                    <span class="label label-warning label-rounded">Pending</span>
+
+                                                }
+                                                @if (item.Status == ClaimStatus.Invalid)
+                                                {
+                                                    <span class="label label-danger label-rounded">Invalid</span>
+
+                                                }
+
+                                                @if (item.Status == ClaimStatus.Valid)
+                                                {
+                                                    <span class="label label-success label-rounded">Valid</span>
+
+                                                }
+                                            </td>
                                             @* <td><span class="label label-success label-rounded">Low</span></td>*@
                                             <td>@item.DateLost.ToShortDateString()</td>
                                             <td>

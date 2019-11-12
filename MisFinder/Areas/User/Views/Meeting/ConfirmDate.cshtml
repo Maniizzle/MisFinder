@@ -2,20 +2,20 @@
 @{
     ViewData["Title"] = "ConfirmDate";
     var num = Model.Id;
-    var thrh = num;
 }
 
 <h1>ConfirmDate</h1>
 <div class="row" onload="ola()" style=" margin-left:20px; margin-right:20px">
     <div class="col-lg-6">
         <h5> Kindly Select a day among these Days which you would be available to retrieve Item </h5>
+        <p>Venue will be chosen within @Model.LocalGovernment.Name</p>
         <form asp-action="ConfirmDate" asp-controller="Meeting" method="post">
             <div class="form-group">
                 <label name class="control-label">First Day</label>
                 <input type="hidden" name="id" value="@num" />
                 <input placeholder="Selected date" id="datePickerId" type="date" name="firstDate" asp-for="UserSelectedDate" class="form-control daterangepicker" disabled>
                 <input type="hidden" name="firstDate" value="User" />
-                <input type="submit" class="btn btn-primary" value="Validate" />
+                <input type="submit" class="btn btn-primary" value="Day 1" />
             </div>
         </form>
         <form asp-action="ConfirmDate" asp-controller="Meeting" method="post">
@@ -24,7 +24,7 @@
                 <input type="hidden" name="id" value="@num" />
                 <input type="hidden" name="secondDate" value="User2" />
                 <input placeholder="Selected date" id="datePickerId2" type="date" name="secondDate" asp-for="USerSelectedDate2" class="form-control daterangepicker" disabled>
-                <input type="submit" class="btn btn-primary" value="Validate" />
+                <input type="submit" class="btn btn-primary" value="Day 2" />
             </div>
         </form>
     </div>

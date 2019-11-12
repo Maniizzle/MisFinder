@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MisFinder.Domain.Models;
 using MisFinder.Domain.Models.ViewModel;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MisFinder.Areas.Admin.Controllers
 {
@@ -130,6 +129,48 @@ namespace MisFinder.Areas.Admin.Controllers
                 return RedirectToAction("Index", "UserManagement");
             }
             return View();
+        }
+
+        public async Task<IActionResult> EditRole(string id)
+        {
+            if (id == null)
+                return NotFound();
+            var role = await roleManager.FindByIdAsync(id);
+            if (role == null)
+                return RedirectToAction("Index");
+            //var rol=roleManager.
+            var editRoleModel = new EditRoleViewModel
+            {
+                Id = id,
+                RoleName = role.Name,
+
+                Users = new List<ApplicationUser>()
+            };
+            foreach (var user in userManager.Users)
+            {
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                    editRoleModel.Users.Add(user);
+            }
+
+            return View(editRoleModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromRole(EditRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var role = await roleManager.FindByIdAsync(model.Id);
+                if (role == null)
+                    return NotFound();
+                var user = await userManager.FindByEmailAsync(model.UserName);
+                if (user == null)
+                    return NotFound();
+                await userManager.RemoveFromRoleAsync(user, role.Name);
+                await userManager.UpdateAsync(user);
+                return RedirectToAction("EditRole", new { id = model.Id });
+            }
+            return RedirectToAction("EditRole", new { id = model.Id });
         }
 
         [HttpPost]

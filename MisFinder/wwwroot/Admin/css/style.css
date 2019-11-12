@@ -69,7 +69,7 @@ body {
   font-family: "Montserrat", sans-serif;
   margin: 0;
   overflow-x: hidden;
-  color: #67757c;
+  color: #fff;
   font-weight: 300;
   font-size: 14px; }
 
@@ -814,7 +814,7 @@ sidebar navigation
     .sidebar-nav ul li {
       list-style: none; }
       .sidebar-nav ul li a {
-        color: #8d97ad;
+        color: #fff;
         padding: 10px 35px 10px 15px;
         display: block;
         font-size: 15px;

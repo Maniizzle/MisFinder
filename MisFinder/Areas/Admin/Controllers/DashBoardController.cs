@@ -21,18 +21,21 @@ namespace MisFinder.Areas.Admin.Controllers
         private readonly IFoundItemClaimRepository claimRepository;
         private readonly ILostItemClaimRepository lostItemClaimRepo;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IMeetingRepository meetingRepository;
 
         public DashboardController(ILostItemRepository lostrepository,
             IFoundItemRepository foundrepository,
             IFoundItemClaimRepository claimRepository,
             ILostItemClaimRepository lostItemClaimRepo,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IMeetingRepository meetingRepository)
         {
             this.lostrepository = lostrepository;
             this.foundrepository = foundrepository;
             this.claimRepository = claimRepository;
             this.lostItemClaimRepo = lostItemClaimRepo;
             this.userManager = userManager;
+            this.meetingRepository = meetingRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -41,10 +44,11 @@ namespace MisFinder.Areas.Admin.Controllers
             var founditem = await foundrepository.GetFilterFoundItems().CountAsync();
             var foundClaim = await claimRepository.GetFilterFoundItemClaims().CountAsync();
             var lostClaim = await lostItemClaimRepo.GetFilterLostItemClaims().CountAsync();
+            var meeting = await meetingRepository.GetAllMeetings().Where(c => c.Status == MeetingStatus.Scheduled).CountAsync();
             var activelostClaims = await lostItemClaimRepo.GetFilterLostItemClaims().Where(c => c.Status == ClaimStatus.Valid).CountAsync();
             var activefoundclaims = await claimRepository.GetFilterFoundItemClaims().Where(c => c.Status == ClaimStatus.Valid).CountAsync();
             var activeClaims = activefoundclaims + activelostClaims;
-            return View(new DashIndexViewModel { LostItemsCount = lostItem, FoundItemCount = founditem, FOundItemClaimCount = foundClaim, LostItemClaimCount = lostClaim, ActiveClaimCount = activeClaims });
+            return View(new DashIndexViewModel { LostItemsCount = lostItem, FoundItemCount = founditem, FOundItemClaimCount = foundClaim, LostItemClaimCount = lostClaim, ActiveClaimCount = activeClaims, ScheduledMeetingCount = meeting });
         }
 
         public async Task<IActionResult> LostItems(string sortOrder, string currentFilter, string searchString, int? pageNumber)
