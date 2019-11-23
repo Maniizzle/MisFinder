@@ -149,9 +149,11 @@ namespace MisFinder.Areas.Admin.Controllers
                 var meeting = await management.GetMeetingById(meetingid);
                 if (meeting == null)
                     return NotFound();
+
                 meeting.MeetingVenue = message;
                 meeting.Status = MeetingStatus.Scheduled;
                 management.Save();
+
                 var foundItemClaim = await foundItemClaimRepository.GetFoundItemClaimById(id);
                 List<string> email = new List<string>();
                 email.Add(foundItemClaim.ApplicationUser.Email);
@@ -184,6 +186,20 @@ namespace MisFinder.Areas.Admin.Controllers
                 await emailSender.SendManyEmailAsync(email, "Inbox", messages, "contactusers");
             }
             return RedirectToAction("Details", new { id = meetingid });
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            var meeting = management.GetMeetingByIdD(id);
+
+            return View(meeting);
+        }
+
+        public async Task<IActionResult> Edit(Meeting meeting)
+        {
+            return View();
         }
     }
 }

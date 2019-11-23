@@ -80,6 +80,10 @@ namespace MisFinder
             app.UseHangfireDashboard();
             app.UseHangfireServer();
             app.UseStaticFiles();
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync("Hello World!");
+            //});
             app.UseAuthentication();
 
             app.UseMvc(routes =>
