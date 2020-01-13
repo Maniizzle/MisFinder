@@ -16,6 +16,7 @@ namespace MisFinder.Domain.Models.ViewModel
         public virtual ApplicationUser ApplicationUser { get; set; }
         public int LostItemId { get; set; }
         public LostItem ListItem { get; set; }
+        public string WhereItemWasFound { get; set; }
         [Required]
         public DateTime DateFound { get; set; }
         public IFormFile Image { get; set; }

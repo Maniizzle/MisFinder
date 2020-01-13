@@ -16,5 +16,9 @@ namespace MisFinder.Data.Persistence.IRepositories
         Task<Meeting> GetMeetingByLostItemId(int? id);
 
         Task<Meeting> GetMeetingByFoundItemId(int? id);
+
+        Task<Meeting> GetMeetingByIdD(int? id);
+
+        Task<Meeting> GetMeetingByIdL(int? id);
     }
 }

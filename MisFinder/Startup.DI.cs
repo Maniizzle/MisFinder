@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MisFinder.Data.Data.Context;
+using MisFinder.CustomIdentity;
 using MisFinder.Data.Notification;
 using MisFinder.Data.Notification.Email;
 using MisFinder.Data.Persistence.IRepositories;
 using MisFinder.Data.Persistence.Repositories;
+using MisFinder.Domain.Models;
 using MisFinder.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MisFinder
 {
@@ -18,6 +15,7 @@ namespace MisFinder
     {
         public static void ConfigureDI(IServiceCollection services)
         {
+            services.AddTransient<IUserClaimsPrincipalFactory<ApplicationUser>, MisfinderUserClaimsPrincipalFactory>();
             services.AddTransient<IFoundItemRepository, FoundItemRepository>();
             services.AddTransient<ILostItemRepository, LostItemRepository>();
             services.AddTransient<IStateRepository, StateRepository>();

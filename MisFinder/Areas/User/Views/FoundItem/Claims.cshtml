@@ -25,6 +25,10 @@
     .panel-group .panel {
         margin-bottom: 0;
         border-radius: 4px;
+        width: 750px;
+        margin-left: 60px;
+    }
+
     }
 
     .accordion .panel-heading {
@@ -66,7 +70,7 @@ else
 {
     <h1>Claims</h1>
 
-    <div class="ui-tabs-accordion my-90 ">
+    <div class="ui-tabs-accordion my-90">
         <div class="row">
             <div class="col-md-12">
 
@@ -92,7 +96,7 @@ else
                                         <a class="pull-left" href="~/@photopath">
                                             <img class="media-object img-circle" style="width:150px;height:150px;" src="~/@photopath" alt="profile">
                                         </a>
-                                        <p style="float:right"><Small class="btn btn-circle-sm">lost at: </Small>@item.WhereItemWasLost</p>
+                                        <p style="float:right"><Small class="btn btn-circle-sm">Lost at: @item.WhereItemWasLost</Small></p>
                                         <span>@item.Color </span>
                                         @*  <h3 style="color:black">@item. </h3>*@
                                         <p> @item.Description </p>
@@ -103,7 +107,7 @@ else
                                         }
                                         else
                                         {
-                                            <input type="submit" value="@item.Status" style="float:right;background-color:#007bff" class="btn btn-default" disabled>
+                                            <input type="submit" value="@item.Status" style="float:right;background-color:#007bff;color:black;" class="btn btn-default" disabled>
                                         }
                                     </div><!-- /.panel-body -->
                                 </div><!-- /.panel-collapse -->

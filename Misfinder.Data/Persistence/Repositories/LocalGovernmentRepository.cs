@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MisFinder.Data.Persistence.Repositories
 {
-    class LocalGovernmentRepository : ILocalGovernmentRepository
+   public class LocalGovernmentRepository : ILocalGovernmentRepository
     {
         private readonly MisFinderDbContext context;
 
@@ -21,12 +21,13 @@ namespace MisFinder.Data.Persistence.Repositories
         public async Task<IEnumerable<LocalGovernment>> GetAllLGA()
         {
             return await context.LocalGovernments.ToListAsync();
-
         }
 
         public async Task<IEnumerable<LocalGovernment>> GetAllLGAByStateId(int id)
         {
-           return await context.LocalGovernments.Where(c => c.StateId == id).ToListAsync();
+            IEnumerable<LocalGovernment> localGovernments = new List<LocalGovernment>();
+               localGovernments= await context.LocalGovernments.Where(c => c.StateId == id).ToListAsync();
+            return localGovernments;
         }
     }
 }

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MisFinder.Data.Persistence.IRepositories
 {
-    public interface IRepository<TEntity> where TEntity :class
+    public interface IRepository<TEntity> where TEntity : class
     {
         void Create(TEntity entity);
         void Delete(TEntity entity);
         Task Delete(int id);
         void Update(TEntity entity);
         void Save();
-        
+
 
         //void Create(TEntity entity);
         //void Delete(int id);

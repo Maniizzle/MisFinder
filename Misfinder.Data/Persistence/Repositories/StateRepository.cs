@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MisFinder.Data.Persistence.Repositories
 {
-    class StateRepository : IStateRepository
+   public class StateRepository : IStateRepository
 
     {
         private readonly MisFinderDbContext context;
@@ -20,7 +20,9 @@ namespace MisFinder.Data.Persistence.Repositories
         }
         public async Task<IEnumerable<State>> GetAllStates()
         {
-            return await context.States.ToListAsync();
+            IEnumerable<State> states = new List<State>();
+            states= await context.States.ToListAsync();
+            return states;
         }
 
         public Task<State> GetStateById(int id)

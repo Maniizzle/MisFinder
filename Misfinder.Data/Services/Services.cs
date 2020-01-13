@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MisFinder.Data.Services
 {
-    class Services
+    internal class Services
     {
     }
 }

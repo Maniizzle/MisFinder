@@ -114,7 +114,7 @@
                                                         <span> @role </span>
                                                     }
                                                 }
-                                                <a asp-action="EditRole" asp-route-id="@item.Id" title="Edit"><img src="~/img/edit.svg" style="height:10px;width:10px;" /></a>
+                                              @*  <a asp-action="EditRole" asp-route-id="@item.Id" title="Edit"><img src="~/img/edit.svg" style="height:10px;width:10px;" /></a>*@
                                             </td>
                                             @if (item.IsBlackListed)
                                             {
@@ -143,9 +143,15 @@
                                                 <span class="round">  @loicount</span>
                                             </td>
                                             <td>
-                                                <a href="" data-toggle="modal" data-target="#DeleteModal" class="btn btn-primary">BlackList </a>
+                                                <form asp-action="BlackList" method="post">
+                                                    <input type="hidden" name="Id" value="@item.Id" />
+                                                    <input type="submit" value="BlackList" class="btn btn-success" />
+                                                   @* <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>*@
+                                                </form>
+                                                @*<a href="" data-toggle="modal" data-target="#DeleteModal" class="btn btn-primary">BlackList </a>*@
                                             </td>
                                             <td>
+                                               
                                                 <a asp-action="Approve" asp-route-id="@item.Id" class="btn btn-primary">Approve </a>
                                             </td>
                                             @* <td><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit Role</a></td>*@

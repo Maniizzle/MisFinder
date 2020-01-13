@@ -34,8 +34,8 @@ namespace MisFinder.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            TempData["States"]
-             = await stateRepository.GetAllStates();
+            ViewBag.State
+                        = await stateRepository.GetAllStates();
 
             return View();
         }
@@ -47,6 +47,7 @@ namespace MisFinder.Controllers
         //    return View(result);
         //}
         [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> SearchFoundItem(SearchViewModel model)
         {
             if (model == null)
@@ -54,12 +55,14 @@ namespace MisFinder.Controllers
             if (ModelState.IsValid)
             {
                 var result = repository.SearchFoundItem(model);
+                // return RedirectToAction("SearchFoundItem", await result.AsNoTracking().ToListAsync());
                 return View(await result.AsNoTracking().ToListAsync());
             }
             return View("Index", model);
         }
 
         [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> SearchLostItem(SearchViewModel model)
         {
             if (model == null)
@@ -68,12 +71,19 @@ namespace MisFinder.Controllers
             {
                 var result = lostItemRepository.SearchLostItem(model);
                 return View(await result.AsNoTracking().ToListAsync());
+                // return RedirectToAction("SearchLostItem", new {lostitems= });
             }
             // TempData["States"]
             //=  await stateRepository.GetAllStates();
 
             return View("Index", model);
         }
+
+        //[HttpGet]
+        //public IActionResult SearchLostItem(IEnumerable<LostItem> lostItems)
+        //{
+        //    return View(lostItems);
+        //}
 
         [AllowAnonymous]
         public async Task<IEnumerable<LocalGovernment>> LocalGovernments(int id)

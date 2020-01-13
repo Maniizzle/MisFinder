@@ -72,14 +72,14 @@ namespace MisFinder.Areas.User.Controllers
                 meetingRepository.Save();
                 var firstdate = ((DateTime)meetingDate.FirstDate).ToShortDateString();
                 var seconddate = ((DateTime)meetingDate.SecondDate).ToShortDateString();
-                var link = Url.Action("ConfirmDate", "Meeting", new { area = "User", id = claim.FoundItem.Id, firstDate = firstdate, secondDate = seconddate }, Request.Scheme);
+                var link = Url.Action("ConfirmDate", "Meeting", new { area = "User", id = claim.Id, firstDate = firstdate, secondDate = seconddate }, Request.Scheme);
                 await System.IO.File.WriteAllTextAsync("ConfirmDate.txt", link);
                 var message = new Dictionary<string, string>
                 {
                     {"FName"," User"},
                     {"EmailClaimLink",link }
                 };
-                await emailNotifier.SendEmailAsync("olamideonakoya1@gmail.com", "Meeting Arrangement", message, "SetUpMeeting");
+                await emailNotifier.SendEmailAsync(claim.ApplicationUser.Email, "Meeting Arrangement", message, "SetUpMeeting");
                 return RedirectToAction("Success", "Account");
             }
             return RedirectToAction("SelectMeetingDate");
@@ -91,8 +91,12 @@ namespace MisFinder.Areas.User.Controllers
             if (id == null || firstDate == null || secondDate == null)
                 return NotFound();
             //  var claimuser = await claimRepository.GetFilterFoundItemClaims().Where(c => c.FoundItemId == id && c.Status == ClaimStatus.Valid).ToListAsync();
-            //  claimuser
-            var meeting = await meetingRepository.GetMeetingByFoundItemId(id);
+            //claimuser
+            var claim = await claimRepository.GetFoundItemClaimById(id);//GetFoundItemClaimbyFoundItemId(id);
+            if (claim.ApplicationUser != await userManager.GetUserAsync(User))
+                return NotFound();
+
+            var meeting = await meetingRepository.GetMeetingByFoundItemId(claim.FoundItemId);
             if (meeting.SelectedCount > 0)
                 return NotFound();
             if (id == null || ((DateTime)meeting.UserSelectedDate).ToShortDateString() != firstDate || ((DateTime)meeting.USerSelectedDate2).ToShortDateString() != secondDate)

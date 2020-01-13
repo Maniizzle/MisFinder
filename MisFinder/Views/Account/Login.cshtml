@@ -1,4 +1,5 @@
 ﻿@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager;
 @{
     Layout = null;}
 
@@ -31,6 +32,9 @@
     <title>Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="204396798397-k8ko6dv37ghuggp186telia0f8ic18ja.apps.googleusercontent.com.apps.googleusercontent.com" />
     <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="~/Login/images/icons/favicon.ico" />
     <!--===============================================================================================-->
@@ -52,6 +56,9 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/Login/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/Login/css/main.css">
+    <script src="~/lib/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="~/lib/sweetalert2/dist/sweetalert2.min.css" />
+
     <!--===============================================================================================-->
 </head>
 <body>
@@ -84,6 +91,7 @@
                     </div>
 
                     <div class="container-login100-form-btn">
+                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button type="submit" class="login100-form-btn">
@@ -94,23 +102,39 @@
                     <br />
                     <p style="text-align:center"> <a asp-action="ForgotPassword">Forgot Password?</a> </p>
 
-                    <div class="text-center p-t-115">
-                        <span class="txt1">
-                            Don’t have an account?
-                        </span>
-
-                        <a class="txt2" asp-action="Register">
-                            Sign Up
-                        </a>
-                    </div>
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </form>
+                <br />
+                @{
+                    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    if (loginProviders.Count != 0)
+                    {
+                        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                            <div class="login100-form" data-onsuccess="onSignIn">
+                                @foreach (var provider in loginProviders)
+                                {
+                                    <button type="submit" class="btn btn-outline-primary" title="Login using your @provider.DisplayName" name="provider" value="@provider.Name">@provider.Name</button>
+                                }
+                            </div>
+                        </form>
+                    }
+                }
+                <div class="text-center p-t-115">
+                    <span class="txt1">
+                        Don’t have an account?
+                    </span>
+
+                    <a class="txt2" asp-action="Register">
+                        Sign Up
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="dropDownSelect1"></div>
 
+    @Html.Raw(TempData["message"])
     <!--===============================================================================================-->
     <script src="~/Login/vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->

@@ -1,13 +1,14 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MisFinder.CustomIdentity;
 using MisFinder.Data.Data.Context;
 using MisFinder.Data.Persistence;
 using MisFinder.Domain.Models;
@@ -34,10 +35,16 @@ namespace MisFinder
                 o.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("MisFinder")));
-            services.AddHangfire(
-        x => x.UseSqlServerStorage(Configuration.GetConnectionString("MisFinder"))
-    );
+            //services.AddHangfire(
+            // x => x.UseSqlServerStorage(Configuration.GetConnectionString("MisFinder"))
+            //.. );
+            services.Configure<CookieTempDataProviderOptions>(opts =>
+            {
+                opts.Cookie.IsEssential = true;
+            });
+
             ConfigureDI(services);
+
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {
                 opts.Lockout.AllowedForNewUsers = true;
@@ -50,7 +57,21 @@ namespace MisFinder
                 AddEntityFrameworkStores<MisFinderDbContext>()
                 .AddDefaultTokenProviders()
                 .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconf");//registering a new tokenprovideroption
-            services.AddAuthentication();
+
+            //services.AddAuthentication().AddGoogle(o =>
+            //{
+            //    o.ClientId = Configuration["Authentication:Google:ClientId"];
+            //    o.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            //});
+            services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            IConfigurationSection googleAuthNSection =
+                Configuration.GetSection("Authentication:Google");
+
+            options.ClientId = googleAuthNSection["ClientId"];
+            options.ClientSecret = googleAuthNSection["ClientSecret"];
+        });
 
             services.AddMvc(configg =>
             {
@@ -77,9 +98,11 @@ namespace MisFinder
             }
 
             app.UseCookiePolicy();
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
+            //app.UseHangfireDashboard();
+            // app.UseHangfireServer();
             app.UseStaticFiles();
+
+            //app.UseSession();
             //app.Run(async (context) =>
             //{
             //    await context.Response.WriteAsync("Hello World!");

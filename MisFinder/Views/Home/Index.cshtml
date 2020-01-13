@@ -1,14 +1,25 @@
 ﻿@model SearchViewModel
-@*@{
-        ViewData["Title"] = "Home";
-    }*@
+@{
+    var states = ViewBag.State;
+   
+    //   ViewData["Title"] = "Home";
+    //  ViewData["Message"] = TempData["message"];
+}
 
 @*<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 text-center">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center pd0"> <a href="" onclick="bindsearchparcial(true);" id="btn_lostpopup" class="btn btn-primary mt10" data-toggle="modal" data-target="#lost_search">Lost Something</a> </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center pd0"> <a href="" onclick="bindsearchparcial(false);" data-toggle="modal" data-target="#lost_search" class="btn btn-default mt10">Found Something</a> </div>
     </div>*@
+<style>
+    .Mycustom {
+        color: black;
+    }
 
-<div class="modal fade" id="modalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    .modal-body .control-label {
+        justify-content: initial;
+    }
+</style>
+<div class="modal fade Mycustom" id="modalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -37,8 +48,9 @@
                         </div>*@
                     <div class="md-form mb-3">
                         <label class="control-label"> State </label>
+                        @*  @Html.DropDownList("departmentId", new SelectList((states), "Id", "Name"), "Select State", new { Id = "departmentId", @class = "form-control" })*@
                         @Html.DropDownListFor(m => m.StateId,
-                      new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
+                      new SelectList(states, "Id", "Name"),
                       "Select state", new  { @class = "form-control" })
                         <span asp-validation-for="StateId" class="text-danger"></span>
                     </div>
@@ -67,7 +79,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="foundmodalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade Mycustom" id="foundmodalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -81,9 +93,10 @@
 
                 <div class="modal-body mx-3">
                     <div class="md-form mb-3">
-                        <i class="fas fa-user prefix grey-text"></i>
+                        @* <i class="fas fa-user prefix grey-text"></i>*@
+                        <label asp-for="Name" class="control-label">Name of Found Item</label>
                         <input type="text" id="form3" asp-for="Name" placeholder="Name of Found Item" class="form-control validate">
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        @* <span asp-validation-for="Name" class="text-danger"></span>*@
                     </div>
                     @*<div class="md-form mb-3">
                         <label class="control-label"> Category</label>
@@ -91,14 +104,14 @@
                             <option selected="selected" name="" value="">Please select a Category</option>
                         </select>*@
 
-                    <span asp-validation-for="ItemCategory" class="text-danger"></span>
+                    @*<span asp-validation-for="ItemCategory" class="text-danger"></span>*@
                     <div class="md-form mb-3">
                         <label class="control-label"> State </label>
                         @Html.DropDownListFor(m => m.StateId,
-                      new SelectList((IEnumerable<State>)TempData["States"], "Id", "Name"),
+                      new SelectList(states, "Id", "Name"),
                       "Select state",
                       new { @class = "form-control", @onchange="FillCity()",id="state" })
-                        <span asp-validation-for="StateId" class="text-danger"></span>
+                        @*<span asp-validation-for="StateId" class="text-danger"></span>*@
                     </div>
                     <div class="md-form mb-3">
                         <label class="control-label"> LGA</label>
@@ -110,7 +123,7 @@
                     <div class="md-form mb-3">
                         <label asp-for="Date" class="control-label">Date Found</label>
                         <input placeholder="Selected date" id="datePickerId" type="date" asp-for="Date" class="form-control daterangepicker">
-                        <span asp-validation-for="Date" class="text-danger"></span>
+                        @* <span asp-validation-for="Date" class="text-danger"></span>*@
 
                         @*<div class="md-form mb-4">
                                 <i class="fas fa-envelope prefix grey-text"></i>
@@ -136,6 +149,7 @@
         Found Something?
     </a>
 </div>
+
 <script>
     datePickerId.max = new Date().toISOString().split("T")[0];
     datePickerId2.max = new Date().toISOString().split("T")[0];
@@ -163,3 +177,7 @@
         });
     }
 </script>
+
+@*<script type='text/javascript'>
+    Swal.fire({position: 'center',icon: 'success',title: '@str : @trwy ', showConfirmButton: false, timer: 4500});
+</script>*@

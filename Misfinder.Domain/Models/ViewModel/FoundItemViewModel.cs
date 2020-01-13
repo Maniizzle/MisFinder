@@ -17,20 +17,25 @@ namespace MisFinder.Domain.Models.ViewModel
         [StringLength(250, MinimumLength = 5)]
         public string Description { get; set; }
         [Required]
+        public int StateId { get; set; }
         public State State { get; set; }
+        [Required]
+        public int LocalGovernmentId { get; set; }
+        public LocalGovernment LocalGovernment { get; set; }
         [MaxLength(100)]
-        public string SpecificLocation { get; set; }
+        public string WhereItemWasFound { get; set; }
+        public ItemCategory ItemCategory { get; set; }
         public string Colour { get; set; }
         [Required]
         public DateTime DateFound { get; set; }
-        public ICollection<FoundAndLostItem> FoundLostItems { get; set; }
         //   public TimeSpan TimeFound { get; set; }
-        //public string StateFound { get; set; }
+        [MaxLength(30)]
+        public string ExactArea { get; set; }
         public IFormFile Photo { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUser FoundItemUser { get; set; }
-        public bool IsClaimed { get; set; }
+      
         public string PhoneNumber { get; set; }
-        public DateTime DateCreated { get; set; }
+        //public DateTime DateCreated { get; set; }
     }
 }

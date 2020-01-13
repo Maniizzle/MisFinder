@@ -179,7 +179,7 @@ namespace MisFinder.Areas.Admin.Controllers
 
                 var messages = new Dictionary<string, string>
             {
-                {"FName",$"User"},
+                {"FName",$"Users"},
                      {"UName",message },
                 //{"EmailClaimLink",link }
             };

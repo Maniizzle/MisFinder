@@ -24,6 +24,8 @@
     .panel-group .panel {
         margin-bottom: 0;
         border-radius: 4px;
+        width: 750px;
+        margin-left: 60px;
     }
 
     .accordion .panel-heading {
@@ -93,7 +95,7 @@
                                             <a class="pull-left" href="~/@photopath">
                                                 <img class="media-object img-circle" style="width:150px;height:150px;" src="~/@photopath" alt="profile">
                                             </a>
-                                            <p style="float:right"><Small class="btn btn-circle-sm">found at: </Small>@item.WhereItemWasFound</p>
+                                            <p style="float:right"><Small class="btn btn-circle-sm">found at: @item.WhereItemWasFound</Small></p>
                                             <h3 style="color:black">How far </h3>
                                             <p> @item.Description </p>
                                             @if (item.Status == ClaimStatus.Pending)

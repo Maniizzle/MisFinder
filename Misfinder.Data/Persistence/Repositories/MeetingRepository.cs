@@ -37,7 +37,7 @@ namespace MisFinder.Data.Persistence.Repositories
 
         public IQueryable<Meeting> GetAllMeetings()
         {
-            IQueryable<Meeting> meetings = context.Meetings.Include(c => c.FoundItem).
+            IQueryable<Meeting> meetings = context.Meetings.Include(c => c.FoundItem).Include(c => c.LocalGovernment).
                 Include(c => c.LostItem);
             return meetings;
         }
@@ -46,7 +46,7 @@ namespace MisFinder.Data.Persistence.Repositories
         {
             return await context.Meetings.
                  Include(c => c.FoundItem)
-                 .Include(c => c.LostItem).FirstOrDefaultAsync(c => c.FoundItem.Id == id);
+                 .ThenInclude(c => c.FoundItemClaims).Include(c => c.LocalGovernment).FirstOrDefaultAsync(c => c.FoundItem.Id == id);
         }
 
         public async Task<Meeting> GetMeetingByLostItemId(int? id)
@@ -57,8 +57,26 @@ namespace MisFinder.Data.Persistence.Repositories
 
         public async Task<Meeting> GetMeetingById(int? id)
         {
-            return await context.Meetings.Include(c => c.FoundItem)
+            return await context.Meetings.Include(c => c.FoundItem).Include(c => c.LocalGovernment)
                 .Include(c => c.LostItem).SingleOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Meeting> GetMeetingByIdD(int? id)
+        {
+            return await context.Meetings.Include(c => c.FoundItem)
+                .ThenInclude(c => c.FoundItemUser)
+                .Include(c => c.FoundItem).
+                ThenInclude(c => c.FoundItemClaims).ThenInclude(c => c.ApplicationUser)
+                .Include(c => c.FoundItem).ThenInclude(c => c.FoundItemUser).Include(c => c.LocalGovernment).SingleOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Meeting> GetMeetingByIdL(int? id)
+        {
+            return await context.Meetings.Include(c => c.LostItem)
+                .ThenInclude(c => c.LostItemUser)
+                .Include(c => c.LostItem).
+                ThenInclude(c => c.LostItemClaims).ThenInclude(c => c.ApplicationUser)
+                .Include(c => c.LostItem).ThenInclude(c => c.LostItemUser).Include(c => c.LocalGovernment).SingleOrDefaultAsync(c => c.Id == id);
         }
 
         public void Save()

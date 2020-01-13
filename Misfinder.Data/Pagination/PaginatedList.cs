@@ -32,6 +32,14 @@ namespace MisFinder.Data.Pagination
             }
         }
 
+        public bool SecondPage
+        {
+            get
+            {
+                return (PageIndex < 3);
+            }
+        }
+
         public bool HasNextPage
         {
             get

@@ -263,7 +263,7 @@ namespace MisFinder.Areas.User.Controllers
             var claim = await claimRepository.GetFoundItemClaimById(id);
             if (claim == null)
                 return NotFound();
-
+            //if(status==Pending)
             if (status == "Valid")
             { claim.Status = ClaimStatus.Valid; }
             if (status == "InValid")
@@ -272,21 +272,21 @@ namespace MisFinder.Areas.User.Controllers
 
             var link = Url.Action("ValidatedFoundItemsClaim", "ClaimManagement", new { area = "Admin" }, Request.Scheme);
             System.IO.File.WriteAllText("validation.txt", link);
-            var message = new Dictionary<string, string>
-                {
-                   {"ITEM",$"Found Item" },
+            //var message = new Dictionary<string, string>
+            //    {
+            //       {"ITEM",$"Found Item" },
 
-                   {"EmailLink",$"{link}" }
-                };
+            //       {"EmailLink",$"{link}" }
+            //    };
 
-            var usersInAdmin = await userManager.GetUsersInRoleAsync("Admin");
-            List<string> emails = new List<string>();
-            foreach (var user in usersInAdmin)
-            {
-                emails.Add(user.Email);
-            }
+            //var usersInAdmin = await userManager.GetUsersInRoleAsync("Admin");
+            //List<string> emails = new List<string>();
+            //foreach (var user in usersInAdmin)
+            //{
+            //    emails.Add(user.Email);
+            //}
 
-            await emailNotifier.SendManyEmailAsync(emails, "Validation", message, "AlertAdmin");
+            //await emailNotifier.SendManyEmailAsync(emails, "Validation", message, "AlertAdmin");
 
             claimRepository.Save();
 

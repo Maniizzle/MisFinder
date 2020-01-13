@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MisFinder.Data.Persistence.IRepositories
 {
-    interface ILocalGovernmentRepository
+  public  interface ILocalGovernmentRepository
     {
         Task<IEnumerable<LocalGovernment>> GetAllLGA();
         Task<IEnumerable<LocalGovernment>> GetAllLGAByStateId(int id);

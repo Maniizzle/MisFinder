@@ -7,32 +7,32 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace MisFinder.Data.Notification 
+namespace MisFinder.Data.Notification
 {
-    public class NotificationService:INotificationService
+    public class NotificationService : INotificationService
     {
-        private readonly ILogger logger;
+        //  private readonly ILogger logger;
 
-        public NotificationService(EmailConfiguration configuration,ILogger logger)
+        public NotificationService(EmailConfiguration configuration)
         {
             Configuration = configuration;
-            this.logger = logger;
+            //  this.logger = logger;
         }
 
         public EmailConfiguration Configuration { get; }
 
         public async Task SendEmail(string receiver, string subject, string body)
         {
-           await  Task.Factory.StartNew(() => 
+            await Task.Factory.StartNew(() =>
             {
                 MailAddress from = new MailAddress(Configuration.SenderAddress, Configuration.SenderName);
                 MailAddress mailto = new MailAddress(receiver);
                 MailMessage message = new MailMessage(from, mailto);
 
-                try{
+                try
+                {
                     using (SmtpClient server = new SmtpClient(Configuration.Host, Configuration.Port))
                     {
-
                         server.Credentials = new NetworkCredential(Configuration.SenderAddress, Configuration.Password);
                         server.EnableSsl = Configuration.EnableSSL;
 
@@ -40,16 +40,14 @@ namespace MisFinder.Data.Notification
                         message.Body = body;
                         message.IsBodyHtml = true;
 
-
-
                         server.Send(message);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                   logger.LogError( ex.Message);
+                    throw;
+                    //logger.LogError( ex.Message);
                 }
-            
             });
         }
     }

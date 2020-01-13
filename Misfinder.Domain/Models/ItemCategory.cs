@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MisFinder.Domain.Models
 {
-   public enum ItemCategory:byte
+    public enum ItemCategory : byte
     {
-        Electronics=1,
+        Electronics = 1,
         Cosmetics,
         Automobile,
         Keys,
@@ -17,7 +17,13 @@ namespace MisFinder.Domain.Models
         Bags,
         Clothing,
         Wears
-        
+    }
 
+    public enum ClaimStatus : byte
+    {
+        Pending = 1,
+        Invalid,
+        Valid,
+        Successful
     }
 }

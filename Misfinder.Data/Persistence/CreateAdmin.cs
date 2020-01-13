@@ -3,8 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MisFinder.Domain.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MisFinder.Data.Persistence
@@ -19,18 +17,15 @@ namespace MisFinder.Data.Persistence
             string username = configuration["Data:AdminUser:Name"];
             string email = configuration["Data:AdminUser:Email"];
             string password = configuration["Data:AdminUser:Password"];
-            string role = configuration["Data:AdminUser:Role"];
-            string role2 = configuration["Data:AdminUser:Role2"];
+            string role = configuration["Data:Roles:Role"];
             if (await userManager.FindByNameAsync(username) == null)
             {
-                if (await roleManager.FindByNameAsync(role) == null && await roleManager.FindByNameAsync(role2)==null)
+                if (await roleManager.FindByNameAsync(role) == null)// && await roleManager.FindByNameAsync(role2) == null)
                 {
-                    
                     await roleManager.CreateAsync(new IdentityRole(role));
-                    await roleManager.CreateAsync(new IdentityRole(role2));
                 }
-                
-                ApplicationUser user = new ApplicationUser
+
+                var user = new ApplicationUser
                 {
                     UserName = email,
                     Email = email
@@ -38,7 +33,6 @@ namespace MisFinder.Data.Persistence
                 IdentityResult result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
-                   
                     await userManager.AddToRoleAsync(user, role);
                 }
             }

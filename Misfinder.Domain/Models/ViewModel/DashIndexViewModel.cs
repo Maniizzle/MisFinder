@@ -10,5 +10,7 @@ namespace MisFinder.Domain.Models.ViewModel
         public int FoundItemCount { get; set; }
         public int FOundItemClaimCount { get; set; }
         public int LostItemClaimCount { get; set; }
+        public int ActiveClaimCount { get; set; }
+        public int ScheduledMeetingCount { get; set; }
     }
 }

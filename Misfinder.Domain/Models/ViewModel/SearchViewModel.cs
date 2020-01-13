@@ -7,13 +7,25 @@ using System.Threading.Tasks;
 namespace MisFinder.Domain.Models.ViewModel
 {
     public class SearchViewModel
-    {   [Required]
-        public string Name { get; set; }
-        
-        public string Color { get; set; }
+
+    {
         [Required]
-        public string Location { get; set; }
+        public string Name { get; set; }
+
+        public ItemCategory ItemCategory { get; set; }
+
+        public string Color { get; set; }
+
+        [Required]
+        public int? StateId { get; set; }
+
+        public int LocalGovernmentId { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
+
+        //public List<State> States { get; set; }
+
+        //        public IEnumerable<State> States { get; } =>
     }
 }

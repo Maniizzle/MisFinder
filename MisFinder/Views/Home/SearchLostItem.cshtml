@@ -14,7 +14,10 @@
         margin: 2px;
     }
 
-    /*.card {
+    .row {
+        display: -webkit-box;
+    }
+    /*.card
         line-height: 0px;
         font-size: 12px;
     }*/
@@ -84,13 +87,21 @@
         padding: 0.9rem;
         font-family: cursive,serif,sans-serif;
     }
+
+    #mycard {
+        height: 249.33px;
+    }
+
+    /*#myrow {
+        display: none;
+    }*/
 </style>
 
 @*<div class="row">
         <div class="column"></div>
         <div class="column"></div>
     </div>*@
-<div>
+<div style="color:black">
     Cant find the Item You found?
     <a asp-area="User" asp-action="Create" asp-controller="FoundItem" class="btn btn-primary"><span> Register your Found Item </span> </a>
 
@@ -102,37 +113,38 @@
     {<br />
         <br />
         <h4>Lost Items Found</h4>
+        <div class="row" id="myrow">
+            @foreach (var item in Model)
+            {
+                var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
 
-        @foreach (var item in Model)
-        {
-            var photopath = "Photos/" + (item.Image?.ImagePath ?? "home 1081.jpg");
+                <div class="col-lg-6">
+                    <!-- Card -->
 
-            <div class="col-lg-6">
-                <!-- Card -->
+                    <div class="card" id="mycard">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4" style="padding-right:0px;">
+                                    <img class="card-img-top img-responsive" style="padding:0px;" width="100" height="100" src="~/@photopath" alt="Card image cap">
+                                </div>
+                                <div class="col-lg-7" style="padding-right:0px;">
+                                    <h4 class="card-title" style="margin-bottom:0px;">
+                                        @item.NameOfLostItem
+                                    </h4>
+                                    <span style="float:right;">@item.DateMisplaced.ToShortDateString()</span>
+                                    <p class="card-text" style="clear:right;">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
+                                    <p style="float:left;font-size:small"><small>lost at: </small>@item.ExactArea</p>
+                                    @*  <a href="#" class="btn btn-primary">Go somewhere</a>*@
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-4" style="padding-right:0px;">
-                                <img class="card-img-top img-responsive" style="padding:0px;" width="100" src="~/@photopath" alt="Card image cap">
-                            </div>
-                            <div class="col-lg-7" style="padding-right:0px;">
-                                <h4 class="card-title" style="margin-bottom:0px;">
-                                    @item.NameOfLostItem
-                                </h4>
-                                <span style="float:right;">@item.DateMisplaced.ToShortDateString()</span>
-                                <p class="card-text" style="clear:right;">@item.Description@*Some quick example text to build on the card title and make up the bulk of the card's content.*@</p>
-                                <p style="float:left;font-size:small"><small>lost at: </small>@item.ExactArea</p>
-                                @*  <a href="#" class="btn btn-primary">Go somewhere</a>*@
-
-                                <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img src="~/img/refund.svg" style="width:50px;height:50px;" /></a>
+                                    <a class="float-right" asp-area="User" asp-controller="LostItemClaim" title="Claim" asp-action="Create" asp-route-id="@item.Id"><img src="~/img/refund.svg" style="width:50px;height:50px;" /></a>
+                                </div>
                             </div>
                         </div>
+                        <!-- Card -->
                     </div>
-                    <!-- Card -->
                 </div>
-            </div>
-        }
+            }
+        </div>
 
     }
 </div>
