@@ -35,6 +35,7 @@ namespace MisFinder
                 o.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("MisFinder")));
+            //services.AddDbContext<MisFinderDbContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("Default"))).AddEntityFrameworkSqlite();
             //services.AddHangfire(
             // x => x.UseSqlServerStorage(Configuration.GetConnectionString("MisFinder"))
             //.. );

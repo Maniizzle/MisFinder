@@ -62,7 +62,8 @@ namespace MisFinder.Controllers
                         { "FName",$"{model.FirstName}" },
                         {"EmailLink", $"{ConfirmEmail}" }
                     };
-                    await emailNotifier.SendEmailAsync(model.UserName, "Email Confirmation", message, "EmailConfirmation");
+
+                    var resul = await emailNotifier.SendEmailAsync(model.UserName, "Email Confirmation", message, "EmailConfirmation");
                     System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
 
                     var msg = "Swal.fire({position: 'top-end',icon: 'success',title: 'Registration Complete, Check your Email for Confirmation', showConfirmButton: false, timer: 3500})";
@@ -129,7 +130,9 @@ namespace MisFinder.Controllers
                                { "FName",$"{user.FirstName}" },
                                {"EmailLink", $"{ConfirmEmail}" }
                             };
+
                             await emailNotifier.SendEmailAsync(model.UserName, "Email Confirmation", message, "EmailConfirmation");
+
                             //System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
                         }
                         ModelState.AddModelError("", "Email is Not Confirmed");

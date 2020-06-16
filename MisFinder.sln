@@ -10,7 +10,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisFinder", "MisFinder\MisF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisFinder.Domain", "MisFinder.Domain\MisFinder.Domain.csproj", "{D8990E99-F473-4587-BA32-9C5E66E75B29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MisFinder.Data", "MisFinder.Data\MisFinder.Data.csproj", "{B3B0B9D5-BEAF-4926-8606-87AFABFF468F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisFinder.Data", "MisFinder.Data\MisFinder.Data.csproj", "{B3B0B9D5-BEAF-4926-8606-87AFABFF468F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{44A162F9-1D31-42E9-847D-E6EEF30ECCB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8990E99-F473-4587-BA32-9C5E66E75B29} = {44A162F9-1D31-42E9-847D-E6EEF30ECCB4}
+		{B3B0B9D5-BEAF-4926-8606-87AFABFF468F} = {44A162F9-1D31-42E9-847D-E6EEF30ECCB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C55C218-2874-412B-BB9E-4A238A0283C1}

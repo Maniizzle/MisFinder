@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -39,20 +40,36 @@ namespace MisFinder.Data.Notification.Email
             return Task.FromResult(msgBody);
         }
 
-        public async Task SendEmailAsync(string to, string subject, Dictionary<string, string> messages, string template = "Text")
+        public async Task<bool> SendEmailAsync(string to, string subject, Dictionary<string, string> messages, string template = "Text")
         {
-            var msgBody = await ReadTemplate(template);
-            var body = msgBody.ParseTemplate(messages);
-            await notificationService.SendEmail(to, subject, body);
+            try
+            {
+                var msgBody = await ReadTemplate(template);
+                var body = msgBody.ParseTemplate(messages);
+                await notificationService.SendEmail(to, subject, body);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public async Task SendManyEmailAsync(List<string> to, string subject, Dictionary<string, string> messages, string template = "Text")
+        public async Task<bool> SendManyEmailAsync(List<string> to, string subject, Dictionary<string, string> messages, string template = "Text")
         {
-            var msgBody = await ReadTemplate(template);
-            var body = msgBody.ParseTemplate(messages);
-            List<Task> job = new List<Task>();
-            to.ForEach(num => job.Add(Task.Run(() => notificationService.SendEmail(num, subject, body))));
-            await Task.WhenAll(job);
+            try
+            {
+                var msgBody = await ReadTemplate(template);
+                var body = msgBody.ParseTemplate(messages);
+                List<Task> job = new List<Task>();
+                to.ForEach(num => job.Add(Task.Run(() => notificationService.SendEmail(num, subject, body))));
+                await Task.WhenAll(job);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

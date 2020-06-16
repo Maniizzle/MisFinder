@@ -9,8 +9,8 @@ namespace MisFinder.Data.Notification.Email
     {
         Task<string> ReadTemplate(string template = "text");//MessageTypes messageTypes);
 
-        Task SendEmailAsync(string to, string subject, Dictionary<string, string> message, string template = "Text");
+        Task<bool> SendEmailAsync(string to, string subject, Dictionary<string, string> message, string template = "Text");
 
-        Task SendManyEmailAsync(List<string> to, string subject, Dictionary<string, string> messages, string template = "Text");
+        Task<bool> SendManyEmailAsync(List<string> to, string subject, Dictionary<string, string> messages, string template = "Text");
     }
 }
