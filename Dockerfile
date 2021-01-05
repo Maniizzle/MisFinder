@@ -12,7 +12,8 @@ COPY ["MisFinder.Data/MisFinder.Data.csproj", "MisFinder.Data/"]
 RUN dotnet restore "MisFinder/MisFinder.csproj"
 COPY . .
 WORKDIR "/src/MisFinder"
-RUN dotnet build "MisFinder.csproj" -c Release -o /app/build
+
+#RUN dotnet build "MisFinder.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "MisFinder.csproj" -c Release -o /app/publish
