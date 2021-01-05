@@ -27,6 +27,9 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "DATABASE_URL": "postgres://yqjpdgoeksanhd:a3bb13bdf668485a86927772ec20af2e55b2d8ed5107a1331be7146b55690553@ec2-52-22-216-69.compute-1.amazonaws.com:5432/ddn725hn1opfi1"
+      },
       "publishAllPorts": true,
       "useSSL": true
     }
