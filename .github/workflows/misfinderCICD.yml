@@ -7,8 +7,8 @@ on:
     - release/*
 
 jobs:
-  build_supermarketapi:
-    runs-on: ubuntu-latest
+  build_misfinderwebapp:
+    runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v1
     - name: Build and deploy the Docker image
