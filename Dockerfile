@@ -11,12 +11,12 @@ COPY ["MisFinder.Domain/MisFinder.Domain.csproj", "MisFinder.Domain/"]
 COPY ["MisFinder.Data/MisFinder.Data.csproj", "MisFinder.Data/"]
 RUN dotnet restore "MisFinder/MisFinder.csproj"
 COPY . .
-WORKDIR "/app/MisFinder"
+#WORKDIR "/app/MisFinder"
 
 #RUN dotnet build "MisFinder.csproj" -c Release -o /app/build
 
 #FROM build AS publish
-RUN dotnet publish "MisFinder.csproj" -c Release -o /app/publish
+RUN dotnet publish  -c Release -o /app/publish
 
 FROM base AS final
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
