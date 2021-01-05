@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace MisFinder.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SystemAdmin")]
     public class DashboardController : Controller
     {
         private readonly ILostItemRepository lostrepository;

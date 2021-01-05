@@ -131,7 +131,7 @@ namespace MisFinder.Controllers
                                {"EmailLink", $"{ConfirmEmail}" }
                             };
 
-                            await emailNotifier.SendEmailAsync(model.UserName, "Email Confirmation", message, "EmailConfirmation");
+                            var res = await emailNotifier.SendEmailAsync(model.UserName, "Email Confirmation", message, "EmailConfirmation");
 
                             //System.IO.File.WriteAllText("Emailtoken.txt", ConfirmEmail);
                         }
@@ -148,7 +148,8 @@ namespace MisFinder.Controllers
                     if (result.Succeeded)
                     {   //resetting their lockout count
                         await userManager.ResetAccessFailedCountAsync(user);
-                        if (await userManager.IsInRoleAsync(user, "Admin"))
+                        var status=await userManager.IsInRoleAsync(user, "SystemAdmin");
+                        if (status)
                             return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
                         return LocalRedirect(returnUrl ?? "/");
                     }
@@ -210,7 +211,7 @@ namespace MisFinder.Controllers
                         { "FName",$"{user.FirstName}" },
                         {"EmailLink", $"{resetUrl}" }
                     };
-                await emailNotifier.SendEmailAsync(user.UserName, "Reset Password", message, "forgotpassword");
+                var mailRes = await emailNotifier.SendEmailAsync(user.UserName, "Reset Password", message, "forgotpassword");
                 // System.IO.File.WriteAllText("resetlink.txt", resetUrl);
                 //  ViewBag.Comment = "Check your mail for Password reset link ";
                 //refactor this later

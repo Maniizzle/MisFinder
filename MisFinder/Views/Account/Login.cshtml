@@ -91,7 +91,7 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                        @* <div class="g-signin2" data-onsuccess="onSignIn"></div>*@
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button type="submit" class="login100-form-btn">
@@ -105,20 +105,20 @@
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </form>
                 <br />
-                @{
-                    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                    if (loginProviders.Count != 0)
-                    {
-                        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                            <div class="login100-form" data-onsuccess="onSignIn">
-                                @foreach (var provider in loginProviders)
-                                {
-                                    <button type="submit" class="btn btn-outline-primary" title="Login using your @provider.DisplayName" name="provider" value="@provider.Name">@provider.Name</button>
-                                }
-                            </div>
-                        </form>
-                    }
-                }
+                @*@{
+                        var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                        if (loginProviders.Count != 0)
+                        {
+                            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                                <div class="login100-form" data-onsuccess="onSignIn">
+                                    @foreach (var provider in loginProviders)
+                                    {
+                                        <button type="submit" class="btn btn-outline-primary" title="Login using your @provider.DisplayName" name="provider" value="@provider.Name">@provider.Name</button>
+                                    }
+                                </div>
+                            </form>
+                        }
+                    }*@
                 <div class="text-center p-t-115">
                     <span class="txt1">
                         Don’t have an account?

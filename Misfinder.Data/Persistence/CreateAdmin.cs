@@ -28,7 +28,10 @@ namespace MisFinder.Data.Persistence
                 var user = new ApplicationUser
                 {
                     UserName = email,
-                    Email = email
+                    Email = email,
+                    EmailConfirmed = true,
+                    LastName="Onakoya",
+                    FirstName="Olamide"
                 };
                 IdentityResult result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)

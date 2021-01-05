@@ -2,61 +2,75 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MisFinder.Data.Data.Context;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MisFinder.Data.Migrations
 {
     [DbContext(typeof(MisFinderDbContext))]
-    [Migration("20191024101651_ClaimsEdit")]
-    partial class ClaimsEdit
+    [Migration("20210105044138_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "3",
+                            Name = "User",
+                            NormalizedName = "User"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -69,14 +83,18 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -87,14 +105,18 @@ namespace MisFinder.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -105,9 +127,11 @@ namespace MisFinder.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -118,13 +142,17 @@ namespace MisFinder.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -134,45 +162,62 @@ namespace MisFinder.Data.Migrations
             modelBuilder.Entity("MisFinder.Domain.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsBlackListed");
+                    b.Property<bool>("IsBlackListed")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -182,8 +227,7 @@ namespace MisFinder.Data.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -192,42 +236,63 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Colour");
+                    b.Property<string>("Colour")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("DateFound");
+                    b.Property<DateTime>("DateFound")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("DeletedOn");
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
+                        .HasColumnType("character varying(250)")
                         .HasMaxLength(250);
 
-                    b.Property<string>("ExactArea");
+                    b.Property<string>("ExactArea")
+                        .HasColumnType("text");
 
-                    b.Property<int?>("ImageId");
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsClaimed");
+                    b.Property<bool>("IsClaimed")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("IsEditedCount");
+                    b.Property<int>("IsEditedCount")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("ItemCategory");
+                    b.Property<bool>("IsMeetingSucceess")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("LocalGovernmentId");
+                    b.Property<string>("ItemCategory")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("ModifiedOn");
+                    b.Property<int>("LocalGovernmentId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("NameOfFoundItem");
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("NameOfFoundItem")
+                        .HasColumnType("text");
 
                     b.Property<string>("WhereItemWasFound")
+                        .HasColumnType("character varying(100)")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
@@ -245,37 +310,60 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Color");
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("DateLost");
+                    b.Property<DateTime>("DateLost")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("DeletedOn");
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<int>("FoundItemId");
+                    b.Property<int>("FoundItemId")
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("ImageId");
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsAdminValid")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("IsEditedCount");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsValidated");
+                    b.Property<int>("IsEditedCount")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("ItemCategory");
+                    b.Property<string>("ItemCategory")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("ModifiedOn");
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("WhereItemWasLost");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ValidatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("WhereItemWasLost")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -292,9 +380,11 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ImagePath");
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -305,11 +395,14 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                    b.Property<int>("StateId");
+                    b.Property<int>("StateId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -4854,42 +4947,63 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Color");
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("DateMisplaced");
+                    b.Property<DateTime>("DateMisplaced")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("DeletedOn");
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
+                        .HasColumnType("character varying(250)")
                         .HasMaxLength(250);
 
-                    b.Property<string>("ExactArea");
+                    b.Property<string>("ExactArea")
+                        .HasColumnType("text");
 
-                    b.Property<int?>("ImageId");
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("IsEditedCount");
+                    b.Property<int>("IsEditedCount")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsFound");
+                    b.Property<bool>("IsFound")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("ItemCategory");
+                    b.Property<bool>("IsMeetingSucceess")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("LocalGovernmentId");
+                    b.Property<string>("ItemCategory")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("ModifiedOn");
+                    b.Property<int>("LocalGovernmentId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("NameOfLostItem");
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("WhereItemWasLost");
+                    b.Property<string>("NameOfLostItem")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WhereItemWasLost")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -4906,37 +5020,57 @@ namespace MisFinder.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("DateFound");
+                    b.Property<DateTime>("DateFound")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("DeletedOn");
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<int?>("ImageId");
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsAdminValid")
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("IsEditedCount");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsValidated");
+                    b.Property<int>("IsEditedCount")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("ItemCategory");
+                    b.Property<byte?>("ItemCategory")
+                        .HasColumnType("smallint");
 
-                    b.Property<int>("LostItemId");
+                    b.Property<int>("LostItemId")
+                        .HasColumnType("integer");
 
-                    b.Property<DateTime?>("ModifiedOn");
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<bool>("Sorted");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<string>("WhereItemWasFound");
+                    b.Property<DateTime?>("ValidatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("WhereItemWasFound")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -4949,13 +5083,94 @@ namespace MisFinder.Data.Migrations
                     b.ToTable("LostItemClaims");
                 });
 
+            modelBuilder.Entity("MisFinder.Domain.Models.Meeting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateUserTwoSelectedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("FoundItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsAdminIncluded")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("IsEditedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsSelectFirstDate")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsSelectSecondDate")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsUserTwoSelectedDate")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LocalGovernmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LostItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("MeeetingTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("MeetingVenue")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("SelectedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("USerSelectedDate2")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("UserSelectedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoundItemId");
+
+                    b.HasIndex("LocalGovernmentId");
+
+                    b.HasIndex("LostItemId");
+
+                    b.ToTable("Meetings");
+                });
+
             modelBuilder.Entity("MisFinder.Domain.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -5151,47 +5366,53 @@ namespace MisFinder.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MisFinder.Domain.Models.ApplicationUser")
+                    b.HasOne("MisFinder.Domain.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MisFinder.Domain.Models.ApplicationUser")
+                    b.HasOne("MisFinder.Domain.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("MisFinder.Domain.Models.ApplicationUser")
+                    b.HasOne("MisFinder.Domain.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MisFinder.Domain.Models.ApplicationUser")
+                    b.HasOne("MisFinder.Domain.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MisFinder.Domain.Models.FoundItem", b =>
@@ -5207,7 +5428,8 @@ namespace MisFinder.Data.Migrations
                     b.HasOne("MisFinder.Domain.Models.LocalGovernment", "LocalGovernment")
                         .WithMany()
                         .HasForeignKey("LocalGovernmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MisFinder.Domain.Models.FoundItemClaim", b =>
@@ -5219,7 +5441,8 @@ namespace MisFinder.Data.Migrations
                     b.HasOne("MisFinder.Domain.Models.FoundItem", "FoundItem")
                         .WithMany("FoundItemClaims")
                         .HasForeignKey("FoundItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MisFinder.Domain.Models.Image", "Image")
                         .WithMany()
@@ -5231,7 +5454,8 @@ namespace MisFinder.Data.Migrations
                     b.HasOne("MisFinder.Domain.Models.State", "State")
                         .WithMany("LocalGovernments")
                         .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MisFinder.Domain.Models.LostItem", b =>
@@ -5247,7 +5471,8 @@ namespace MisFinder.Data.Migrations
                     b.HasOne("MisFinder.Domain.Models.LocalGovernment", "LocalGovernment")
                         .WithMany()
                         .HasForeignKey("LocalGovernmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MisFinder.Domain.Models.LostItemClaim", b =>
@@ -5263,7 +5488,25 @@ namespace MisFinder.Data.Migrations
                     b.HasOne("MisFinder.Domain.Models.LostItem", "LostItem")
                         .WithMany("LostItemClaims")
                         .HasForeignKey("LostItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MisFinder.Domain.Models.Meeting", b =>
+                {
+                    b.HasOne("MisFinder.Domain.Models.FoundItem", "FoundItem")
+                        .WithMany()
+                        .HasForeignKey("FoundItemId");
+
+                    b.HasOne("MisFinder.Domain.Models.LocalGovernment", "LocalGovernment")
+                        .WithMany()
+                        .HasForeignKey("LocalGovernmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MisFinder.Domain.Models.LostItem", "LostItem")
+                        .WithMany()
+                        .HasForeignKey("LostItemId");
                 });
 #pragma warning restore 612, 618
         }

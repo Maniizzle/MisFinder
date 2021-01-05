@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace MisFinder.CustomIdentity
     public class EmailConfirmationTokenProvider<TUSer> : DataProtectorTokenProvider<TUSer> where TUSer : class
     {
         public EmailConfirmationTokenProvider(IDataProtectionProvider dataProtectionProvider,
-            IOptions<EmailConfirmationTokenProviderOptions> options) : base(dataProtectionProvider, options)
+            IOptions<EmailConfirmationTokenProviderOptions> options, ILogger<DataProtectorTokenProvider<TUSer>> logger) : base(dataProtectionProvider, options, logger)
         {
         }
     }

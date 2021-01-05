@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MisFinder.Data.Migrations
 {
@@ -55,7 +55,7 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImagePath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -68,7 +68,7 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -81,7 +81,7 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -102,7 +102,7 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -187,7 +187,7 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: true),
                     StateId = table.Column<int>(nullable: false)
                 },
@@ -207,13 +207,14 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     DeletedBy = table.Column<string>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    ItemCategory = table.Column<byte>(nullable: true),
+                    IsEditedCount = table.Column<int>(nullable: false),
+                    ItemCategory = table.Column<string>(nullable: true),
                     NameOfFoundItem = table.Column<string>(nullable: true),
                     Description = table.Column<string>(maxLength: 250, nullable: true),
                     LocalGovernmentId = table.Column<int>(nullable: false),
@@ -223,7 +224,8 @@ namespace MisFinder.Data.Migrations
                     DateFound = table.Column<DateTime>(nullable: false),
                     ImageId = table.Column<int>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    IsClaimed = table.Column<bool>(nullable: false)
+                    IsClaimed = table.Column<bool>(nullable: false),
+                    IsMeetingSucceess = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,13 +255,14 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     DeletedBy = table.Column<string>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    ItemCategory = table.Column<byte>(nullable: true),
+                    IsEditedCount = table.Column<int>(nullable: false),
+                    ItemCategory = table.Column<string>(nullable: true),
                     NameOfLostItem = table.Column<string>(nullable: true),
                     Description = table.Column<string>(maxLength: 250, nullable: true),
                     ExactArea = table.Column<string>(nullable: true),
@@ -268,6 +271,7 @@ namespace MisFinder.Data.Migrations
                     Color = table.Column<string>(nullable: true),
                     DateMisplaced = table.Column<DateTime>(nullable: false),
                     ImageId = table.Column<int>(nullable: true),
+                    IsMeetingSucceess = table.Column<bool>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     IsFound = table.Column<bool>(nullable: false)
                 },
@@ -299,22 +303,24 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     DeletedBy = table.Column<string>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsEditedCount = table.Column<int>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    ItemCategory = table.Column<byte>(nullable: true),
+                    ItemCategory = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     FoundItemId = table.Column<int>(nullable: false),
                     ImageId = table.Column<int>(nullable: true),
-                    ExactAreaLost = table.Column<string>(nullable: true),
+                    WhereItemWasLost = table.Column<string>(nullable: true),
                     DateLost = table.Column<DateTime>(nullable: false),
-                    IsEditedCount = table.Column<int>(nullable: false),
-                    IsEditedLockOut = table.Column<bool>(nullable: false),
-                    IsValid = table.Column<bool>(nullable: false)
+                    Color = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: false),
+                    ValidatedOn = table.Column<DateTime>(nullable: true),
+                    IsAdminValid = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -344,21 +350,23 @@ namespace MisFinder.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     DeletedBy = table.Column<string>(nullable: true),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsEditedCount = table.Column<int>(nullable: false),
                     ItemCategory = table.Column<byte>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     LostItemId = table.Column<int>(nullable: false),
-                    Sorted = table.Column<bool>(nullable: false),
+                    WhereItemWasFound = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: false),
+                    ValidatedOn = table.Column<DateTime>(nullable: true),
                     DateFound = table.Column<DateTime>(nullable: false),
                     ImageId = table.Column<int>(nullable: true),
-                    IsEditedCount = table.Column<int>(nullable: false),
-                    IsEditedLockOut = table.Column<bool>(nullable: false)
+                    IsAdminValid = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -383,12 +391,66 @@ namespace MisFinder.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Meetings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(nullable: true),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsEditedCount = table.Column<int>(nullable: false),
+                    UserSelectedDate = table.Column<DateTime>(nullable: false),
+                    USerSelectedDate2 = table.Column<DateTime>(nullable: false),
+                    IsSelectFirstDate = table.Column<bool>(nullable: false),
+                    IsSelectSecondDate = table.Column<bool>(nullable: false),
+                    MeetingVenue = table.Column<string>(nullable: true),
+                    IsUserTwoSelectedDate = table.Column<bool>(nullable: false),
+                    DateUserTwoSelectedDate = table.Column<DateTime>(nullable: true),
+                    MeeetingTime = table.Column<DateTime>(nullable: false),
+                    LostItemId = table.Column<int>(nullable: true),
+                    FoundItemId = table.Column<int>(nullable: true),
+                    SelectedCount = table.Column<int>(nullable: false),
+                    Status = table.Column<string>(nullable: false),
+                    LocalGovernmentId = table.Column<int>(nullable: false),
+                    IsAdminIncluded = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Meetings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Meetings_FoundItems_FoundItemId",
+                        column: x => x.FoundItemId,
+                        principalTable: "FoundItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Meetings_LocalGovernments_LocalGovernmentId",
+                        column: x => x.LocalGovernmentId,
+                        principalTable: "LocalGovernments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Meetings_LostItems_LostItemId",
+                        column: x => x.LostItemId,
+                        principalTable: "LostItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "3", null, "User", "User" });
+
             migrationBuilder.InsertData(
                 table: "States",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Abia" },
                     { 21, "Kebbi" },
                     { 22, "Kogi" },
                     { 23, "Kwara" },
@@ -405,17 +467,18 @@ namespace MisFinder.Data.Migrations
                     { 34, "Taraba" },
                     { 35, "Yobe" },
                     { 20, "Katsina" },
-                    { 36, "Zamfara" },
                     { 19, "Kano" },
+                    { 18, "Kaduna" },
                     { 17, "Jigawa" },
+                    { 1, "Abia" },
                     { 2, "Adamawa" },
                     { 3, "Akwa Ibom" },
                     { 4, "Anambra" },
                     { 5, "Bauchi" },
                     { 6, "Bayelsa" },
                     { 7, "Benue" },
+                    { 36, "Zamfara" },
                     { 8, "Borno" },
-                    { 9, "CrossRiver" },
                     { 10, "Delta" },
                     { 11, "Ebonyi" },
                     { 12, "Edo" },
@@ -423,7 +486,7 @@ namespace MisFinder.Data.Migrations
                     { 14, "Enugu" },
                     { 15, "Gombe" },
                     { 16, "Imo" },
-                    { 18, "Kaduna" },
+                    { 9, "CrossRiver" },
                     { 37, "Abuja" }
                 });
 
@@ -1130,14 +1193,7 @@ namespace MisFinder.Data.Migrations
                     { 244, "Abakaliki", 11 },
                     { 246, "Afikpo South", 11 },
                     { 247, "Ebonyi", 11 },
-                    { 248, "Ezza North", 11 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "LocalGovernments",
-                columns: new[] { "Id", "Name", "StateId" },
-                values: new object[,]
-                {
+                    { 248, "Ezza North", 11 },
                     { 249, "Ezza South", 11 },
                     { 250, "Ikwo", 11 },
                     { 251, "Ishielu", 11 },
@@ -1205,8 +1261,7 @@ namespace MisFinder.Data.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -1232,8 +1287,7 @@ namespace MisFinder.Data.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_FoundItemClaims_ApplicationUserId",
@@ -1299,6 +1353,21 @@ namespace MisFinder.Data.Migrations
                 name: "IX_LostItems_LocalGovernmentId",
                 table: "LostItems",
                 column: "LocalGovernmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Meetings_FoundItemId",
+                table: "Meetings",
+                column: "FoundItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Meetings_LocalGovernmentId",
+                table: "Meetings",
+                column: "LocalGovernmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Meetings_LostItemId",
+                table: "Meetings",
+                column: "LostItemId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1323,6 +1392,9 @@ namespace MisFinder.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "LostItemClaims");
+
+            migrationBuilder.DropTable(
+                name: "Meetings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
